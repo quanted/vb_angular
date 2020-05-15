@@ -19,7 +19,10 @@ export class NavigationComponent implements OnInit {
 
   logout(): void {
     this.auth.logout();
-    this.router.navigateByUrl("/map");
+  }
+
+  gotoHome(): void {
+    this.router.navigateByUrl("/");
   }
 
   gotoMap(): void {

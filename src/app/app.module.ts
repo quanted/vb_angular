@@ -11,6 +11,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { DataComponent } from './components/data/data.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ResultsComponent } from './components/results/results.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ResultsComponent } from './components/results/results.component';
     MapComponent,
     LoginComponent,
     DataComponent,
-    ResultsComponent
+    ResultsComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
