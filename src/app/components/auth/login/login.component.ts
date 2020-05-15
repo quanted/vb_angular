@@ -7,6 +7,9 @@ import { AuthService } from "src/app/services/auth.service";
   styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit {
+  registerUser = false;
+  resetUserPW = false;
+
   constructor(private auth: AuthService) {}
 
   ngOnInit() {}
@@ -15,7 +18,19 @@ export class LoginComponent implements OnInit {
     this.auth.login();
   }
 
-  register(): boolean {
-    return true;
+  register(): void {
+    this.registerUser = true;
+  }
+
+  isRegistering($event): void {
+    this.registerUser = $event;
+  }
+
+  resetPW(): void {
+    this.resetUserPW = true;
+  }
+
+  isResetting($event): void {
+    this.resetUserPW = $event;
   }
 }

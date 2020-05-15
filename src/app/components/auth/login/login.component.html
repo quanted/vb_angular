@@ -1,2 +1,13 @@
-<button mat-raised-button color="Primary" (click)="login()">Login</button>
-<button mat-raised-button color="Primary" (click)="register()">Register</button>
+<button mat-raised-button color="primary" (click)="login()">Login</button>
+<button mat-raised-button color="primary" (click)="register()">Register</button>
+<button mat-button (click)="resetPW()">
+  Forgot password?
+</button>
+
+<ng-container *ngIf="registerUser">
+  <app-registration (registerUser)="isRegistering($event)"></app-registration>
+</ng-container>
+
+<ng-container *ngIf="resetUserPW">
+  <app-reset-password (resetUserPW)="isResetting($event)"></app-reset-password>
+</ng-container>
