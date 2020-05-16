@@ -5,9 +5,7 @@
   <div class="row content">
     <ng-container *ngIf="userIsAuthenticated()">
       <div class="box">
-        <div class="row header">
-          <app-navigation></app-navigation>
-        </div>
+        <app-navigation></app-navigation>
         <div class="row content">
           <router-outlet></router-outlet>
         </div>
