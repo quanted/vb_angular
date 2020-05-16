@@ -1,6 +1,6 @@
 .box {
   padding: 0.5em;
   display: grid;
-  gap: 0.25em;
-  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5em;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
 }
