@@ -2,6 +2,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 
 import { MatButtonModule } from "@angular/material/button";
+import { MatInputModule } from "@angular/material/input";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -16,6 +17,7 @@ import { ResultsComponent } from "./components/results/results.component";
 import { HomeComponent } from "./components/home/home.component";
 import { RegistrationComponent } from "./components/auth/registration/registration.component";
 import { ResetPasswordComponent } from "./components/auth/reset-password/reset-password.component";
+import { AccountComponent } from "./components/auth/account/account.component";
 
 @NgModule({
   declarations: [
@@ -30,12 +32,14 @@ import { ResetPasswordComponent } from "./components/auth/reset-password/reset-p
     HomeComponent,
     RegistrationComponent,
     ResetPasswordComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatInputModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

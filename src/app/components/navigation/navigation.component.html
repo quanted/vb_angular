@@ -1,7 +1,14 @@
-<ng-container *ngIf="userIsAuthenticated()">
-  <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
-  <button mat-raised-button color="primary" (click)="gotoMap()">Map</button>
-  <button mat-raised-button color="primary" (click)="gotoData()">Data</button>
-  <button mat-raised-button color="primary" (click)="gotoResults()">Results</button>
-  <button mat-raised-button color="primary" (click)="logout()">Logout</button>
-</ng-container>
+<div id="navigation">
+  <ng-container *ngIf="userIsAuthenticated()">
+    <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
+    <button mat-raised-button color="primary" (click)="gotoMap()">Map</button>
+    <button mat-raised-button color="primary" (click)="gotoData()">Data</button>
+    <button mat-raised-button color="primary" (click)="gotoResults()">
+      Results
+    </button>
+    <button mat-raised-button color="primary" (click)="gotoAccount()">
+      Account
+    </button>
+    <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+  </ng-container>
+</div>

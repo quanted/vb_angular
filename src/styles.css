@@ -1,7 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-html {
-  background: #0e6993;
-}
 
 /* Responsive Styles */
 @media screen and (max-width: 767px) {
@@ -10,5 +7,16 @@ html {
 @media screen and (max-width: 575px) {
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html {
+  background: #0e6993;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

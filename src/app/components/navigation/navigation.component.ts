@@ -21,6 +21,10 @@ export class NavigationComponent implements OnInit {
     this.auth.logout();
   }
 
+  gotoAccount(): void {
+    this.router.navigateByUrl("/account");
+  }
+
   gotoHome(): void {
     this.router.navigateByUrl("/");
   }
