@@ -7,16 +7,13 @@
 @media screen and (max-width: 575px) {
 }
 
-html {
+html,
+body {
+  margin: 0;
+  height: 100%;
   background: #0e6993;
 }
 
-html,
 body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
