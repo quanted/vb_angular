@@ -4,14 +4,14 @@
   height: 100%;
 }
 
-.box .row.header {
+.row.header {
   flex: 0 1 80px;
 }
 
-.box .row.content {
+.row.content {
   flex: 1 1 auto;
 }
 
-.box .row.footer {
+.row.footer {
   flex: 0 1 40px;
 }
