@@ -19,6 +19,8 @@ import { RegistrationComponent } from "./components/auth/registration/registrati
 import { ResetPasswordComponent } from "./components/auth/reset-password/reset-password.component";
 import { AccountComponent } from "./components/auth/account/account.component";
 
+import { AngularEsriModule } from "angular-esri-components";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +42,7 @@ import { AccountComponent } from "./components/auth/account/account.component";
     BrowserAnimationsModule,
     MatButtonModule,
     MatInputModule,
+    AngularEsriModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

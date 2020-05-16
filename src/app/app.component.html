@@ -4,8 +4,14 @@
   </div>
   <div class="row content">
     <ng-container *ngIf="userIsAuthenticated()">
-      <app-navigation></app-navigation>
-      <router-outlet></router-outlet>
+      <div class="box">
+        <div class="row header">
+          <app-navigation></app-navigation>
+        </div>
+        <div class="row content">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
     </ng-container>
     <ng-container *ngIf="!userIsAuthenticated()">
       <app-login></app-login>
