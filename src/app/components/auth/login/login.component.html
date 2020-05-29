@@ -2,15 +2,16 @@
   <div class="login">
     <div class="title">
       <h1>Welcome to Virtual Beach</h1>
+      <h3>{{ statusMessage }}</h3>
     </div>
-    <form class="fields">
-      <mat-form-field class="example-full-width">
-        <mat-label>Enter Email</mat-label>
-        <input matInput placeholder="Ex. doe.john@epa.gov" />
+    <form class="fields" [formGroup]="loginForm">
+      <mat-form-field>
+        <mat-label>Enter Username</mat-label>
+        <input matInput type="text" placeholder="Ex. doe.john@epa.gov" formControlName="username" />
       </mat-form-field>
-      <mat-form-field class="example-full-width">
+      <mat-form-field>
         <mat-label>Enter Password</mat-label>
-        <input matInput />
+        <input matInput type="password" formControlName="password" />
       </mat-form-field>
     </form>
 
@@ -30,16 +31,20 @@
       </div>
     </div>
 
-    <ng-container *ngIf="registerUser">
-      <app-registration
-        (registerUser)="isRegistering($event)"
-      ></app-registration>
-    </ng-container>
+    <div>
+      <ng-container *ngIf="registeringUser">
+        <app-registration
+          (registeringUser)="isRegistering($event)"
+        ></app-registration>
+      </ng-container>
+    </div>
 
-    <ng-container *ngIf="resetUserPW">
-      <app-reset-password
-        (resetUserPW)="isResetting($event)"
-      ></app-reset-password>
-    </ng-container>
+    <div>
+      <ng-container *ngIf="resetUserPW">
+        <app-reset-password
+          (resetUserPW)="isResetting($event)"
+        ></app-reset-password>
+      </ng-container>
+    </div>
   </div>
 </div>

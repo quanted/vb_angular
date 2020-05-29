@@ -8,7 +8,7 @@ import { EsriModuleProvider } from "angular-esri-components";
 })
 export class MapComponent implements OnInit {
   mapProperties: __esri.MapProperties = {
-    basemap: "dark-gray",
+    basemap: "satellite",
   };
 
   mapViewProperties: __esri.MapViewProperties = {
