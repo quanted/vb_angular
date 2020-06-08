@@ -1,16 +1,34 @@
 <h4>Register User</h4>
 <h4>{{ statusMessage }}</h4>
 <form class="fields" [formGroup]="registrationForm">
-    <mat-form-field>
-        <mat-label>Enter Username:</mat-label>
-        <input matInput type="text" formControlName="username"/>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Enter Password:</mat-label>
-        <input matInput type="password" formControlName="password"/>
-    </mat-form-field>
+  <mat-form-field>
+    <mat-label>First Name</mat-label>
+    <input matInput type="text" formControlName="first_name" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Last Name</mat-label>
+    <input matInput type="text" formControlName="last_name" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Enter Username</mat-label>
+    <input matInput type="text" formControlName="username" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Enter Email</mat-label>
+    <input matInput type="text" formControlName="email" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Enter Password</mat-label>
+    <input matInput type="password" formControlName="password" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Verify Password</mat-label>
+    <input matInput type="password" formControlName="password2" />
+  </mat-form-field>
 </form>
 <div class="buttons">
-    <button mat-button (click)="cancel()" color="primary">Cancel</button>
-    <button mat-raised-button (click)="register()" color="primary">Register</button>
+  <button mat-button (click)="cancel()" color="primary">Cancel</button>
+  <button mat-raised-button (click)="register()" color="primary">
+    Register
+  </button>
 </div>

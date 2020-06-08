@@ -26,6 +26,8 @@ import { AccountComponent } from "./components/auth/account/account.component";
 
 import { AngularEsriModule } from "angular-esri-components";
 
+import { CookieService } from "ngx-cookie-service";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +55,7 @@ import { AngularEsriModule } from "angular-esri-components";
     MatInputModule,
     AngularEsriModule,
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

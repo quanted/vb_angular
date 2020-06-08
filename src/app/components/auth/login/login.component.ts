@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-login",
@@ -20,17 +20,22 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.loginForm = this.fb.group({
       username: [null, Validators.required],
-      password: [null, Validators.required]
-    });}
+      password: [null, Validators.required],
+    });
+  }
 
   login(): void {
     if (this.loginForm.valid) {
-      this.auth.login(this.loginForm.get('username'), this.loginForm.get('password'))
-      .subscribe(response => {
-        if (response.error) {
-          this.statusMessage = response.error;
-        }
-      });
+      this.auth
+        .login(
+          this.loginForm.get("username").value,
+          this.loginForm.get("password").value
+        )
+        .subscribe((response) => {
+          if (response.error) {
+            this.statusMessage = response.error;
+          }
+        });
     } else {
       this.statusMessage = "Username and Password are required";
     }
