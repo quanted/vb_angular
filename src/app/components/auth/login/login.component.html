@@ -7,7 +7,12 @@
     <form class="fields" [formGroup]="loginForm">
       <mat-form-field>
         <mat-label>Enter Username</mat-label>
-        <input matInput type="text" placeholder="Ex. doe.john@epa.gov" formControlName="username" />
+        <input
+          matInput
+          type="text"
+          placeholder="Ex. doe.john@epa.gov"
+          formControlName="username"
+        />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Enter Password</mat-label>
@@ -20,11 +25,11 @@
         <button mat-raised-button color="primary" (click)="login()">
           Login
         </button>
-        <button mat-raised-button color="primary" (click)="register()">
+      </div>
+      <div>
+        <button mat-button (click)="register()">
           Register
         </button>
-      </div>
-      <div class="reset">
         <button mat-button (click)="resetPW()">
           Forgot password?
         </button>

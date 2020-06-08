@@ -1,5 +1,5 @@
-<div class="box">
-  <ng-container *ngIf="userIsAuthenticated()">
+<ng-container *ngIf="userIsAuthenticated()">
+  <div>
     <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
     <button mat-raised-button color="primary" (click)="gotoMap()">Map</button>
     <button mat-raised-button color="primary" (click)="gotoData()">Data</button>
@@ -10,5 +10,5 @@
       Account
     </button>
     <button mat-raised-button color="primary" (click)="logout()">Logout</button>
-  </ng-container>
-</div>
+  </div>
+</ng-container>

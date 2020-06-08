@@ -59,15 +59,13 @@ export class AuthService {
     this.goHome();
   }
 
-  register(first_name, last_name, username, email, password): Observable<any> {
+  register(username, email, password): Observable<any> {
     const options = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
       }),
     };
     const newUser = {
-      first_name,
-      last_name,
       username,
       email,
       password,
