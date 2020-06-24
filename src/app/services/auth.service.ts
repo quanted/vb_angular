@@ -9,6 +9,8 @@ import { environment } from "../../environments/environment";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { CookieService } from "ngx-cookie-service";
+import { RegistrationResponse } from "../models/registration-response";
+import { LoginResponse } from "../models/login-response";
 
 @Injectable({
   providedIn: "root",
@@ -39,10 +41,10 @@ export class AuthService {
         options
       )
       .pipe(
-        tap((response) => {
+        tap((response: LoginResponse) => {
           this.isAuthenticated = true;
-          this.cookieService.set("TOKEN", response["token"]);
-          this.cookieService.set("USERNAME", response["username"]);
+          this.cookieService.set("TOKEN", response.token);
+          this.cookieService.set("USERNAME", response.username);
           this.goHome();
         }),
         catchError((err) => {
@@ -73,10 +75,10 @@ export class AuthService {
     return this.http
       .post(environment.apiURL + "api/user/register/", newUser, options)
       .pipe(
-        tap((response) => {
+        tap((response: RegistrationResponse) => {
           this.isAuthenticated = true;
-          this.cookieService.set("TOKEN", response["token"]);
-          this.cookieService.set("USERNAME", response["username"]);
+          this.cookieService.set("TOKEN", response.token);
+          this.cookieService.set("USERNAME", response.username);
           this.goHome();
         }),
         catchError((err) => {
