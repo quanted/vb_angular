@@ -13,6 +13,11 @@
   flex: 1 1 auto;
 }
 
+.row.content-block {
+  flex: 1 1 auto;
+  display: block;
+}
+
 .row.footer {
   flex: 0 1 40px;
 }

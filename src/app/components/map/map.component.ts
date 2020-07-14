@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { EsriModuleProvider } from "angular-esri-components";
+import { MapService } from "src/app/services/map.service";
 
 @Component({
   selector: "app-map",
@@ -7,19 +8,19 @@ import { EsriModuleProvider } from "angular-esri-components";
   styleUrls: ["./map.component.css"],
 })
 export class MapComponent implements OnInit {
-  mapProperties: __esri.MapProperties = {
-    basemap: "satellite",
-  };
-
-  mapViewProperties: __esri.MapViewProperties = {
-    center: [-83.377319, 33.948006],
-    zoom: 8,
-  };
+  mapProperties;
+  mapViewProperties;
 
   map: __esri.Map;
   mapView: __esri.MapView;
 
-  constructor(private esriModule: EsriModuleProvider) {}
+  constructor(
+    private esriModule: EsriModuleProvider,
+    private mapService: MapService
+  ) {
+    this.mapProperties = this.mapService.getMapProperties();
+    this.mapViewProperties = this.mapService.getMapViewProperties();
+  }
 
   ngOnInit() {}
 
