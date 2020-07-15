@@ -27,6 +27,8 @@ import { AccountComponent } from "./components/auth/account/account.component";
 import { AngularEsriModule } from "angular-esri-components";
 
 import { CookieService } from "ngx-cookie-service";
+import { AnalyticalComponent } from "./components/analytical/analytical.component";
+import { PredictionComponent } from "./components/prediction/prediction.component";
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { CookieService } from "ngx-cookie-service";
     RegistrationComponent,
     ResetPasswordComponent,
     AccountComponent,
+    AnalyticalComponent,
+    PredictionComponent,
   ],
   imports: [
     BrowserModule,

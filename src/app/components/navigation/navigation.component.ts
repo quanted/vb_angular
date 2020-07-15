@@ -21,10 +21,6 @@ export class NavigationComponent implements OnInit {
     this.auth.logout();
   }
 
-  gotoAccount(): void {
-    this.router.navigateByUrl("/account");
-  }
-
   gotoHome(): void {
     this.router.navigateByUrl("/");
   }
@@ -37,7 +33,11 @@ export class NavigationComponent implements OnInit {
     this.router.navigateByUrl("/data");
   }
 
-  gotoResults(): void {
-    this.router.navigateByUrl("/results");
+  gotoAnalytical(): void {
+    this.router.navigateByUrl("/analytical");
+  }
+
+  gotoPrediction(): void {
+    this.router.navigateByUrl("/prediction");
   }
 }
