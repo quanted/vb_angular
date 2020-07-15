@@ -1,7 +1,12 @@
 <ng-container *ngIf="userIsAuthenticated()">
   <div class="buttons">
     <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
-    <button mat-raised-button color="primary" (click)="gotoMap()">Map</button>
+    <button mat-raised-button color="primary" (click)="gotoMap()">
+      ng-component-Map
+    </button>
+    <button mat-raised-button color="primary" (click)="gotoMap2()">
+      Esri-loader Map
+    </button>
     <button mat-raised-button color="primary" (click)="gotoData()">Data</button>
     <button mat-raised-button color="primary" (click)="gotoAnalytical()">
       Analytical

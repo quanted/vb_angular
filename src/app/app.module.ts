@@ -29,6 +29,8 @@ import { AngularEsriModule } from "angular-esri-components";
 import { CookieService } from "ngx-cookie-service";
 import { AnalyticalComponent } from "./components/analytical/analytical.component";
 import { PredictionComponent } from "./components/prediction/prediction.component";
+import { MapLeafletComponent } from './components/map-leaflet/map-leaflet.component';
+import { MapEsriLoaderComponent } from './components/map-esri-loader/map-esri-loader.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,8 @@ import { PredictionComponent } from "./components/prediction/prediction.componen
     AccountComponent,
     AnalyticalComponent,
     PredictionComponent,
+    MapLeafletComponent,
+    MapEsriLoaderComponent,
   ],
   imports: [
     BrowserModule,

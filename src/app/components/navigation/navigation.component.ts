@@ -29,6 +29,10 @@ export class NavigationComponent implements OnInit {
     this.router.navigateByUrl("/map");
   }
 
+  gotoMap2(): void {
+    this.router.navigateByUrl("/map-esri");
+  }
+
   gotoData(): void {
     this.router.navigateByUrl("/data");
   }

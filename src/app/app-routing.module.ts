@@ -7,11 +7,13 @@ import { DataComponent } from "./components/data/data.component";
 import { LoginComponent } from "./components/auth/login/login.component";
 import { AnalyticalComponent } from "./components/analytical/analytical.component";
 import { PredictionComponent } from "./components/prediction/prediction.component";
+import { MapEsriLoaderComponent } from "./components/map-esri-loader/map-esri-loader.component";
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "login", component: LoginComponent },
   { path: "map", component: MapComponent },
+  { path: "map-esri", component: MapEsriLoaderComponent },
   { path: "data", component: DataComponent },
   { path: "analytical", component: AnalyticalComponent },
   { path: "prediction", component: PredictionComponent },
