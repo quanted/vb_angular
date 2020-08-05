@@ -23,7 +23,7 @@ export class DatasetService {
 
   getDatasets(): Observable<any> {
     this.setHeaders();
-    return this.http.get(environment.apiURL + "/dataset/", this.options).pipe(
+    return this.http.get(environment.apiURL + "dataset/", this.options).pipe(
       catchError((err) => {
         console.log(err);
         return of({ error: `Failed to fetch datasets!` });
@@ -34,7 +34,7 @@ export class DatasetService {
   addDataset(newDataset): Observable<any> {
     this.setHeaders();
     return this.http
-      .post(environment.apiURL + "/dataset/", newDataset, this.options)
+      .post(environment.apiURL + "dataset/", newDataset, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);
@@ -46,7 +46,7 @@ export class DatasetService {
   updateDataset(updatedDataset, id): Observable<any> {
     this.setHeaders();
     return this.http
-      .put(environment.apiURL + `/dataset/${id}/`, updatedDataset, this.options)
+      .put(environment.apiURL + `dataset/${id}/`, updatedDataset, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);
@@ -58,7 +58,7 @@ export class DatasetService {
   deleteDataset(id): Observable<any> {
     this.setHeaders();
     return this.http
-      .delete(environment.apiURL + `/dataset/${id}/`, this.options)
+      .delete(environment.apiURL + `dataset/${id}/`, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);

@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { EsriModuleProvider } from "angular-esri-components";
 import { MapService } from "src/app/services/map.service";
+import esri = __esri; // Esri TypeScript Types
 
 @Component({
   selector: "app-map",
@@ -11,8 +12,8 @@ export class MapComponent implements OnInit {
   mapProperties;
   mapViewProperties;
 
-  map: __esri.Map;
-  mapView: __esri.MapView;
+  map: esri.Map;
+  mapView: esri.MapView;
 
   constructor(
     private esriModuleProvider: EsriModuleProvider,
@@ -24,7 +25,7 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {}
 
-  onMapInit(mapInfo: { map: __esri.Map; mapView: __esri.MapView }) {
+  onMapInit(mapInfo: { map: esri.Map; mapView: esri.MapView }) {
     this.map = mapInfo.map;
     this.mapView = mapInfo.mapView;
 

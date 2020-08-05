@@ -1,3 +1,10 @@
 <div id="home">
-  <p>Home works!</p>
+  <h2>Welcome {{ username }}</h2>
+  <h3>{{ statusMessage }}</h3>
+  <div *ngFor="let location of locations">{{ location }}</div>
+  <div>
+    <button mat-raised-button type="button" (click)="addLocation()">
+      Add Location
+    </button>
+  </div>
 </div>

@@ -17,6 +17,7 @@ import { LoginResponse } from "../models/login-response";
 })
 export class AuthService {
   isAuthenticated = false;
+  username = "";
 
   constructor(
     private router: Router,
@@ -35,16 +36,14 @@ export class AuthService {
       }),
     };
     return this.http
-      .post(
-        environment.apiURL + "api/user/login/",
-        { username, password },
-        options
-      )
+      .post(environment.apiURL + "user/login/", { username, password }, options)
       .pipe(
         tap((response: LoginResponse) => {
+          console.log(response);
           this.isAuthenticated = true;
           this.cookieService.set("TOKEN", response.token);
           this.cookieService.set("USERNAME", response.username);
+          this.username = response.username;
           this.goHome();
         }),
         catchError((err) => {
@@ -58,6 +57,7 @@ export class AuthService {
     this.isAuthenticated = false;
     this.cookieService.set("TOKEN", null);
     this.cookieService.set("USERNAME", null);
+    this.username = "";
     this.goHome();
   }
 
@@ -73,7 +73,7 @@ export class AuthService {
       password,
     };
     return this.http
-      .post(environment.apiURL + "api/user/register/", newUser, options)
+      .post(environment.apiURL + "user/register/", newUser, options)
       .pipe(
         tap((response: RegistrationResponse) => {
           this.isAuthenticated = true;
@@ -95,12 +95,16 @@ export class AuthService {
       }),
     };
     return this.http
-      .post(environment.apiURL + "api/user/reset", { email }, options)
+      .post(environment.apiURL + "user/reset", { email }, options)
       .pipe(
         catchError((err) => {
           return of({ error: "Failed to request password reset!" });
         })
       );
+  }
+
+  getUsername() {
+    return this.username;
   }
 
   goHome(): void {

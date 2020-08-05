@@ -24,7 +24,7 @@ export class AnalyticalmodelService {
   getModels(): Observable<any> {
     this.setHeaders();
     return this.http
-      .get(environment.apiURL + "/analyticalmodel/", this.options)
+      .get(environment.apiURL + "analyticalmodel/", this.options)
       .pipe(
         catchError((err) => {
           console.log(err);
@@ -36,7 +36,7 @@ export class AnalyticalmodelService {
   addModel(newModel): Observable<any> {
     this.setHeaders();
     return this.http
-      .post(environment.apiURL + "/analyticalmodel/", newModel, this.options)
+      .post(environment.apiURL + "analyticalmodel/", newModel, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);
@@ -49,7 +49,7 @@ export class AnalyticalmodelService {
     this.setHeaders();
     return this.http
       .put(
-        environment.apiURL + `/analyticalmodel/${id}/`,
+        environment.apiURL + `analyticalmodel/${id}/`,
         updatedModel,
         this.options
       )
@@ -64,7 +64,7 @@ export class AnalyticalmodelService {
   deleteModel(id): Observable<any> {
     this.setHeaders();
     return this.http
-      .delete(environment.apiURL + `/analyticalmodel/${id}/`, this.options)
+      .delete(environment.apiURL + `analyticalmodel/${id}/`, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);

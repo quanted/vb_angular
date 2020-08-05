@@ -23,7 +23,7 @@ export class WorkflowService {
 
   getWorkflows(): Observable<any> {
     this.setHeaders();
-    return this.http.get(environment.apiURL + "/workflow/", this.options).pipe(
+    return this.http.get(environment.apiURL + "workflow/", this.options).pipe(
       catchError((err) => {
         console.log(err);
         return of({ error: `Failed to fetch workflows!` });
@@ -34,7 +34,7 @@ export class WorkflowService {
   addWorkflow(newWorkflow): Observable<any> {
     this.setHeaders();
     return this.http
-      .post(environment.apiURL + "/workflow/", newWorkflow, this.options)
+      .post(environment.apiURL + "workflow/", newWorkflow, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);
@@ -47,7 +47,7 @@ export class WorkflowService {
     this.setHeaders();
     return this.http
       .put(
-        environment.apiURL + `/workflow/${id}/`,
+        environment.apiURL + `workflow/${id}/`,
         updatedWorkflow,
         this.options
       )
@@ -62,7 +62,7 @@ export class WorkflowService {
   deleteWorkflow(id): Observable<any> {
     this.setHeaders();
     return this.http
-      .delete(environment.apiURL + `/workflow/${id}/`, this.options)
+      .delete(environment.apiURL + `workflow/${id}/`, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);
