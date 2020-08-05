@@ -39,7 +39,6 @@ export class AuthService {
       .post(environment.apiURL + "user/login/", { username, password }, options)
       .pipe(
         tap((response: LoginResponse) => {
-          console.log(response);
           this.isAuthenticated = true;
           this.cookieService.set("TOKEN", response.token);
           this.cookieService.set("USERNAME", response.username);

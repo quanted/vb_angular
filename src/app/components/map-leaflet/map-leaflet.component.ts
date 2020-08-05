@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+
 import * as L from "leaflet";
+
 import { MapService } from "src/app/services/map.service";
 import { SettingsService } from "src/app/services/settings.service";
 
@@ -16,6 +18,7 @@ export class MapLeafletComponent implements OnInit {
   beachline = L.polyline;
   center = L.circle;
   headingline = L.polyline;
+  waterMarker = L.marker;
 
   flag = L.icon({
     iconUrl: "../assets/images/icon_flag.png",
@@ -80,6 +83,7 @@ export class MapLeafletComponent implements OnInit {
         this.map.removeLayer(this.beachline);
         this.map.removeLayer(this.center);
         this.map.removeLayer(this.headingline);
+        this.map.removeLayer(this.waterMarker);
       }
       this.beachline = L.polyline(latlngs, {
         color: this.settings.getColor("beachline"),
@@ -97,27 +101,18 @@ export class MapLeafletComponent implements OnInit {
           (headinglineStart[1] - latlngs[0].lng) *
             (headinglineStart[1] - latlngs[0].lng)
       );
-      // calculate slope of beachline
-      const slope =
-        (latlngs[0].lat - latlngs[1].lat) / (latlngs[0].lng - latlngs[1].lng);
-      // calculate angle of slope in radians
-      const beachlineRadians = Math.atan(slope) * Math.PI;
-      // add PI/2 radians
-      const headinglineRadians = beachlineRadians + Math.PI / 2;
+      const latDiff = headinglineStart[0] - latlngs[0].lat;
+      const lngDiff = headinglineStart[1] - latlngs[0].lng;
 
-      let endX = radius + radius * Math.cos(headinglineRadians);
-      let endY = radius + radius * Math.sin(headinglineRadians);
-
-      this.heading = headinglineRadians;
-      console.log("radius: ", radius);
-      console.log("slope: ", slope);
-      console.log("beachlineRadians: ", beachlineRadians);
-      console.log("headinglineRadians: ", headinglineRadians);
+      let endX = headinglineStart[0] + latDiff;
+      let endY = headinglineStart[1] + -(lngDiff);
 
       const headinglineEnd = [endX, endY];
       this.headingline = L.polyline([headinglineStart, headinglineEnd], {
         color: "blue",
       }).addTo(this.map);
+
+      this.waterMarker = L.marker(headinglineEnd, {icon: this.water}).addTo(this.map);
 
       this.center = L.circle(headinglineStart, {
         radius: 2000,

@@ -5,8 +5,7 @@ import { Observable, of } from "rxjs";
 import { catchError } from "rxjs/operators";
 
 import { environment } from "../../environments/environment";
-
-import { CookieService } from "ngx-cookie-service";
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: "root",
