@@ -1,6 +1,6 @@
 <h4>Register User</h4>
 <h4>{{ statusMessage }}</h4>
-<form [formGroup]="registrationForm">
+<form [formGroup]="registrationForm" (keyup.enter)="register()">
   <div class="fields">
     <mat-form-field>
       <mat-label>Enter Username</mat-label>

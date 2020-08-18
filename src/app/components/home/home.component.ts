@@ -37,6 +37,6 @@ export class HomeComponent implements OnInit {
 
   addLocation(): void {
     console.log("add location");
-    this.router.navigateByUrl("map-leaflet");
+    this.router.navigateByUrl("map");
   }
 }

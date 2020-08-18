@@ -2,20 +2,16 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
 import { HomeComponent } from "./components/home/home.component";
-import { MapComponent } from "./components/map/map.component";
+import { MapComponent } from "./components/map/map/map.component";
 import { DataComponent } from "./components/data/data.component";
 import { LoginComponent } from "./components/auth/login/login.component";
 import { AnalyticalComponent } from "./components/analytical/analytical.component";
 import { PredictionComponent } from "./components/prediction/prediction.component";
-import { MapEsriLoaderComponent } from "./components/map-esri-loader/map-esri-loader.component";
-import { MapLeafletComponent } from "./components/map-leaflet/map-leaflet.component";
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "login", component: LoginComponent },
   { path: "map", component: MapComponent },
-  { path: "map-esri", component: MapEsriLoaderComponent },
-  { path: "map-leaflet", component: MapLeafletComponent },
   { path: "data", component: DataComponent },
   { path: "analytical", component: AnalyticalComponent },
   { path: "prediction", component: PredictionComponent },
