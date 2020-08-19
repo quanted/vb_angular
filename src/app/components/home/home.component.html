@@ -1,7 +1,14 @@
 <div id="home">
   <h2>Welcome {{ username }}</h2>
   <h3>{{ statusMessage }}</h3>
-  <div *ngFor="let location of locations">{{ location }}</div>
+  <div *ngFor="let location of locations">
+    <p>{{ location | json }}</p>
+    <p>
+      <button mat-raised-button type="button" (click)="gotoLocation(location)">
+        see on map
+      </button>
+    </p>
+  </div>
   <div>
     <button mat-raised-button type="button" (click)="addLocation()">
       Add Location

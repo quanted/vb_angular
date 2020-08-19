@@ -1,1 +1,15 @@
-<p>data works!</p>
+<mat-card>
+  <mat-card-content>
+    <h4>Upload a data file</h4>
+    <input
+      type="file"
+      accept=".csv"
+      name="files[]"
+      (change)="updateFileList($event)"
+    /><button mat-raised-button type="button" (click)="uploadSourceFile()">
+      Upload Data
+    </button>
+  </mat-card-content>
+</mat-card>
+
+<p>{{ data | json }}</p>

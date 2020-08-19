@@ -5,6 +5,8 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
+import { DragDropModule } from "@angular/cdk/drag-drop";
+
 import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
@@ -52,6 +54,7 @@ import { CookieService } from "ngx-cookie-service";
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    DragDropModule,
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,

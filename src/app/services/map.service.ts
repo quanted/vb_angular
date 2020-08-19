@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
 
 import * as L from "leaflet";
+
 import { SettingsService } from "./settings.service";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -11,8 +13,12 @@ export class MapService {
   markers = [];
   beachline = L.polyline;
   center = L.circle;
-  headingline = L.polyline;
+  waterLine = L.polyline;
+  landLine = L.polyline;
   waterMarker = L.marker;
+  landMarker = L.marker;
+
+  markerChangeObserver;
 
   flag = L.icon({
     iconUrl: "../assets/images/icon_flag.png",
@@ -24,8 +30,8 @@ export class MapService {
     iconSize: [32, 32], // size of the icon
     iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
   });
-  wind = L.icon({
-    iconUrl: "../assets/images/icon_wind.png",
+  land = L.icon({
+    iconUrl: "../assets/images/icon_land.png",
     iconSize: [32, 32], // size of the icon
     iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
   });
@@ -35,36 +41,39 @@ export class MapService {
   };
 
   mapViewProperties: any = {
-    center: [33.948, -83.37731906],
-    zoom: 8,
+    center: [37.31, -92.1],
+    zoom: 5,
   };
 
-  defaultTileSet = L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-      attribution: "edupala.com © Angular LeafLet",
-    }
-  );
-
-  constructor(private settings: SettingsService) {}
+  constructor(private settings: SettingsService) {
+    this.markerChangeObserver = new BehaviorSubject<any>(this.markers);
+  }
 
   initMap(): void {
-    this.map = L.map("map").setView(
-      this.mapViewProperties.center,
-      this.mapViewProperties.zoom
-    );
+    this.map = L.map("map");
     this.map.on("click", (e) => {
       this.updateMarkers(e);
     });
-    this.defaultTileSet.addTo(this.map);
+
+    let testTileSet = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution: "edupala.com © Angular LeafLet",
+      }
+    );
+    testTileSet.addTo(this.map);
+    this.map.setView(
+      this.mapViewProperties.center,
+      this.mapViewProperties.zoom
+    );
+  }
+
+  zoomTo(coords) {
+    this.map.flyTo(coords);
   }
 
   getMapViewProperties(): any {
     return this.mapViewProperties;
-  }
-
-  getDefaultTileSet(): any {
-    return this.defaultTileSet;
   }
 
   getIcon(name): L.icon {
@@ -73,12 +82,27 @@ export class MapService {
         return this.flag;
       case "water":
         return this.water;
-      case "wind":
-        return this.wind;
+      case "land":
+        return this.land;
       default:
         return this.flag;
     }
   }
+
+  getMarkers() {
+    return this.markers;
+  }
+
+  clearMarkers() {
+    if (this.markers.length > 0) {
+      for (const marker of this.markers) {
+        this.map.removeLayer(marker);
+      }
+    }
+    this.markers = [];
+    this.drawBeachline();
+  }
+
   updateMarkers($event): void {
     if (this.markers.length < 2) {
       const marker = new L.marker($event.latlng, {
@@ -93,57 +117,97 @@ export class MapService {
           draggable: "true",
         });
         this.drawBeachline();
+        this.markerChangeObserver.next(this.markers);
         this.map.panTo(new L.LatLng(position.lat, position.lng));
       });
       this.map.addLayer(marker);
     }
     this.drawBeachline();
+    this.markerChangeObserver.next(this.markers);
   }
 
   drawBeachline(): void {
-    if (this.markers.length === 2) {
-      const latlngs = [this.markers[0]._latlng, this.markers[1]._latlng];
-      if (this.beachline) {
-        this.map.removeLayer(this.beachline);
-        this.map.removeLayer(this.center);
-        this.map.removeLayer(this.headingline);
-        this.map.removeLayer(this.waterMarker);
-      }
-      this.beachline = L.polyline(latlngs, {
+    if (this.beachline) {
+      this.map.removeLayer(this.beachline);
+      this.map.removeLayer(this.center);
+      this.map.removeLayer(this.waterLine);
+      this.map.removeLayer(this.landLine);
+      this.map.removeLayer(this.waterMarker);
+      this.map.removeLayer(this.landMarker);
+    }
+    if (this.markers.length >= 2) {
+      const beachEndpoints = [this.markers[0]._latlng, this.markers[1]._latlng];
+
+      this.beachline = L.polyline(beachEndpoints, {
         color: this.settings.getColor("beachline"),
       }).addTo(this.map);
-      // calculate and draw headingline
+      // calculate and draw waterLine
       // calculate centerpoint of beachline
-      const headinglineStart = [
-        (latlngs[0].lat + latlngs[1].lat) / 2,
-        (latlngs[0].lng + latlngs[1].lng) / 2,
-      ];
+      const beachCenterpoint = {
+        lat: (beachEndpoints[0].lat + beachEndpoints[1].lat) / 2,
+        lng: (beachEndpoints[0].lng + beachEndpoints[1].lng) / 2,
+      };
       // calculate radius of location circle
       const radius = Math.sqrt(
-        (headinglineStart[0] - latlngs[0].lat) *
-          (headinglineStart[0] - latlngs[0].lat) +
-          (headinglineStart[1] - latlngs[0].lng) *
-            (headinglineStart[1] - latlngs[0].lng)
+        (beachCenterpoint.lat - beachEndpoints[0].lat) *
+          (beachCenterpoint.lat - beachEndpoints[0].lat) +
+          (beachCenterpoint.lng - beachEndpoints[0].lng) *
+            (beachCenterpoint.lng - beachEndpoints[0].lng)
       );
-      const latDiff = headinglineStart[0] - latlngs[0].lat;
-      const lngDiff = headinglineStart[1] - latlngs[0].lng;
 
-      let endX = headinglineStart[0] + latDiff;
-      let endY = headinglineStart[1] + -lngDiff;
+      const dy = beachEndpoints[1].lat - beachEndpoints[0].lat;
+      const dx = beachEndpoints[1].lng - beachEndpoints[0].lng;
+      const beachAngleRadians = Math.atan(dy / dx);
+      let endX = beachCenterpoint.lat + radius * Math.cos(beachAngleRadians);
+      let endY = beachCenterpoint.lng - radius * Math.sin(beachAngleRadians);
+      const waterLineEnd = [endX, endY];
+      let endX2 = beachCenterpoint.lat - radius * Math.cos(beachAngleRadians);
+      let endY2 = beachCenterpoint.lng + radius * Math.sin(beachAngleRadians);
+      const landLineEnd = [endX2, endY2];
 
-      const headinglineEnd = [endX, endY];
-      this.headingline = L.polyline([headinglineStart, headinglineEnd], {
+      this.waterLine = L.polyline([beachCenterpoint, waterLineEnd], {
         color: "blue",
       }).addTo(this.map);
 
-      this.waterMarker = L.marker(headinglineEnd, {
-        icon: this.water,
+      this.landLine = L.polyline([beachCenterpoint, landLineEnd], {
+        color: "green",
       }).addTo(this.map);
 
-      this.center = L.circle(headinglineStart, {
-        radius: 2000,
+      this.waterMarker = L.marker(waterLineEnd, {
+        icon: this.water,
+      }).addTo(this.map);
+      this.waterMarker.on("click", ($event) => {
+        this.swapWaterAndLand($event);
+      });
+      this.markers[2] = this.waterMarker;
+
+      this.landMarker = L.marker(landLineEnd, {
+        icon: this.land,
+      }).addTo(this.map);
+      this.landMarker.on("click", ($event) => {
+        this.swapWaterAndLand($event);
+      });
+      this.markers[3] = this.landMarker;
+
+      this.center = L.circle(beachCenterpoint, {
+        radius: radius,
         color: "red",
       }).addTo(this.map);
     }
+  }
+
+  swapWaterAndLand($event) {
+    console.log("pre: ", this.markers);
+    const waterCoords = this.markers[2]._latlng;
+    const landCoords = this.markers[3]._latlng;
+    console.log(waterCoords);
+    console.log(landCoords);
+
+    this.markers[2].setLatLng(new L.LatLng(landCoords.lat, landCoords.lng));
+    this.markers[3].setLatLng(new L.LatLng(waterCoords.lat, waterCoords.lng));
+
+    console.log("post: ", this.markers);
+    this.drawBeachline();
+    this.markerChangeObserver.next(this.markers);
   }
 }

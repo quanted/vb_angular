@@ -2,6 +2,7 @@
   [formGroup]="locationForm"
   (keyup.enter)="saveLocation()"
   class="location-form"
+  cdkDrag
 >
   <mat-card-header>
     <mat-card-title>Add a new location</mat-card-title>
@@ -35,6 +36,9 @@
         #start_longitude
       />
     </mat-form-field>
+    <button mat-raised-button type="button" (click)="zoomToStart()">
+      center on start flag
+    </button>
     <!-- Beach End -->
     <mat-form-field>
       <mat-label>End Latitude: </mat-label>
@@ -54,6 +58,9 @@
         #end_longitude
       />
     </mat-form-field>
+    <button mat-raised-button type="button" (click)="zoomToEnd()">
+      center on end flag
+    </button>
     <!-- Ocean Orientation -->
     <mat-form-field>
       <mat-label>Ocean Latitude: </mat-label>

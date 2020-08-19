@@ -26,7 +26,6 @@ export class HomeComponent implements OnInit {
         if (locations.length < 1) {
           this.statusMessage = "You have no stored locations";
         } else {
-          console.log(locations);
           this.locations = locations;
         }
       } else {
@@ -38,5 +37,9 @@ export class HomeComponent implements OnInit {
   addLocation(): void {
     console.log("add location");
     this.router.navigateByUrl("map");
+  }
+
+  gotoLocation(location) {
+    console.log(location);
   }
 }
