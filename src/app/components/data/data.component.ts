@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { DatasetService } from "src/app/services/dataset.service";
 
 @Component({
   selector: "app-data",
@@ -9,7 +10,7 @@ export class DataComponent implements OnInit {
   files: FileList;
   data;
 
-  constructor() {}
+  constructor(private dataService: DatasetService) {}
 
   ngOnInit() {}
 
@@ -27,11 +28,19 @@ export class DataComponent implements OnInit {
       reader.onload = (e) => {
         if (reader.result) {
           this.data = reader.result;
+          this.parseCSV(this.data);
         } else {
           // error messages here?
         }
       };
       reader.readAsText(this.files[f]);
+    }
+  }
+
+  parseCSV(data) {
+    const lines = data.split("\n");
+    for (const line of lines) {
+      console.log("line: ", line);
     }
   }
 }

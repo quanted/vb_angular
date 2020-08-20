@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MapService } from "src/app/services/map.service";
-import { Subscription } from "rxjs";
 import { LocationService } from "src/app/services/location.service";
 
 @Component({
@@ -11,7 +10,6 @@ import { LocationService } from "src/app/services/location.service";
 })
 export class LocationFormComponent implements OnInit {
   locationForm: FormGroup;
-  private mapMarkerObserver: Subscription;
   markers = [];
 
   constructor(
@@ -31,14 +29,12 @@ export class LocationFormComponent implements OnInit {
       o_latitude: [null, Validators.required],
       o_longitude: [null, Validators.required],
     });
-    this.mapMarkerObserver = this.mapService.markerChangeObserver.subscribe(
-      (markers) => {
-        this.markers = markers;
-        if (this.markers.length > 0) {
-          this.updateLocationForm();
-        }
+    this.mapService.markerChangeObserver.subscribe((markers) => {
+      this.markers = markers;
+      if (this.markers.length > 0) {
+        this.updateLocationForm();
       }
-    );
+    });
   }
 
   saveLocation() {
@@ -78,9 +74,6 @@ export class LocationFormComponent implements OnInit {
       this.locationForm
         .get("end_longitude")
         .setValue(this.markers[1]._latlng.lng);
-    }
-
-    if (this.markers[2]) {
       this.locationForm.get("o_latitude").setValue(this.markers[2]._latlng.lat);
       this.locationForm
         .get("o_longitude")
@@ -88,11 +81,11 @@ export class LocationFormComponent implements OnInit {
     }
   }
 
-  zoomToStart() {
-    this.mapService.zoomTo(this.markers[0]._latlng);
+  flyToStart() {
+    this.mapService.flyTo(this.markers[0]._latlng);
   }
 
-  zoomToEnd() {
-    this.mapService.zoomTo(this.markers[1]._latlng);
+  flyToEnd() {
+    this.mapService.flyTo(this.markers[1]._latlng);
   }
 }
