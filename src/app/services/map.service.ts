@@ -101,7 +101,6 @@ export class MapService {
     L.polyline(beachEndpoints, {
       color: this.settings.getColor("beachline"),
     }).addTo(this.beachIndicator);
-    // calculate and draw waterLine
     // calculate centerpoint of beachline
     const beachCenterpoint = {
       lat: (beachEndpoints[0].lat + beachEndpoints[1].lat) / 2,
@@ -150,7 +149,7 @@ export class MapService {
     this.markers[3] = landMarker;
 
     L.circle(beachCenterpoint, {
-      radius: radius,
+      radius: 2000,
       color: "red",
     }).addTo(this.beachIndicator);
 

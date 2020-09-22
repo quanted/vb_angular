@@ -29,6 +29,7 @@ export class LocationFormComponent implements OnInit {
       o_latitude: [null, Validators.required],
       o_longitude: [null, Validators.required],
     });
+    this.mapService.clearMarkers();
     this.mapService.markerChangeObserver.subscribe((markers) => {
       this.markers = markers;
       if (this.markers.length > 0) {
