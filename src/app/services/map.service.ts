@@ -168,7 +168,9 @@ export class MapService {
       }
     }
     this.markers = [];
-    this.map.removeLayer(this.beachIndicator);
+    if (this.beachIndicator !== undefined) {
+      this.map.removeLayer(this.beachIndicator);
+    }
   }
 
   flyTo(coords) {
