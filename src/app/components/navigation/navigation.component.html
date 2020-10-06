@@ -1,15 +1,9 @@
-<ng-container *ngIf="userIsAuthenticated()">
+<ng-container *ngIf="!userIsAuthenticated()">
   <div class="buttons">
     <button mat-raised-button (click)="gotoHome()">Home</button>
-    <!-- <button mat-raised-button color="primary" (click)="gotoMap()">
-      ng-esri
-    </button>
-    <button mat-raised-button color="primary" (click)="gotoMap2()">
-      esri-loader
-    </button> -->
-    <button mat-raised-button (click)="gotoMap()">
+    <!-- <button mat-raised-button (click)="gotoMap()">
       Map
-    </button>
+    </button> -->
     <button mat-raised-button (click)="gotoData()">Data</button>
     <button mat-raised-button (click)="gotoAnalytical()">
       Analytical

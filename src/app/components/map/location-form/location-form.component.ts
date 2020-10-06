@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MapService } from "src/app/services/map.service";
 import { LocationService } from "src/app/services/location.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-location-form",
@@ -15,7 +16,8 @@ export class LocationFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private mapService: MapService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -49,6 +51,7 @@ export class LocationFormComponent implements OnInit {
     } else {
       console.log("form invalid!");
     }
+    this.router.navigateByUrl('/');
   }
 
   clearForm() {
