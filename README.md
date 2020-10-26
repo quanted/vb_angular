@@ -1,4 +1,4 @@
-# Vbweb
+# VB-Web Angular Development Code
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.8.
 
@@ -25,3 +25,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+# VB-Web Angular Integration
+
+Compiled angular code is served from [VB_Django](https://github.com/quanted/vb_django) as static file content.
