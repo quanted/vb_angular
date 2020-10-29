@@ -13,20 +13,12 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit() {}
 
-  userIsAuthenticated(): boolean {
-    return this.auth.userIsAuthenticated();
-  }
-
   logout(): void {
     this.auth.logout();
   }
 
   gotoHome(): void {
     this.router.navigateByUrl("/");
-  }
-
-  gotoMap(): void {
-    this.router.navigateByUrl("/map");
   }
 
   gotoData(): void {

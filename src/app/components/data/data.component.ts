@@ -3,14 +3,13 @@ import { DatasetService } from "src/app/services/dataset.service";
 
 import * as XLSX from "xlsx";
 
-type AOA = any [][];
-
 @Component({
   selector: "app-data",
   templateUrl: "./data.component.html",
   styleUrls: ["./data.component.css"],
 })
 export class DataComponent implements OnInit {
+  importedData = [];
   columnData = [];
   columnNames = [];
 
@@ -32,10 +31,10 @@ export class DataComponent implements OnInit {
       const wsname: string = wb.SheetNames[0];
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
-      const data = <AOA>(XLSX.utils.sheet_to_json(ws, {header: 1}));
+      this.importedData = (XLSX.utils.sheet_to_json(ws, {header: 1}));
 
-      this.columnNames = data[0];
-      const columnValues = data.slice(1);
+      this.columnNames = this.importedData[0];
+      const columnValues = this.importedData.slice(1);
       for (let i = 0; i < columnValues.length; i++) {
         const record = {};
         const values = columnValues[i];
@@ -44,9 +43,6 @@ export class DataComponent implements OnInit {
         }
         this.columnData.push(record);
       }
-      console.log("onFileChange: ", this.columnNames);
-      console.log("onFileChange: ", this.columnData);
-
     }
     reader.readAsBinaryString(target.files[0]);
   }

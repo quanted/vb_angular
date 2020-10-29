@@ -12,6 +12,8 @@ import { CookieService } from "ngx-cookie-service";
   providedIn: "root",
 })
 export class DatasetService {
+  dataSet = [];
+  
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   options = {
