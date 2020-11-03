@@ -51,7 +51,7 @@ export class LocationFormComponent implements OnInit {
     } else {
       console.log("form invalid!");
     }
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('/location');
   }
 
   clearForm() {

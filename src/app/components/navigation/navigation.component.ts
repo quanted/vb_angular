@@ -13,23 +13,11 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit() {}
 
-  logout(): void {
-    this.auth.logout();
-  }
-
   gotoHome(): void {
     this.router.navigateByUrl("/");
   }
 
-  gotoData(): void {
-    this.router.navigateByUrl("/data");
-  }
-
-  gotoAnalytical(): void {
-    this.router.navigateByUrl("/analytical");
-  }
-
-  gotoPrediction(): void {
-    this.router.navigateByUrl("/prediction");
+  logout(): void {
+    this.auth.logout();
   }
 }

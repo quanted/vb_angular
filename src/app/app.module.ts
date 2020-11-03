@@ -11,6 +11,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from '@angular/material/table';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -31,6 +32,7 @@ import { AnalyticalComponent } from "./components/analytical/analytical.componen
 import { PredictionComponent } from "./components/prediction/prediction.component";
 
 import { CookieService } from "ngx-cookie-service";
+import { LocationComponent } from './components/location/location.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ import { CookieService } from "ngx-cookie-service";
     AccountComponent,
     AnalyticalComponent,
     PredictionComponent,
+    LocationComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,6 +65,7 @@ import { CookieService } from "ngx-cookie-service";
     MatButtonModule,
     MatInputModule,
     MatTableModule,
+    MatExpansionModule,
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],
