@@ -45,13 +45,12 @@ export class LocationFormComponent implements OnInit {
       console.log(this.locationForm.value);
       this.locationService
         .addLocation(this.locationForm.value)
-        .subscribe((response) => {
-          console.log("add-location: ", response);
+        .subscribe((location) => {
+          this.router.navigateByUrl(`location/${location.id}`);
         });
     } else {
       console.log("form invalid!");
     }
-    this.router.navigateByUrl('/location');
   }
 
   clearForm() {

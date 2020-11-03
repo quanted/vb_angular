@@ -38,8 +38,4 @@ export class HomeComponent implements OnInit {
     console.log("add location");
     this.router.navigateByUrl("map");
   }
-
-  gotoLocation(location) {
-    console.log(location);
-  }
 }

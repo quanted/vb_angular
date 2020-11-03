@@ -5,6 +5,7 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
+import { CookieService } from "ngx-cookie-service";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 
 import { MatCardModule } from "@angular/material/card";
@@ -20,7 +21,9 @@ import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
 import { NavigationComponent } from "./components/navigation/navigation.component";
 import { MapComponent } from "./components/map/map/map.component";
+import { LocationComponent } from './components/location/location.component';
 import { LocationFormComponent } from "./components/map/location-form/location-form.component";
+import { LocationDetailComponent } from './components/location-detail/location-detail.component';
 import { LoginComponent } from "./components/auth/login/login.component";
 import { DataComponent } from "./components/data/data.component";
 import { ResultsComponent } from "./components/results/results.component";
@@ -31,8 +34,6 @@ import { AccountComponent } from "./components/auth/account/account.component";
 import { AnalyticalComponent } from "./components/analytical/analytical.component";
 import { PredictionComponent } from "./components/prediction/prediction.component";
 
-import { CookieService } from "ngx-cookie-service";
-import { LocationComponent } from './components/location/location.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,9 @@ import { LocationComponent } from './components/location/location.component';
     FooterComponent,
     NavigationComponent,
     MapComponent,
+    LocationComponent,
     LocationFormComponent,
+    LocationDetailComponent,
     LoginComponent,
     DataComponent,
     ResultsComponent,
@@ -51,7 +54,6 @@ import { LocationComponent } from './components/location/location.component';
     AccountComponent,
     AnalyticalComponent,
     PredictionComponent,
-    LocationComponent,
   ],
   imports: [
     BrowserModule,

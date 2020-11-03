@@ -2,12 +2,7 @@
   <h2>Welcome {{ username }}</h2>
   <h3>{{ statusMessage }}</h3>
   <div *ngFor="let location of locations">
-    <p>{{ location | json }}</p>
-    <p>
-      <button mat-raised-button type="button" (click)="gotoLocation(location)">
-        Edit Location
-      </button>
-    </p>
+    <app-location-detail [location]="location"></app-location-detail>
   </div>
   <div>
     <button mat-raised-button type="button" (click)="addLocation()">

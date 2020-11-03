@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { LocationService } from 'src/app/services/location.service';
 
 @Component({
   selector: 'app-location',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LocationComponent implements OnInit {
   panelOpenState = false;
-  constructor() { }
+  location_ID;
+  location = {};
+  constructor(
+    private route: ActivatedRoute,
+    private locationService: LocationService
+  ) { }
 
   ngOnInit(): void {
+    this.location_ID = this.route.snapshot.paramMap.get('id');
+    this.locationService.getLocations().subscribe((locations) => {
+      this.location = locations.find((location) => {
+        return location.id == this.location_ID;
+      });
+    });
   }
-
 }

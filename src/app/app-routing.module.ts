@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "login", component: LoginComponent },
   { path: "map", component: MapComponent },
-  { path: "location", component: LocationComponent },
+  { path: "location/:id", component: LocationComponent },
 ];
 
 @NgModule({
