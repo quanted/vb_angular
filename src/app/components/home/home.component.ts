@@ -34,6 +34,26 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  deleteLocation(location): void {
+    this.locationService.deleteLocation(location.id).subscribe(() => {
+      this.locationService.getLocations().subscribe((locations) => {
+        if (!locations.error) {
+          if (locations.length < 1) {
+            this.statusMessage = "You have no stored locations";
+          } else {
+            this.locations = locations;
+          }
+        } else {
+          console.log(locations.error);
+        }
+      });
+    });
+  }
+
+  gotoLocation(location) {
+    this.router.navigateByUrl(`location/${location.id}`);
+  }
+
   addLocation(): void {
     console.log("add location");
     this.router.navigateByUrl("map");
