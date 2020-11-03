@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
         if (!locations.error) {
           if (locations.length < 1) {
             this.statusMessage = "You have no stored locations";
+            this.locations = [];
           } else {
             this.locations = locations;
           }
