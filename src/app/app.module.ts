@@ -13,6 +13,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
+
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -68,6 +70,7 @@ import { PredictionComponent } from "./components/prediction/prediction.componen
     MatInputModule,
     MatTableModule,
     MatExpansionModule,
+    MatSelectModule,
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],
