@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AnalyticalComponent implements OnInit {
 
-  constructor() { }
+  // List of model types
+  models : string[] = [
+    "Mean Linear Regression", 
+    "Gradient Boosting Machine", 
+    "Partial Least Squares"
+  ];
 
-  ngOnInit() {
-  }
+  selectedModel : string;
+
+  constructor() {}
+
+  ngOnInit() {}
 
 }
