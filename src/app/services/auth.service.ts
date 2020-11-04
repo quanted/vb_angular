@@ -16,9 +16,6 @@ import { LoginResponse } from "../models/login-response";
   providedIn: "root",
 })
 export class AuthService {
-  isAuthenticated = false;
-  username = "";
-
   constructor(
     private router: Router,
     private http: HttpClient,
@@ -26,7 +23,7 @@ export class AuthService {
   ) {}
 
   userIsAuthenticated(): boolean {
-    return this.isAuthenticated;
+    return this.cookieService.get("TOKEN") != 'null';
   }
 
   login(username, password): Observable<any> {
@@ -39,10 +36,8 @@ export class AuthService {
       .post(environment.apiURL + "user/login/", { username, password }, options)
       .pipe(
         tap((response: LoginResponse) => {
-          this.isAuthenticated = true;
           this.cookieService.set("TOKEN", response.token);
           this.cookieService.set("USERNAME", response.username);
-          this.username = response.username;
           this.goHome();
         }),
         catchError((err) => {
@@ -53,10 +48,8 @@ export class AuthService {
   }
 
   logout(): void {
-    this.isAuthenticated = false;
     this.cookieService.set("TOKEN", null);
     this.cookieService.set("USERNAME", null);
-    this.username = "";
     this.goHome();
   }
 
@@ -75,7 +68,6 @@ export class AuthService {
       .post(environment.apiURL + "user/register/", newUser, options)
       .pipe(
         tap((response: RegistrationResponse) => {
-          this.isAuthenticated = true;
           this.cookieService.set("TOKEN", response.token);
           this.cookieService.set("USERNAME", response.username);
           this.goHome();
@@ -103,7 +95,7 @@ export class AuthService {
   }
 
   getUsername() {
-    return this.username;
+    return this.cookieService.get("USERNAME");
   }
 
   goHome(): void {
