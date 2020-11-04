@@ -9,7 +9,7 @@ export class AnalyticalComponent implements OnInit {
 
   // List of model types
   models : string[] = [
-    "Mean Linear Regression", 
+    "Multiple Linear Regression", 
     "Gradient Boosting Machine", 
     "Partial Least Squares"
   ];
