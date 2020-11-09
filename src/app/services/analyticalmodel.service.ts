@@ -10,9 +10,9 @@ import { CookieService } from 'ngx-cookie-service';
 @Injectable({
   providedIn: "root",
 })
-export class AnalyticalmodelService {
+export class AnalyticalModelService {
   constructor(private http: HttpClient, private cookieService: CookieService) {}
-
+  
   options = {
     headers: new HttpHeaders({
       "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export class AnalyticalmodelService {
       );
   }
 
-  updateModle(updatedModel, id): Observable<any> {
+  updateModel(updatedModel, id): Observable<any> {
     this.setHeaders();
     return this.http
       .put(

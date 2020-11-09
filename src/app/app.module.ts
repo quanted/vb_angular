@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from "./app-routing.module";
+import { AnalyticalModule } from "./components/analytical/analytical.module";
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
@@ -33,9 +34,7 @@ import { HomeComponent } from "./components/home/home.component";
 import { RegistrationComponent } from "./components/auth/registration/registration.component";
 import { ResetPasswordComponent } from "./components/auth/reset-password/reset-password.component";
 import { AccountComponent } from "./components/auth/account/account.component";
-import { AnalyticalComponent } from "./components/analytical/analytical.component";
 import { PredictionComponent } from "./components/prediction/prediction.component";
-
 
 @NgModule({
   declarations: [
@@ -54,10 +53,10 @@ import { PredictionComponent } from "./components/prediction/prediction.componen
     RegistrationComponent,
     ResetPasswordComponent,
     AccountComponent,
-    AnalyticalComponent,
     PredictionComponent,
   ],
   imports: [
+    AnalyticalModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,

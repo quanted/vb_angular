@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AnalyticalModelService } from '../../services/analyticalmodel.service';
 
 @Component({
   selector: 'app-analytical',
@@ -6,13 +7,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./analytical.component.css']
 })
 export class AnalyticalComponent implements OnInit {
-
-  // List of model types
-  models : string[] = [
-    "Multiple Linear Regression", 
-    "Gradient Boosting Machine", 
-    "Partial Least Squares"
-  ];
 
   selectedModel : string;
 
