@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AnalyticalModelService } from '../../services/analyticalmodel.service';
 
 @Component({
   selector: 'app-analytical',
