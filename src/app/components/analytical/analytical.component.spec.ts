@@ -1,5 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AnalyticalComponent } from './analytical.component';
+import { HttpClientTestingModule }
+       from '@angular/common/http/testing';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HttpRequestInterceptor } 
+       from '../../services/testing/HttpRequestInterceptor';
 
 describe('AnalyticalComponent', () => {
   let component: AnalyticalComponent;
@@ -7,9 +12,18 @@ describe('AnalyticalComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [ AnalyticalComponent ]
-    })
-    .compileComponents();
+      declarations: [AnalyticalComponent],
+      imports: [
+        HttpClientTestingModule
+      ],
+      providers: [
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: HttpRequestInterceptor,
+          multi: true
+        }
+      ]
+    }).compileComponents();
   });
 
   beforeEach(() => {

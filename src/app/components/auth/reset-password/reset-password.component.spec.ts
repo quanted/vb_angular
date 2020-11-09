@@ -3,6 +3,7 @@ import { ResetPasswordComponent } from './reset-password.component';
 import { HttpClientTestingModule, HttpTestingController } 
     from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('ResetPasswordComponent', () => {
   let component: ResetPasswordComponent;
@@ -11,7 +12,7 @@ describe('ResetPasswordComponent', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [ ResetPasswordComponent ],
-      imports: [HttpClientTestingModule, RouterTestingModule]
+      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule]
     })
     .compileComponents();
   });

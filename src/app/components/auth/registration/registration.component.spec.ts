@@ -3,6 +3,8 @@ import { RegistrationComponent } from './registration.component';
 import { HttpClientTestingModule, HttpTestingController } 
     from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 describe('RegistrationComponent', () => {
   let component: RegistrationComponent;
@@ -11,7 +13,7 @@ describe('RegistrationComponent', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [ RegistrationComponent ],
-      imports: [HttpClientTestingModule, RouterTestingModule]
+      imports: [HttpClientTestingModule, RouterTestingModule, ReactiveFormsModule]
     })
     .compileComponents();
   });

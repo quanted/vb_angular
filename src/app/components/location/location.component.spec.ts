@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { LocationComponent } from './location.component';
+import { HttpClientTestingModule, HttpTestingController } 
+    from '@angular/common/http/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 describe('LocationComponent', () => {
   let component: LocationComponent;
@@ -8,7 +11,8 @@ describe('LocationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LocationComponent ]
+      declarations: [ LocationComponent ],
+      imports: [RouterModule.forRoot([]), HttpClientTestingModule, ReactiveFormsModule]
     })
     .compileComponents();
   });

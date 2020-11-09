@@ -7,8 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AnalyticalComponent implements OnInit {
 
-  selectedModel : string;
-
   constructor() {}
 
   ngOnInit() {}
