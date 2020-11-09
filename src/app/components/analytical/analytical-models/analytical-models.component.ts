@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AnalyticalModelService } from '../../../services/analyticalmodel.service';
-import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -17,7 +16,6 @@ export class AnalyticalModelsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    //this.location_ID = this.route.snapshot.paramMap.get('id');
     this.models = this.analyticalModelService.getModels();
     console.log(this.models);
   }
