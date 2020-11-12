@@ -6,6 +6,7 @@ import { catchError } from "rxjs/operators";
 
 import { environment } from "../../environments/environment";
 import { CookieService } from 'ngx-cookie-service';
+import { AnalyticalModelResponse } from '../models/analytical-model-response';
 
 @Injectable({
   providedIn: "root",
@@ -16,21 +17,26 @@ export class AnalyticalModelService {
   options = {
     headers: new HttpHeaders({
       "Content-Type": "application/json",
-      Authorization: `Token ${this.cookieService.get("TOKEN")}`,
+      Authorization: `Token ${this.cookieService.get("TOKEN")}`
     }),
   };
 
-  getModels(): Observable<any> {
+  getModels(projectID : string): Observable<AnalyticalModelResponse[]> {
     this.setHeaders();
-    return this.http
-      .get(environment.apiURL + "analyticalmodel/", this.options)
-      .pipe(
-        catchError((err) => {
-          console.log(err);
-          return of({ error: `Failed to fetch analyticalmodels!` });
-        })
-      );
+    return this.http.post<AnalyticalModelResponse[]>
+    (environment.apiURL + `analyticalmodel/${projectID}/`, this.options)
+    .pipe(
+      catchError(this.handleError<AnalyticalModelResponse[]>('getModels', []))
+    );
   }
+
+
+private handleError<T>(operation = 'operation', result?: T) {
+  return (error: any): Observable<T> => {
+    console.error(error);
+    return of(result as T);
+  };
+}
 
   addModel(newModel): Observable<any> {
     this.setHeaders();
@@ -74,8 +80,8 @@ export class AnalyticalModelService {
 
   setHeaders(): void {
     this.options.headers = new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: `Token ${this.cookieService.get("TOKEN")}`,
+      "Content-Type" : "application/json",
+      "Authorization" : `Token ${this.cookieService.get("TOKEN")}`
     });
   }
 }

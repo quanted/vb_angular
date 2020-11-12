@@ -28,14 +28,13 @@ describe('AnalyticalModelService', () => {
   });
 
   it('getModels() should provide models', () => {
-    service.getModels().subscribe((model : AnalyticalModelResponse) => {
+    service.getModels("1").subscribe(model => {
       expect(model).not.toBe(null);
       expect(JSON.stringify(model)).toEqual(JSON.stringify(mockModel));
     });
 
     const req = httpTestingController
-              .expectOne(`https://127.0.0.1:8080/api/analyticalmodel/`);
-
+      .expectOne(`http://127.0.0.1:8080/api/analyticalmodel/1/`);
     req.flush(mockModel);
   });
 });

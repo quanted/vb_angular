@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AnalyticalModelService } from '../../../services/analyticalmodel.service';
 import { AnalyticalModelResponse } from '../../../models/analytical-model-response';
-import { mockModel } from '../../../models/analytical-model-response';
-import {Observable} from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-analytical-models',
@@ -11,8 +10,7 @@ import {Observable} from 'rxjs';
 })
 export class AnalyticalModelsComponent implements OnInit {
 
-  models : Observable<AnalyticalModelResponse[]>;
-  mock : AnalyticalModelResponse[] = [mockModel];
+  models : AnalyticalModelResponse[];
 
   displayedColumns: string[] = [
     'project', 
@@ -24,12 +22,22 @@ export class AnalyticalModelsComponent implements OnInit {
   ];
 
   constructor(
-    private analyticalModelService : AnalyticalModelService
+    private route : ActivatedRoute,
+    private analyticalModelService : AnalyticalModelService,
   ) { }
 
   ngOnInit(): void {
-    this.models = this.analyticalModelService.getModels();
-    console.log(this.models);
+    this.getModels(this.route.snapshot.paramMap.get('id'));
   }
 
+  getModels(projectID : string) {
+    if(projectID === "undefined" || projectID === "null") {
+      console.log("No project ID");
+      return;
+    } else {
+      this.analyticalModelService.getModels(projectID).subscribe(model => {
+        this.models = model;
+      });
+    }
+  }
 }

@@ -1,66 +1,48 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AnalyticalModelsComponent } from './analytical-models.component';
-import { HttpClientTestingModule }
+import { AnalyticalModelService } from '../../../services/analyticalmodel.service';
+import { HttpClientTestingModule, HttpTestingController }
        from '@angular/common/http/testing';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import { HttpRequestInterceptor } 
-       from '../../../services/testing/HttpRequestInterceptor';
-import {mockModel} from '../../../models/analytical-model-response';
+import { RouterTestingModule } from '@angular/router/testing';
+import {AnalyticalModelResponse, mockModel} from '../../../models/analytical-model-response';
 
 describe('AnalyticalModelsComponent', () => {
   let component: AnalyticalModelsComponent;
   let fixture: ComponentFixture<AnalyticalModelsComponent>;
+  let httpTestingController: HttpTestingController;
+  let mockModels: AnalyticalModelResponse[] = [mockModel]
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [AnalyticalModelsComponent],
       imports: [
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        RouterTestingModule
       ],
-      providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: HttpRequestInterceptor,
-          multi: true
-        }
-      ]
-    }).compileComponents();
-  });
+      providers: [ AnalyticalModelService ]
+    });
 
-  beforeEach(() => {
+    await TestBed.compileComponents();
+
     fixture = TestBed.createComponent(AnalyticalModelsComponent);
     component = fixture.componentInstance;
+    httpTestingController = fixture.debugElement.injector.get<HttpTestingController>(HttpTestingController);
     fixture.detectChanges();
   });
+
+  afterEach(() => {
+    httpTestingController.verify();
+  });
+
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render table of models', (done) => {
-    expect(component.models).toEqual(mockModel);
-
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-  
-      let tableRows = fixture.nativeElement.querySelectorAll('tr');
-      expect(tableRows.length).toBe(4);
-  
-      // Header row
-      let headerRow = tableRows[0];
-      expect(headerRow.cells[0].innerHTML).toBe('Email');
-      expect(headerRow.cells[1].innerHTML).toBe('Created');
-      expect(headerRow.cells[2].innerHTML).toBe('Roles');
-  
-      // Data rows
-      let row1 = tableRows[1];
-      expect(row1.cells[0].innerHTML).toBe('dummy@mail.com');
-      expect(row1.cells[1].innerHTML).toBe('01-01-2020');
-      expect(row1.cells[2].innerHTML).toBe('admin,standard');
-  
-      // Test more rows here..
-  
-      done();
-    });
+  it('should return model', () => {
+    component.getModels("1");
+    const req = httpTestingController.expectOne(`http://127.0.0.1:8080/api/analyticalmodel/1/`);
+    req.flush(mockModel);
+    expect(JSON.stringify(component.models)).toEqual(JSON.stringify(mockModels[0]));
   });
 });

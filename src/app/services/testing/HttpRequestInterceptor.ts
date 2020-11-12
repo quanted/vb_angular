@@ -8,15 +8,14 @@ import { Injectable, Injector } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
-
-import { mockModel } from '../../models/analytical-model-response';
+import { AnalyticalModelResponse, mockModel } from '../../models/analytical-model-response';
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
     constructor(private injector: Injector) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (request.url === "https://127.0.0.1:8080/api/analyticalmodel/") {
+        if (request.url === "http://127.0.0.1:8080/api/analyticalmodel/1") {
             console.log('Loaded from json : ' + request.url);
             return of(new HttpResponse({ status: 200, body: ((mockModel) as any).default }));
         }
