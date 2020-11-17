@@ -24,7 +24,7 @@ export class AnalyticalModelService {
   getModels(projectID : string): Observable<AnalyticalModelResponse[]> {
     this.setHeaders();
     return this.http.post<AnalyticalModelResponse[]>
-    (environment.apiURL + `analyticalmodel/${projectID}/`, this.options)
+    (environment.apiURL + `analyticalmodel/project_id=${projectID}`, this.options)
     .pipe(
       catchError(this.handleError<AnalyticalModelResponse[]>('getModels', []))
     );

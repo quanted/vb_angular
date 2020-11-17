@@ -34,7 +34,7 @@ describe('AnalyticalModelService', () => {
     });
 
     const req = httpTestingController
-      .expectOne(`http://127.0.0.1:8080/api/analyticalmodel/1/`);
+      .expectOne(`http://127.0.0.1:8080/api/analyticalmodel/project_id=1`);
     req.flush(mockModel);
   });
 });

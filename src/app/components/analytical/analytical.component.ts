@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AnalyticalComponent implements OnInit {
 
+  createModel : Boolean = false;
+
   constructor() {}
 
   ngOnInit() {}

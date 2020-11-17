@@ -15,7 +15,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     constructor(private injector: Injector) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (request.url === "http://127.0.0.1:8080/api/analyticalmodel/1") {
+        if (request.url === "http://127.0.0.1:8080/api/analyticalmodel/project_id=1") {
             console.log('Loaded from json : ' + request.url);
             return of(new HttpResponse({ status: 200, body: ((mockModel) as any).default }));
         }
