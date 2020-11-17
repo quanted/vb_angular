@@ -1,0 +1,14 @@
+button {
+    width: 100px;
+    height: 50px;
+    color: white;
+    margin: 10px auto;
+}
+
+.new {
+    background-color: #2e8540;
+}
+
+.cancel {
+    background-color: red;
+}
