@@ -18,13 +18,17 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 })
 export class AnalyticalModelsComponent implements OnInit {
 
+  // Holds models returned for project Id by the AnalyticalModelService
   models : AnalyticalModelResponse[] = [];
 
+  // Column names displayed on table that shows the models
   columnsToDisplay: string[] = [
     'name', 
     'type', 
     'model'
   ];
+
+  // State variable for opening closing table elements on click
   expandedElement: AnalyticalModelResponse | null;
 
   constructor(
@@ -35,13 +39,13 @@ export class AnalyticalModelsComponent implements OnInit {
   ngOnInit(): void {
     //this.getModels(this.route.snapshot.paramMap.get('id'));
 
-    // Fake models for UI devlopment
+    // Fake models for UI development
     for(let i = 0; i < 3; i++) {
       this.models.push({
         project : `${i}`,
-        name : "myProject",
-        type : "AProjectType",
-        description : "A Project Description.",
+        name : "myModel",
+        type : "A Model Type",
+        description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         variables : "vars",
         model : "linear regression"
       });

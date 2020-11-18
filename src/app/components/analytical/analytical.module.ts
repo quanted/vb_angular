@@ -5,6 +5,8 @@ import { AnalyticalModelsComponent } from './analytical-models/analytical-models
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from "@angular/material/button";
 import { CreateModelComponent } from './create-model/create-model.component';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatInputModule } from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -15,7 +17,10 @@ import { CreateModelComponent } from './create-model/create-model.component';
   imports: [
     CommonModule,
     MatTableModule,
-    MatButtonModule
+    MatButtonModule,
+    MatInputModule,
+    FormsModule, 
+    ReactiveFormsModule
   ],
   exports: [
     AnalyticalComponent

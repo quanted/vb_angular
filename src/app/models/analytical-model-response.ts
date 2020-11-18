@@ -10,9 +10,9 @@ export interface AnalyticalModelResponse {
 // Test model
 export const mockModel : AnalyticalModelResponse = {
     project : '1',
-    name : "myProject",
-    type : "AProjectType",
-    description : "A Project Description.",
+    name : "myModel",
+    type : "A Model Type",
+    description : "A Model Description.",
     variables : "vars",
     model : "linear regression"
 };

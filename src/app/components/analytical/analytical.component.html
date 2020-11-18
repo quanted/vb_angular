@@ -1,4 +1,5 @@
 <div *ngIf="createModel; then thenBlock else elseBlock"></div>
 <ng-template #thenBlock><app-create-model></app-create-model></ng-template>
 <ng-template #elseBlock><app-analytical-models></app-analytical-models></ng-template>
-<button mat-raised-button [ngClass]="{'new' : !createModel, 'cancel' : createModel}" (click)="createModel = !createModel">{{!createModel ? 'New Model' : 'Cancel'}}</button >
+<button mat-raised-button [ngClass]="{'new' : !createModel, 'cancel' : createModel}"
+ (click)="createModel = !createModel">{{!createModel ? 'New Model' : 'Cancel'}}</button>
