@@ -1,33 +1,27 @@
 <h2>Create Model</h2>
+
+<!--Model Name-->
+
 <mat-horizontal-stepper [linear]="isLinear" #stepper>
-    <mat-step [stepControl]="firstFormGroup">
-      <form [formGroup]="firstFormGroup">
-        <ng-template matStepLabel>Name and Type</ng-template>
+    <mat-step [stepControl]="nameFormGroup">
+      <form [formGroup]="nameFormGroup">
+        <ng-template matStepLabel>Name</ng-template>
         <mat-form-field>
           <mat-label>Name</mat-label>
-          <input matInput placeholder="Model name" formControlName="firstCtrl" required>
+          <input matInput placeholder="Model name" formControlName="nameCtrl" required>
         </mat-form-field>
-        <mat-form-field>
-            <mat-label>Type</mat-label>
-            <!--<input matInput placeholder="Model Type" formControlName="fourthCtrl" required>-->
-            <mat-select formControlName="fourthCtrl" required>
-                <mat-option *ngFor="let type of types" [value]="type">
-                  {{type}}
-                </mat-option>
-              </mat-select>
-          </mat-form-field>
         <div>
           <button mat-button matStepperNext>Next</button>
         </div>
       </form>
     </mat-step>
 
-    <!--Choose Vars-->
-    <mat-step [stepControl]="secondFormGroup" label="Choose variables">
-      <form [formGroup]="secondFormGroup">
+    <!--Select Data-->
+    <mat-step [stepControl]="selectDataFormGroup" label="Select Data">
+      <form [formGroup]="selectDataFormGroup">
         <mat-form-field>
-          <mat-label>Address</mat-label>
-          <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
+          <mat-label>data</mat-label>
+          <input matInput formControlName="dataCtrl" placeholder="data"
                  required>
         </mat-form-field>
         <div>
@@ -38,12 +32,16 @@
     </mat-step>
 
     <!--Control Options-->
-    <mat-step [stepControl]="thirdFormGroup" label="Control Options">
-        <form [formGroup]="thirdFormGroup">
+    <mat-step [stepControl]="pipelineFormGroup" label="Analytical Pipeline">
+        <form [formGroup]="pipelineFormGroup">
           <mat-form-field>
-            <mat-label>Address</mat-label>
-            <input matInput formControlName="thirdCtrl" placeholder="Ex. 1 Main St, New York, NY"
-                   required>
+            <mat-label>Estimator</mat-label>
+            <input matInput placeholder="Estimator Type" formControlName="typeCtrl" required>
+            <mat-select formControlName="typeCtrl" required>
+                <mat-option *ngFor="let type of types" [value]="type">
+                  {{type}}
+                </mat-option>
+              </mat-select>
           </mat-form-field>
           <div>
             <button mat-button matStepperPrevious>Back</button>

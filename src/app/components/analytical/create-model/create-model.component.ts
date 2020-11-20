@@ -9,9 +9,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CreateModelComponent implements OnInit {
 
   isLinear = false;
-  firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
-  thirdFormGroup: FormGroup;
+  nameFormGroup: FormGroup;
+  selectDataFormGroup: FormGroup;
+  pipelineFormGroup: FormGroup;
 
   types : string[] = [
     "Linear Regression", 
@@ -19,18 +19,17 @@ export class CreateModelComponent implements OnInit {
     "Gradient Boosting Machine"
   ];
 
-  constructor(private _formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required],
-      fourthCtrl: ['', Validators.required]
+    this.nameFormGroup = this.formBuilder.group({
+      nameCtrl: ['', Validators.required],
     });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
+    this.selectDataFormGroup = this.formBuilder.group({
+      dataCtrl: ['', Validators.required]
     });
-    this.thirdFormGroup = this._formBuilder.group({
-      thirdCtrl: ['', Validators.required]
+    this.pipelineFormGroup = this.formBuilder.group({
+      typeCtrl: ['', Validators.required]
     });
   }
 
