@@ -53,7 +53,7 @@ import { PredictionComponent } from "./components/prediction/prediction.componen
     RegistrationComponent,
     ResetPasswordComponent,
     AccountComponent,
-    PredictionComponent,
+    PredictionComponent
   ],
   imports: [
     AnalyticalModule,

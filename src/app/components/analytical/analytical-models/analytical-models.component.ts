@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AnalyticalModelService } from '../../../services/analyticalmodel.service';
 import { AnalyticalModelResponse, mockModel } from '../../../models/analytical-model-response';
 import { ActivatedRoute } from '@angular/router';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-analytical-models',
@@ -18,14 +19,16 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 })
 export class AnalyticalModelsComponent implements OnInit {
 
+  modelFormGroup: FormGroup;
+
   // Holds models returned for project Id by the AnalyticalModelService
   models : AnalyticalModelResponse[] = [];
 
   // Column names displayed on table that shows the models
   columnsToDisplay: string[] = [
     'name', 
-    'type', 
-    'model'
+    'type',
+    'action'
   ];
 
   // State variable for opening closing table elements on click
@@ -34,6 +37,7 @@ export class AnalyticalModelsComponent implements OnInit {
   constructor(
     private route : ActivatedRoute,
     private analyticalModelService : AnalyticalModelService,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {

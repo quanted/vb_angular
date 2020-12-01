@@ -47,17 +47,6 @@ tr.example-element-row:not(.example-expanded-row):active {
   opacity: 0.5;
 }
 
-button {
-  width: 100px;
-  height: 50px;
-  color: white;
-  margin: 10px auto;
-}
-
-.select {
-  background-color: #0e6993;
-}
-
 .mat-form-field {
   width: 100%;
 }

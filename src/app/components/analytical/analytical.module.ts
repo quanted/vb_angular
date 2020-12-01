@@ -9,6 +9,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { CreateModelComponent } from './create-model/create-model.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
+import { IconsModule } from '../icons/icons.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MatInputModule } from "@angular/material/input";
     MatStepperModule,
     MatSelectModule,
     FormsModule, 
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    IconsModule
   ],
   exports: [
     AnalyticalComponent
