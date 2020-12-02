@@ -4,7 +4,9 @@ import { AnalyticalModelResponse, mockModel } from '../../../models/analytical-m
 import { ActivatedRoute } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { MatDialog } from '@angular/material/dialog';
+import { ModelDialogComponent } from './model-dialog/model-dialog.component'
+ 
 @Component({
   selector: 'app-analytical-models',
   templateUrl: './analytical-models.component.html',
@@ -37,10 +39,14 @@ export class AnalyticalModelsComponent implements OnInit {
   constructor(
     private route : ActivatedRoute,
     private analyticalModelService : AnalyticalModelService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
+    this.modelFormGroup = this.formBuilder.group({
+      descriptionCtrl: [''],
+    });
     //this.getModels(this.route.snapshot.paramMap.get('id'));
 
     // Fake models for UI development
@@ -64,5 +70,12 @@ export class AnalyticalModelsComponent implements OnInit {
         this.models = model;
       });
     }
+  }
+
+  openDialog(obj) {
+    const dialogRef = this.dialog.open(ModelDialogComponent, {
+      width: '250px',
+      data: obj
+    });
   }
 }

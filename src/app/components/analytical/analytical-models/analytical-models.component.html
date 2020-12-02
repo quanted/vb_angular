@@ -17,12 +17,7 @@
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef>Action</th>
     <td mat-cell *matCellDef="let element" class="action-link">
-      <elipse-icon></elipse-icon>
-      <!--
-      <a (click)="editModel()">Select</a> |
-      <a>Edit</a> | 
-      <a>Delete</a> 
-      --> 
+      <elipse-icon (click)="openDialog(element); $event.stopPropagation();"></elipse-icon>
     </td>
   </ng-container>
 

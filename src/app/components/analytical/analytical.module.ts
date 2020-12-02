@@ -9,13 +9,16 @@ import { MatSelectModule } from "@angular/material/select";
 import { CreateModelComponent } from './create-model/create-model.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
+import { MatDialogModule } from '@angular/material/dialog';
 import { IconsModule } from '../icons/icons.module';
+import { ModelDialogComponent } from './analytical-models/model-dialog/model-dialog.component';
 
 @NgModule({
   declarations: [
     AnalyticalComponent, 
     AnalyticalModelsComponent,
-    CreateModelComponent
+    CreateModelComponent,
+    ModelDialogComponent
   ],
   imports: [
     CommonModule,
@@ -24,6 +27,7 @@ import { IconsModule } from '../icons/icons.module';
     MatInputModule,
     MatStepperModule,
     MatSelectModule,
+    MatDialogModule,
     FormsModule, 
     ReactiveFormsModule,
     IconsModule
