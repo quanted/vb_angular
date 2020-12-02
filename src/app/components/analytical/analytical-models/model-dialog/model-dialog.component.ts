@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-model-dialog',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModelDialogComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<ModelDialogComponent>) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+
+  closeDialog(){
+    this.dialogRef.close({event:'Cancel'});
   }
-
 }

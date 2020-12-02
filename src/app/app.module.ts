@@ -14,6 +14,8 @@ import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
@@ -70,6 +72,8 @@ import { PredictionComponent } from "./components/prediction/prediction.componen
     MatTableModule,
     MatExpansionModule,
     MatSelectModule,
+    MatChipsModule,
+    MatIconModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent],
