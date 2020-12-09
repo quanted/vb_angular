@@ -10,6 +10,7 @@ import { CreateModelComponent } from './create-model/create-model.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { IconsModule } from '../icons/icons.module';
 import { ModelDialogComponent } from './analytical-models/model-dialog/model-dialog.component';
 
@@ -28,6 +29,7 @@ import { ModelDialogComponent } from './analytical-models/model-dialog/model-dia
     MatStepperModule,
     MatSelectModule,
     MatDialogModule,
+    MatCheckboxModule,
     FormsModule, 
     ReactiveFormsModule,
     IconsModule

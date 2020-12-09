@@ -30,7 +30,7 @@
           <form [formGroup]="modelFormGroup">
           <mat-form-field class="example-full-width">
             <mat-label>Description</mat-label>
-            <textarea matInput formControlName="descriptionCtrl">{{element.description}}</textarea>
+            <textarea matInput [readonly]="true">{{element.description}}</textarea>
           </mat-form-field>
         </form>
         </div>

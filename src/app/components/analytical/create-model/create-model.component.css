@@ -5,3 +5,23 @@
 .mat-form-field {
   margin: 16px;
 }
+
+.estimator {
+  border-bottom: 1px solid grey;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 50px;
+  color: white;
+  margin: 10px auto;
+}
+
+.new {
+  background-color: #2e8540;
+}
