@@ -1,7 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 
-import * as L from "leaflet";
-
 import { MapService } from "src/app/services/map.service";
 
 @Component({

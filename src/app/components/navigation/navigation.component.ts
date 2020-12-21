@@ -9,9 +9,13 @@ import { Router } from "@angular/router";
   styleUrls: ["./navigation.component.css"],
 })
 export class NavigationComponent implements OnInit {
+  username: string;
+
   constructor(private auth: AuthService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.username = this.auth.getUsername();
+  }
 
   gotoHome(): void {
     this.router.navigateByUrl("/");

@@ -8,18 +8,14 @@
 }
 
 .row.header {
-  flex: 0 1 80px;
+  flex: 0 1 40px;
 }
 
 .row.content {
-  flex: 1 1 auto;
-}
-
-.row.content-block {
   flex: 1 1 auto;
   display: block;
 }
 
 .row.footer {
-  flex: 0 1 40px;
+  flex: 0 1 30px;
 }

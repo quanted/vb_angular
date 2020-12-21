@@ -2,19 +2,17 @@
   <div class="row header">
     <app-header></app-header>
   </div>
-  <div class="row content">
-    <ng-container *ngIf="userIsAuthenticated()">
-      <div class="box">
-        <app-navigation></app-navigation>
-        <div class="row content-block">
-          <router-outlet></router-outlet>
-        </div>
+  <ng-container *ngIf="userIsAuthenticated()">
+    <div class="box">
+      <app-navigation></app-navigation>
+      <div class="row content">
+        <router-outlet></router-outlet>
       </div>
-    </ng-container>
-    <ng-container *ngIf="!userIsAuthenticated()">
-      <app-login></app-login>
-    </ng-container>
-  </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!userIsAuthenticated()">
+    <app-login></app-login>
+  </ng-container>
   <div class="row footer">
     <app-footer></app-footer>
   </div>

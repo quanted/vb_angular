@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 
 import * as L from "leaflet";
 
 import { SettingsService } from "./settings.service";
-import { BehaviorSubject } from "rxjs";
-import { LocationService } from "./location.service";
 
 @Injectable({
   providedIn: "root",
@@ -17,20 +16,27 @@ export class MapService {
 
   markerChangeObserver;
 
+  testTileSet = L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      attribution: "edupala.com © Angular LeafLet",
+    }
+  );
+
   flag = L.icon({
     iconUrl: "../assets/images/icon_flag.png",
     iconSize: [32, 32], // size of the icon
-    iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+    iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
   });
   water = L.icon({
     iconUrl: "../assets/images/icon_water.png",
     iconSize: [32, 32], // size of the icon
-    iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+    iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
   });
   land = L.icon({
     iconUrl: "../assets/images/icon_land.png",
     iconSize: [32, 32], // size of the icon
-    iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+    iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
   });
 
   mapProperties: any = {
@@ -47,17 +53,13 @@ export class MapService {
   }
 
   initMap(): void {
-    this.map = L.map("map");
-    this.map.on("click", ($event) => {
-      this.addMarker($event);
-    });
-    let testTileSet = L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {
-        attribution: "edupala.com © Angular LeafLet",
-      }
-    );
-    testTileSet.addTo(this.map);
+    if(!this.map) {
+      this.map = L.map("map");
+      this.map.on("click", ($event) => {
+        this.addMarker($event);
+      });
+      this.testTileSet.addTo(this.map);
+    }
     this.map.setView(
       this.mapViewProperties.center,
       this.mapViewProperties.zoom

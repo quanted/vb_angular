@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { LocationService } from "src/app/services/location.service";
-import { AuthService } from "src/app/services/auth.service";
 import { Router } from "@angular/router";
+
+import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
   selector: "app-home",
@@ -9,54 +9,35 @@ import { Router } from "@angular/router";
   styleUrls: ["./home.component.css"],
 })
 export class HomeComponent implements OnInit {
-  username = "";
-  statusMessage = "";
-  locations = [];
+  statusMessage: string;
+
+  projects;
 
   constructor(
-    private locationService: LocationService,
-    private authService: AuthService,
-    private router: Router
+    private projectService: ProjectService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
-    this.username = this.authService.getUsername();
-    this.locationService.getLocations().subscribe((locations) => {
-      if (!locations.error) {
-        if (locations.length < 1) {
-          this.statusMessage = "You have no stored locations";
+    this.statusMessage = '';
+    
+    this.projects = [];
+    this.projectService.getProjects().subscribe((projects) => {
+      if (!projects.error) {
+        if (projects.length < 1) {
+          this.statusMessage = "You have no stored projects";
         } else {
-          this.locations = locations;
+          this.projects = projects;
+          console.log(this.projects);
         }
       } else {
-        console.log(locations.error);
+        console.log(projects.error);
       }
     });
   }
-
-  deleteLocation(location): void {
-    this.locationService.deleteLocation(location.id).subscribe(() => {
-      this.locationService.getLocations().subscribe((locations) => {
-        if (!locations.error) {
-          if (locations.length < 1) {
-            this.statusMessage = "You have no stored locations";
-            this.locations = [];
-          } else {
-            this.locations = locations;
-          }
-        } else {
-          console.log(locations.error);
-        }
-      });
-    });
-  }
-
-  gotoLocation(location) {
-    this.router.navigateByUrl(`location/${location.id}`);
-  }
-
-  addLocation(): void {
-    console.log("add location");
+  
+  createProject(): void {
+    console.log("createing new project");
     this.router.navigateByUrl("map");
   }
 }

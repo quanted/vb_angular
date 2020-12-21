@@ -1,0 +1,21 @@
+<mat-card id="location-detail" *ngIf="location">
+  <mat-card-content>
+    <table>
+      <tr>
+        <td>
+          <div id="mini-map">
+            <app-mini-map [location]="location"></app-mini-map>
+          </div>
+        </td>  
+        <td>
+          <h2>
+            Name: {{ location.name || "no location data" }}
+          </h2>
+          <h2>
+            Description: {{ location.description || "no location data" }}
+          </h2>
+        </td>  
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>

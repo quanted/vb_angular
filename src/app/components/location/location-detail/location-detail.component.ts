@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+import { LocationData } from 'src/app/models/location-data';
+
 @Component({
   selector: 'app-location-detail',
   templateUrl: './location-detail.component.html',
@@ -7,10 +9,9 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class LocationDetailComponent implements OnInit {
 
-  constructor(
-  ) { }
+  constructor() {}
 
-  @Input() location: any;
+  @Input() location: LocationData;
 
   ngOnInit(): void {
   }

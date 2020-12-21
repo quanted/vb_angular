@@ -1,6 +1,6 @@
-<mat-card id='location'>
-    <!-- Location Details-->
-    <app-location-detail [location]="location"></app-location-detail>
+<mat-card id='project'>
+    <!-- Project Details-->
+    <app-location-detail [location]="project"></app-location-detail>
     <!-- Data -->
     <mat-accordion>
         <mat-expansion-panel (opened)="panelOpenState = true"
@@ -10,7 +10,7 @@
                 Data
             </mat-panel-title>
             <mat-panel-description>
-                file name(s)?
+                file name(s)? validated? uploaded?
             </mat-panel-description>
             </mat-expansion-panel-header>
             <app-data></app-data>
