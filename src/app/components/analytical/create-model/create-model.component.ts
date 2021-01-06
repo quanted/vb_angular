@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, QueryList, ViewChild, ViewChildren, Output, EventEmitter} from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import {MatCheckbox} from '@angular/material/checkbox';
+import {AnalyticalModelResponse} from '../../../models/analytical-model-response';
 
 @Component({
   selector: 'app-create-model',
@@ -12,67 +14,12 @@ export class CreateModelComponent implements OnInit {
   nameFormGroup: FormGroup;
   selectDataFormGroup: FormGroup;
   methodFormGroup: FormGroup;
-
-  types : string[] = [
-    "Linear Regression", 
-    "Partial Least Squares", 
-    "Gradient Boosting Machine"
-  ];
-
-  evaluationCriteria : String[] = [
-    "Akaike Information Criterion (AIC)",
-    "Corrected Akaike Information Criterion (AICC)",
-    "R2",
-    "Adjusted R2",
-    "Predicted Error Sum of Squares (PRESS)",
-    "Bayesian Information Criterion (BIC)",
-    "RMSE",
-    "Sensitivity",
-    "Specificity",
-    "Accuracy"
-  ]
-
-  randomVars : String[] = [
-    "skeleton",
-    "evaluate",
-    "community",
-    "star",
-    "perfume",
-    "abbey",
-    "weak",
-    "hardship",
-    "habit",
-    "unlawful"
-  ]
-
-  estimatorsJSON = {
-    // Estimator is selected from a select dropdown of these top level variables.
-    "Linear Regression" : {
-      // Inputs with corresponding input types are dynamically displayed.
-        "Evaluation Criteria" : {
-          "inputType" : "select",
-          "description" : "",
-          "values" : [
-            "Akaike Information Criterion (AIC)",
-            "Corrected Akaike Information Criterion (AICC)",
-            "R2",
-            "Adjusted R2",
-            "Predicted Error Sum of Squares (PRESS)",
-            "Bayesian Information Criterion (BIC)",
-            "RMSE",
-            "Sensitivity",
-            "Specificity",
-            "Accuracy"
-          ]
-        }
-    },
-    "Partial Least Squares" : {
-
-    },
-    "Gradient Boosting Machine" : {
-
-    }
-  };
+  types: string[] = ['Linear Regression', 'Histogram Gradient Boosting', 'L1 Least-angle Regression'];
+  vars: string[] = ['mpg', 'cyl', 'displ', 'hp', 'weight', 'accel', 'yr', 'origin', 'name'];
+  @ViewChild('selectAll') private selectAllCheckbox: MatCheckbox;
+  @ViewChildren('checkboxes') private checkboxes: QueryList<MatCheckbox>;
+  @Output() sendMessage = new EventEmitter();
+  model: AnalyticalModelResponse;
 
   constructor(private formBuilder: FormBuilder) {}
 
@@ -82,7 +29,7 @@ export class CreateModelComponent implements OnInit {
     });
     this.selectDataFormGroup = this.formBuilder.group({
       dependantVar: ['', Validators.required],
-      independantVars: []
+      independentVars: ['']
     });
     this.methodFormGroup = this.formBuilder.group({
       estimators: this.formBuilder.array([this.estimators])
@@ -105,19 +52,55 @@ export class CreateModelComponent implements OnInit {
     });
   }
   /**********/
-  
-  onChangeEstimator(e) {
-    // Get estimator 
-    let estimator : String = e.source.value ?? "";
 
+  onChangeDependantSelection(e) {
+    const dependant = e.source.value ?? '';
+    this.checkboxes.forEach(checkbox => {
+      if (dependant === checkbox.value) {
+        checkbox.disabled = true;
+        checkbox.checked = false;
+      } else {
+        checkbox.disabled = false;
+      }
+    });
+  }
 
-    for(let element in this.estimatorsJSON[`${estimator}`]){
-      
+  onSelectAll(e) {
+    if (this.selectAllCheckbox.checked) {
+      this.checkboxes.forEach(checkbox => {
+        if (!checkbox.checked && !checkbox.disabled) {
+          checkbox.checked = true;
+        }
+      });
+    } else {
+      this.checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+          checkbox.checked = false;
+        }
+      });
     }
   }
 
-  addMethod() {
-    (this.methodFormGroup.get("estimators") as FormArray).push(this.estimators);
+  onChangeEstimator(e) {
+    const estimator = e.source.value ?? '';
   }
 
+  addMethod() {
+    (this.methodFormGroup.get('estimators') as FormArray).push(this.estimators);
+  }
+
+  runModel(e) {
+    this.model = {
+      dependantVariable: '',
+      description: '',
+      estimators: [],
+      independentVariables: [''],
+      name: this.nameFormGroup.controls.nameCtrl.value,
+      project: '',
+      type: '',
+      variables: ''
+    };
+
+    this.sendMessage.next(this.model);
+  }
 }

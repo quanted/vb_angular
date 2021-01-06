@@ -2,6 +2,10 @@
   margin-top: 8px;
 }
 
+li {
+  list-style: none;
+}
+
 .mat-form-field {
   margin: 16px;
 }
@@ -24,4 +28,9 @@ button {
 
 .new {
   background-color: #2e8540;
+}
+
+.independent {
+  border: 1px solid lightgrey;
+  padding: 15px;
 }

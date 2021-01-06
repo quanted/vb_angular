@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AnalyticalModelService } from '../../../services/analyticalmodel.service';
 import { AnalyticalModelResponse, mockModel } from '../../../models/analytical-model-response';
 import { ActivatedRoute } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ModelDialogComponent } from './model-dialog/model-dialog.component'
- 
+import { ModelDialogComponent } from './model-dialog/model-dialog.component';
+
 @Component({
   selector: 'app-analytical-models',
   templateUrl: './analytical-models.component.html',
@@ -21,14 +21,15 @@ import { ModelDialogComponent } from './model-dialog/model-dialog.component'
 })
 export class AnalyticalModelsComponent implements OnInit {
 
+  display: boolean;
   modelFormGroup: FormGroup;
 
   // Holds models returned for project Id by the AnalyticalModelService
-  models : AnalyticalModelResponse[] = [];
+  models: AnalyticalModelResponse[] = [];
 
   // Column names displayed on table that shows the models
   columnsToDisplay: string[] = [
-    'name', 
+    'name',
     'type',
     'action'
   ];
@@ -37,8 +38,8 @@ export class AnalyticalModelsComponent implements OnInit {
   expandedElement: AnalyticalModelResponse | null;
 
   constructor(
-    private route : ActivatedRoute,
-    private analyticalModelService : AnalyticalModelService,
+    private route: ActivatedRoute,
+    private analyticalModelService: AnalyticalModelService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog
   ) { }
@@ -47,32 +48,25 @@ export class AnalyticalModelsComponent implements OnInit {
     this.modelFormGroup = this.formBuilder.group({
       descriptionCtrl: [''],
     });
-    //this.getModels(this.route.snapshot.paramMap.get('id'));
-
-    // Fake models for UI development
-    for(let i = 0; i < 3; i++) {
-      this.models.push({
-        project : `${i}`,
-        name : "myModel",
-        type : "A Model Type",
-        description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        variables : "vars",
-        model : "linear regression"
-      });
-    }
+    // this.getModels(this.route.snapshot.paramMap.get('id'));
+    this.getModels('1');
   }
 
-  getModels(projectID : string) {
-    if(projectID === "undefined" || projectID === "null") {
-      console.log("No project ID");
+  getModels(projectID: string): void {
+    if (projectID === 'undefined' || projectID === 'null') {
+      this.display = true;
     } else {
       this.analyticalModelService.getModels(projectID).subscribe(model => {
         this.models = model;
+        console.log(this.models);
       });
+      if (this.models.length === 0) {
+        this.display = true;
+      }
     }
   }
 
-  openDialog(obj) {
+  openDialog(obj): void {
     const dialogRef = this.dialog.open(ModelDialogComponent, {
       width: '250px',
       data: obj

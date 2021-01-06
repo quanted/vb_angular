@@ -1,132 +1,82 @@
 <h2>Create Model</h2>
-
 <mat-horizontal-stepper [linear]="isLinear" #stepper>
-    <!--Model Name-->
-    <mat-step [stepControl]="nameFormGroup">
-      <form [formGroup]="nameFormGroup">
-        <ng-template matStepLabel>Name</ng-template>
-        <mat-form-field>
-          <mat-label>Name</mat-label>
-          <input matInput placeholder="Model name" formControlName="nameCtrl" required>
-        </mat-form-field>
-        <mat-form-field style="width: 100%;">
-          <mat-label>Description</mat-label>
-          <textarea matInput placeholder=""></textarea>
-        </mat-form-field>
-      </form>
-    </mat-step>
+  <!--Model Name-->
+  <mat-step [stepControl]="nameFormGroup">
+    <form [formGroup]="nameFormGroup">
+      <h4>Type a name and description for this model.</h4>
+      <ng-template matStepLabel>Name</ng-template>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Model name" formControlName="nameCtrl" required>
+      </mat-form-field>
+      <mat-form-field style="width: 100%;">
+        <mat-label>Description</mat-label>
+        <textarea matInput placeholder=""></textarea>
+      </mat-form-field>
+    </form>
+  </mat-step>
 
-    <!--Select Data-->
-    <mat-step [stepControl]="selectDataFormGroup" label="Select Data">
-      <form [formGroup]="selectDataFormGroup">
-        <mat-form-field>
-          <mat-label>Dependant Variable</mat-label>
-          <mat-select formControlName="dependantVar" required>
-            <mat-option *ngFor="let v of randomVars" [value]="v">
-              {{v}}
-            </mat-option>
+  <!--Select Data-->
+  <mat-step [stepControl]="selectDataFormGroup" label="Select Data">
+    <form [formGroup]="selectDataFormGroup">
+      <h4 style="margin-bottom: -5px;">Select the dependent variable to be modelled.</h4>
+      <mat-form-field>
+        <mat-label>Dependant Variable</mat-label>
+        <mat-select formControlName="dependantVar" (selectionChange)="onChangeDependantSelection($event)"  required>
+          <mat-option *ngFor="let v of vars" [value]="v">
+            {{v}}
+          </mat-option>
         </mat-select>
-        </mat-form-field>
-        <!--
-          <mat-label>Select all Independant Variables</mat-label>\
-          <ul>
-            <li *ngFor="let v of randomVars">
-              <mat-checkbox [value]="v">
-                {{v}}
-              </mat-checkbox>
-            </li>
-          </ul>
-        -->
-      </form>
-    </mat-step>
+      </mat-form-field>
+      <div>
+        <h4>Select all of the independent variables to include in the model.</h4>
+        <div>
+          <mat-checkbox color="primary" (change)="onSelectAll($event)" #selectAll>
+            Select All
+          </mat-checkbox>
+        </div>
+        <ul class="independent">
+          <li *ngFor="let v of vars">
+            <mat-checkbox color="primary" [value]="v" #checkboxes>
+              {{v}}
+            </mat-checkbox>
+          </li>
+        </ul>
+      </div>
+    </form>
+  </mat-step>
 
-    <!--Analytical Methods-->
-    <mat-step [stepControl]="methodFormGroup" label="Analytical Methods">
-        <form [formGroup]="methodFormGroup">
-          <div formArrayName="estimators">
-          <div class="estimator" *ngFor="let estimator of methodFormGroup.get('estimators')['controls']; let estIndex = index" [formGroupName]="estIndex">
-            <div [formGroup]="estimator">
+  <!--Analytical Methods-->
+  <mat-step [stepControl]="methodFormGroup" label="Analytical Methods">
+    <form [formGroup]="methodFormGroup">
+      <h4>Add estimators for this model.</h4>
+      <div formArrayName="estimators">
+        <div class="estimator"
+             *ngFor="let estimator of methodFormGroup.get('estimators')['controls']; let estIndex = index"
+             [formGroupName]="estIndex">
+          <div [formGroup]="estimator">
             <h3 style="color: gray">Method #{{estIndex + 1}}</h3>
-            <h3>Estimator Settings</h3>
             <mat-form-field>
               <mat-label>Estimator</mat-label>
               <mat-select formControlName="estimatorSelect" (selectionChange)="onChangeEstimator($event)" required>
-                  <mat-option *ngFor="let type of types" [value]="type">
-                    {{type}}
-                  </mat-option>
+                <mat-option *ngFor="let type of types" [value]="type">
+                  {{type}}
+                </mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field *ngIf="estimator.controls['estimatorSelect'].value === 'Linear Regression'">
-              <mat-label>Evaluation Criteria</mat-label>
-              <mat-select required>
-                  <mat-option *ngFor="let ec of evaluationCriteria" [value]="ec">
-                    {{ec}}
-                  </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="estimator.controls['estimatorSelect'].value === 'Linear Regression'">
-              <mat-label>Maximum VIF</mat-label>
-              <input matInput placeholder="#">
-            </mat-form-field>
-            <h3>Evaluation Thresholds</h3>
-            <mat-form-field>
-              <mat-label>Decision Criterion</mat-label>
-              <input matInput placeholder="#">
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Regulatory Standard</mat-label>
-              <input matInput placeholder="#">
-            </mat-form-field>
-            <mat-form-field *ngIf="estimator.controls['estimatorSelect'].value === 'Linear Regression'">
-              <mat-label>Threshold Transform</mat-label>
-              <mat-select>
-                  <mat-option value="None">None</mat-option>
-                  <mat-option value="Log10">Log10</mat-option>
-                  <mat-option value="Ln">Ln</mat-option>
-                  <mat-option value="Power">Power</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <h3>Model Search</h3>
-            <mat-form-field>
-              <mat-label>Search Type</mat-label>
-              <mat-select formControlName="modelSearchSelect">
-                <mat-option value="Default">Default</mat-option>
-                  <mat-option value="All Variable Combinations">All Variable Combinations</mat-option>
-                  <mat-option value="Genetic Algorithm">Genetic Algorithm</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <div *ngIf="estimator.controls['modelSearchSelect'].value === 'Genetic Algorithm'">
-              <mat-form-field>
-                <mat-label>Population size</mat-label>
-                <input matInput placeholder="#" required>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Number of Generations</mat-label>
-                <input matInput placeholder="#" required>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Mutation Rate</mat-label>
-                <input matInput placeholder="#" required>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Crossover Rate</mat-label>
-                <input matInput placeholder="#" required>
-              </mat-form-field>
-            </div>
           </div>
-          </div>
-          </div>
-          <button mat-raised-button class="new" (click)="addMethod();">Add Method</button>
-        </form>
-    </mat-step>
-
-    <!--Run-->
-    <mat-step>
-      <ng-template matStepLabel>Run</ng-template>
-      <p>Run the model.</p>
-      <div>
-        <button mat-button class="select">Run</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
       </div>
-    </mat-step>
+      <button mat-raised-button class="new" (click)="addMethod();">Add Method</button>
+    </form>
+  </mat-step>
+
+  <!--Run-->
+  <mat-step>
+    <ng-template matStepLabel>Run</ng-template>
+    <h4>Click run to begin developing the model.</h4>
+    <div>
+      <button mat-raised-button class="new" (click)="runModel($event);">Run</button>
+    </div>
+  </mat-step>
 </mat-horizontal-stepper>

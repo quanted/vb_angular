@@ -1,5 +1,6 @@
 <h2>Select Model</h2>
-<table mat-table [dataSource]="models" multiTemplateDataRows>
+<div *ngIf="display" class="load-error"><p>No models found</p></div>
+<table *ngIf="!display" mat-table [dataSource]="models" multiTemplateDataRows>
 
   <!--Model Name Column-->
   <ng-container matColumnDef="name">

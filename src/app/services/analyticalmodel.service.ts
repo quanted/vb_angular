@@ -1,27 +1,27 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, of } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
-import { environment } from "../../environments/environment";
+import { environment } from '../../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { AnalyticalModelResponse } from '../models/analytical-model-response';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class AnalyticalModelService {
   constructor(private http: HttpClient, private cookieService: CookieService) {}
-  
+
   options = {
     headers: new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: `Token ${this.cookieService.get("TOKEN")}`
+      'Content-Type': 'application/json',
+      Authorization: `Token ${this.cookieService.get('TOKEN')}`
     }),
   };
 
-  getModels(projectID : string): Observable<AnalyticalModelResponse[]> {
+  getModels(projectID: string): Observable<AnalyticalModelResponse[]> {
     this.setHeaders();
     return this.http.post<AnalyticalModelResponse[]>
     (environment.apiURL + `analyticalmodel/project_id=${projectID}`, this.options)
@@ -31,17 +31,17 @@ export class AnalyticalModelService {
   }
 
 
-private handleError<T>(operation = 'operation', result?: T) {
-  return (error: any): Observable<T> => {
-    console.error(error);
-    return of(result as T);
-  };
-}
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      return of(result as T);
+    };
+  }
 
   addModel(newModel): Observable<any> {
     this.setHeaders();
     return this.http
-      .post(environment.apiURL + "analyticalmodel/", newModel, this.options)
+      .post(environment.apiURL + 'analyticalmodel/', newModel, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);
@@ -80,8 +80,8 @@ private handleError<T>(operation = 'operation', result?: T) {
 
   setHeaders(): void {
     this.options.headers = new HttpHeaders({
-      "Content-Type" : "application/json",
-      "Authorization" : `Token ${this.cookieService.get("TOKEN")}`
+      'Content-Type' : 'application/json',
+      Authorization : `Token ${this.cookieService.get('TOKEN')}`
     });
   }
 }
