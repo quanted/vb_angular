@@ -11,9 +11,10 @@ li {
 }
 
 .estimator {
-  border-bottom: 1px solid grey;
-  margin-bottom: 10px;
+  padding: 5px;
+  margin-bottom: 20px;
   width: 100%;
+  box-shadow: 2px 10px 20px -6px rgba(0,0,0,0.15);
 }
 
 button {
@@ -33,4 +34,9 @@ button {
 .independent {
   border: 1px solid lightgrey;
   padding: 15px;
+}
+
+.nav {
+  background-color: #673ab7;
+  width: auto;
 }

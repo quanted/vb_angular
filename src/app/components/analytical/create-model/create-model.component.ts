@@ -2,6 +2,7 @@ import {Component, OnInit, QueryList, ViewChild, ViewChildren, Output, EventEmit
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {AnalyticalModelResponse} from '../../../models/analytical-model-response';
+import {AnalyticalModelService} from '../../../services/analyticalmodel.service';
 
 @Component({
   selector: 'app-create-model',
@@ -11,6 +12,7 @@ import {AnalyticalModelResponse} from '../../../models/analytical-model-response
 export class CreateModelComponent implements OnInit {
 
   isLinear = false;
+  resamplingApproachFormGroup: FormGroup;
   nameFormGroup: FormGroup;
   selectDataFormGroup: FormGroup;
   methodFormGroup: FormGroup;
@@ -21,12 +23,22 @@ export class CreateModelComponent implements OnInit {
   @Output() sendMessage = new EventEmitter();
   model: AnalyticalModelResponse;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private analyticalService: AnalyticalModelService) {}
 
   ngOnInit() {
+    this.resamplingApproachFormGroup = this.formBuilder.group({
+      gridpointsCtrl: ['5'],
+      cvFoldsCtrl: ['5'],
+      cvRepsCtrl: ['3'],
+      cvGroupCountCtrl: ['5'],
+      cvStrategyCtrl: ['Quantile'],
+      bootStrategyCtrl: ['Linear Regression']
+    });
+    /*
     this.nameFormGroup = this.formBuilder.group({
       nameCtrl: ['', Validators.required],
     });
+     */
     this.selectDataFormGroup = this.formBuilder.group({
       dependantVar: ['', Validators.required],
       independentVars: ['']
@@ -40,8 +52,10 @@ export class CreateModelComponent implements OnInit {
   /* Get Methods */
   get estimators(): FormGroup {
     return this.formBuilder.group({
+      nameCtrl: ['', Validators.required],
       estimatorSelect: ['', Validators.required],
-      modelSearchSelect: ['', Validators.required],
+      imputationCtrl: ['Impute this'],
+      featureCtrl: ['Feature this'],
       inputs: new FormArray([this.inputs])
     });
   }
