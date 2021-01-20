@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@ang
 import {MatCheckbox} from '@angular/material/checkbox';
 import {AnalyticalModelResponse} from '../../../models/analytical-model-response';
 import {AnalyticalModelService} from '../../../services/analyticalmodel.service';
+import {MatInput} from '@angular/material/input';
 
 @Component({
   selector: 'app-create-model',
@@ -13,9 +14,8 @@ export class CreateModelComponent implements OnInit {
 
   isLinear = false;
   resamplingApproachFormGroup: FormGroup;
-  nameFormGroup: FormGroup;
   selectDataFormGroup: FormGroup;
-  methodFormGroup: FormGroup;
+  pipelineFormGroup: FormGroup;
   types: string[] = ['Linear Regression', 'Histogram Gradient Boosting', 'L1 Least-angle Regression'];
   vars: string[] = ['mpg', 'cyl', 'displ', 'hp', 'weight', 'accel', 'yr', 'origin', 'name'];
   @ViewChild('selectAll') private selectAllCheckbox: MatCheckbox;
@@ -32,40 +32,19 @@ export class CreateModelComponent implements OnInit {
       cvRepsCtrl: ['3'],
       cvGroupCountCtrl: ['5'],
       cvStrategyCtrl: ['Quantile'],
-      bootStrategyCtrl: ['Linear Regression']
+      bootStrategyCtrl: ['None'],
+      bootRepsCtrl: ['3']
     });
-    /*
-    this.nameFormGroup = this.formBuilder.group({
-      nameCtrl: ['', Validators.required],
-    });
-     */
     this.selectDataFormGroup = this.formBuilder.group({
       dependantVar: ['', Validators.required],
       independentVars: ['']
     });
-    this.methodFormGroup = this.formBuilder.group({
-      estimators: this.formBuilder.array([this.estimators])
+    this.pipelineFormGroup = this.formBuilder.group({
+      estimatorCtrl: ['', Validators.required],
+      pipelineNameCtrl: [''],
+      pipelineDescCtrl: ['']
     });
   }
-
-
-  /* Get Methods */
-  get estimators(): FormGroup {
-    return this.formBuilder.group({
-      nameCtrl: ['', Validators.required],
-      estimatorSelect: ['', Validators.required],
-      imputationCtrl: ['Impute this'],
-      featureCtrl: ['Feature this'],
-      inputs: new FormArray([this.inputs])
-    });
-  }
-
-  get inputs(): FormGroup {
-    return this.formBuilder.group({
-      input: ['', Validators.required]
-    });
-  }
-  /**********/
 
   onChangeDependantSelection(e) {
     const dependant = e.source.value ?? '';
@@ -95,26 +74,11 @@ export class CreateModelComponent implements OnInit {
     }
   }
 
-  onChangeEstimator(e) {
-    const estimator = e.source.value ?? '';
-  }
-
-  addMethod() {
-    (this.methodFormGroup.get('estimators') as FormArray).push(this.estimators);
+  estimatorChange(e): void {
+    this.pipelineFormGroup.controls.pipelineNameCtrl.setValue(e.source.triggerValue);
   }
 
   runModel(e) {
-    this.model = {
-      dependantVariable: '',
-      description: '',
-      estimators: [],
-      independentVariables: [''],
-      name: this.nameFormGroup.controls.nameCtrl.value,
-      project: '',
-      type: '',
-      variables: ''
-    };
-
     this.sendMessage.next(this.model);
   }
 }

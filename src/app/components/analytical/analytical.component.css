@@ -1,7 +1,9 @@
 button {
+    display: block;
     height: 50px;
     color: white;
     margin: 10px auto;
+    text-align: center;
 }
 
 .new {

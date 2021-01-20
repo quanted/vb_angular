@@ -6,10 +6,6 @@
       <h3 style="color: grey">Cross-Validation</h3>
       <ng-template matStepLabel>Resampling Approach</ng-template>
       <mat-form-field>
-        <mat-label>Gridpoints</mat-label>
-        <input matInput formControlName="gridpointsCtrl">
-      </mat-form-field>
-      <mat-form-field>
         <mat-label>Cross-Validation Folds</mat-label>
         <input matInput formControlName="cvFoldsCtrl">
       </mat-form-field>
@@ -23,37 +19,35 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Cross-Validation Strategy</mat-label>
-        <input matInput formControlName="cvStrategyCtrl">
+        <mat-select formControlName="cvStrategyCtrl">
+          <mat-option value="Quantile">
+            Quantile
+          </mat-option>
+          <mat-option value="Linear">
+            Linear
+          </mat-option>
+        </mat-select>
       </mat-form-field>
-      <h3 style="color: grey">Bootstrap</h3>
+      <h3 style="color: grey;">Bootstrap</h3>
       <mat-form-field>
         <mat-label>Bootstrap Strategy</mat-label>
-        <input matInput formControlName="bootStrategyCtrl">
+        <mat-select formControlName="bootStrategyCtrl">
+          <mat-option value="None">
+            None
+          </mat-option>
+          <mat-option value="Linear">
+            Linear
+          </mat-option>
+        </mat-select>
       </mat-form-field>
-    </form>
-  </mat-step>
-
-
-  <!--Model Name-->
-  <!--
-  <mat-step [stepControl]="nameFormGroup">
-    <form [formGroup]="nameFormGroup">
-      <h4>Type a name and description for this model.</h4>
-      <ng-template matStepLabel>Name</ng-template>
       <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput placeholder="Model name" formControlName="nameCtrl" required>
-      </mat-form-field>
-      <mat-form-field style="width: 100%;">
-        <mat-label>Description</mat-label>
-        <textarea matInput placeholder=""></textarea>
+        <mat-label>Bootstrap Repetitions</mat-label>
+        <input matInput formControlName="bootRepsCtrl">
       </mat-form-field>
     </form>
   </mat-step>
-  -->
 
   <!--Select Data-->
-  <!--
   <mat-step [stepControl]="selectDataFormGroup" label="Select Data">
     <form [formGroup]="selectDataFormGroup">
       <h4 style="margin-bottom: -5px;">Select the dependent variable to be modelled.</h4>
@@ -82,46 +76,30 @@
       </div>
     </form>
   </mat-step>
-  -->
 
   <!--Analytical Pipelines-->
-  <mat-step [stepControl]="methodFormGroup" label="Analytical Pipelines">
-    <form [formGroup]="methodFormGroup">
-      <h4>Add pipelines for this experiment.</h4>
-      <div formArrayName="estimators">
-        <div class="estimator"
-             *ngFor="let estimator of methodFormGroup.get('estimators')['controls']; let estIndex = index"
-             [formGroupName]="estIndex">
-          <div [formGroup]="estimator">
-            <h3 style="color: gray">Pipeline #{{estIndex + 1}}</h3>
-            <mat-form-field>
-              <mat-label>Name</mat-label>
-              <input matInput placeholder="Pipeline Name" formControlName="nameCtrl" required>
-            </mat-form-field>
-            <mat-form-field style="width: 90%;">
-              <mat-label>Description</mat-label>
-              <textarea matInput placeholder=""></textarea>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Estimator</mat-label>
-              <mat-select formControlName="estimatorSelect" (selectionChange)="onChangeEstimator($event)" required>
-                <mat-option *ngFor="let type of types" [value]="type">
-                  {{type}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Imputation</mat-label>
-              <input matInput formControlName="imputationCtrl">
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Feature Selection</mat-label>
-              <input matInput formControlName="featureCtrl">
-            </mat-form-field>
-          </div>
-        </div>
-      </div>
-      <button mat-raised-button class="new" (click)="addMethod();">Add Method</button>
+  <mat-step [stepControl]="pipelineFormGroup" label="Analytical Pipeline">
+    <form [formGroup]="pipelineFormGroup">
+      <h4>Add a pipeline for this experiment.</h4>
+      <mat-form-field>
+        <mat-label>Estimator</mat-label>
+        <mat-select formControlName="estimatorCtrl" (selectionChange)="estimatorChange($event)">
+          <mat-option *ngFor="let type of types" [value]="type">
+            {{type}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="pipelineNameCtrl" #pipelineName>
+      </mat-form-field>
+      <mat-form-field style="width: 90%;">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="pipelineDescCtrl"></textarea>
+      </mat-form-field>
+      <br>
+      Advanced expansion panel here
     </form>
   </mat-step>
 

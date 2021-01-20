@@ -22,25 +22,12 @@
                                 (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
             <mat-panel-title>
-                Set Up Experiment
+                Experiment
             </mat-panel-title>
             </mat-expansion-panel-header>
             <app-analytical></app-analytical>
         </mat-expansion-panel>
     </mat-accordion>
-
-    <!-- Results -->
-  <mat-accordion>
-    <mat-expansion-panel (opened)="panelOpenState = true"
-                         (closed)="panelOpenState = false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Training Dashboard / Experiment Results
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <app-results></app-results>
-    </mat-expansion-panel>
-  </mat-accordion>
 
     <!-- Prediction -->
     <mat-accordion>

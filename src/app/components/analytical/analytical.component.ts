@@ -12,7 +12,7 @@ export class AnalyticalComponent implements OnInit, AfterViewInit {
 
   createModel: boolean;
 
-  constructor() { this.createModel = true; }
+  constructor() { this.createModel = false; }
 
   ngOnInit(): void {}
   ngAfterViewInit(): void {}

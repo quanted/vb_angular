@@ -1,22 +1,21 @@
-<h2>Select Experiment</h2>
-<div *ngIf="display" class="load-error"><p>No experiments found</p></div>
-<table *ngIf="!display" mat-table [dataSource]="models" multiTemplateDataRows>
+<h4>Select or create new experiment.</h4>
+<table mat-table [dataSource]="models" multiTemplateDataRows>
 
   <!--Model Name Column-->
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element"> {{element.name}} </td>
   </ng-container>
 
   <!--Model Type Column-->
   <ng-container matColumnDef="type">
-    <th mat-header-cell *matHeaderCellDef>Type</th>
+    <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element"> {{element.type}} </td>
   </ng-container>
 
   <!--Action Column-->
   <ng-container matColumnDef="action">
-    <th mat-header-cell *matHeaderCellDef>Action</th>
+    <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element" class="action-link">
       <elipse-icon (click)="openDialog(element); $event.stopPropagation();"></elipse-icon>
     </td>
@@ -48,3 +47,4 @@
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 
 </table>
+<div *ngIf="display" class="no-experiments"><p>No experiments found.</p></div>
