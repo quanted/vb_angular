@@ -1,7 +1,7 @@
 <div class="buttons">
   <button mat-button (click)="gotoHome()">Home</button>
-  <h3>
-    Welcome to Virtual Beach {{ username }}
+  <h3 id="greeting">
+    Welcome to Virtual Beach <span id="user-name">{{ username }}</span>
   </h3>
   <button mat-button (click)="logout()">Logout</button>
 </div>

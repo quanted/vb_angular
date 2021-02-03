@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { LocationData } from 'src/app/models/location-data';
 import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
@@ -14,6 +13,8 @@ export class ProjectComponent implements OnInit {
 
   project_ID: string;
   project;
+  
+  dataFileName = 'No data selected';
 
   constructor(
     private route: ActivatedRoute,
@@ -29,5 +30,9 @@ export class ProjectComponent implements OnInit {
         });
       });
     }
+  }
+
+  setDataFileName(fileName): void {
+    this.dataFileName = fileName;
   }
 }

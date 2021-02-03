@@ -9,7 +9,8 @@ import { ProjectService } from 'src/app/services/project.service';
   styleUrls: ['./project-detail.component.css']
 })
 export class ProjectDetailComponent implements OnInit {
-
+  panelOpenState = false;
+  
   @Input() project;
 
   hasDashboard = false;

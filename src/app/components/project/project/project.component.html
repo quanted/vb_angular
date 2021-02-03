@@ -1,4 +1,5 @@
 <mat-card id='project'>
+    <h1 class="centered">Project Creation</h1>
     <!-- Project Details-->
     <app-location-detail [location]="project"></app-location-detail>
     <!-- Data -->
@@ -7,13 +8,13 @@
                                 (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
             <mat-panel-title>
-                Data
+                Training Data
             </mat-panel-title>
             <mat-panel-description>
-                file name(s)? validated? uploaded?
+                {{ dataFileName }}
             </mat-panel-description>
             </mat-expansion-panel-header>
-            <app-data></app-data>
+            <app-data (dataFile)="setDataFileName($event)"></app-data>
         </mat-expansion-panel>
     </mat-accordion>
     <!-- Analytical -->
@@ -22,25 +23,25 @@
                                 (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
             <mat-panel-title>
-                Statistical Model
+                Create Model(s)
             </mat-panel-title>
             <mat-panel-description>
-                selected model/estimator? training status?
+                Models created
             </mat-panel-description>
             </mat-expansion-panel-header>
             <app-analytical></app-analytical>
         </mat-expansion-panel>
     </mat-accordion>
-    <!-- Prediction -->
+    <!-- Training Results -->
     <mat-accordion>
         <mat-expansion-panel (opened)="panelOpenState = true"
                                 (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
             <mat-panel-title>
-                Prediction Results
+                Training Dashboard
             </mat-panel-title>
             <mat-panel-description>
-                status?
+                Training status
             </mat-panel-description>
             </mat-expansion-panel-header>
             <app-prediction></app-prediction>

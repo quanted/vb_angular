@@ -1,28 +1,55 @@
-<mat-card id="project-detail" *ngIf="project">
-    <mat-card-content>
-      <table>
-        <tr>
-          <td>
-            <div id="mini-map">
-              <app-mini-map [location]="project"></app-mini-map>
-            </div>
-          </td>  
-          <td>
-            <h2>
-              Name: {{ project.name || "no project name" }}
-            </h2>
-            <h2>
-              Description: {{ project.description || "no project description" }}
-            </h2>
-          </td>  
-        </tr>
-      </table>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button type="button" (click)="editProject(project)">Edit Project</button>
-      <ng-container *ngIf="hasDashboard">
-        <button mat-raised-button type="button" (click)="gotoDashboard(project)">Project dashboard</button>
+<mat-card *ngIf="project" class="project-info">
+    <div class="info-a">
+      <h3>
+        Location: {{ project.name || "no project name" }}
+      </h3>
+      <h3>
+        Description: {{ project.description || "no project description" }}
+      </h3>
+    </div>
+
+    <mat-accordion class="info-b">
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                              (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Experiments
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-expansion-panel (opened)="panelOpenState = true"
+                              (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Experiment 1
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>Pipelines</div>
+          <div>Pipeline 1 Status Cancel</div>
+          <div>Pipeline 2 Status Cancel</div>
+          <div>Pipeline 3 Status Cancel</div>
+          <div>Pipeline 4 Status Cancel</div>
+      </mat-expansion-panel>
+      <mat-expansion-panel (opened)="panelOpenState = true"
+      (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+          Experiment 2
+          </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>Pipelines</div>
+          <div>Pipeline 1 Status Cancel</div>
+          <div>Pipeline 2 Status Cancel</div>
+          <div>Pipeline 3 Status Cancel</div>
+          <div>Pipeline 4 Status Cancel</div>
+        </mat-expansion-panel>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <div class="buttons">
+      <button mat-button type="button" (click)="editProject(project)">Edit Project</button>
+      <ng-container *ngIf="true">
+        <button mat-button type="button" (click)="gotoDashboard(project)">Project dashboard</button>
       </ng-container> 
-      <button mat-raised-button type="button" (click)="deleteProject(project)">Delete Project</button>
-    </mat-card-actions>
+      <button mat-button type="button" (click)="deleteProject(project)">Delete Project</button>
+    </div>
+    <app-mini-map [location]="project" class="map"></app-mini-map>
 </mat-card>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { DatasetService } from "src/app/services/dataset.service";
 
 import * as XLSX from "xlsx";
@@ -9,16 +9,26 @@ import * as XLSX from "xlsx";
   styleUrls: ["./data.component.css"],
 })
 export class DataComponent implements OnInit {
+  datasets;
+  data = false;
+
+  @Output() dataFile: EventEmitter<any> = new EventEmitter<any>();
+  fileName = '';
+
   importedData = [];
   columnData = [];
   columnNames = [];
 
   constructor(private dataService: DatasetService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.dataService.getDatasets().subscribe(datasets => {
+      this.datasets = {...datasets};
+    }
+    );
+  }
 
   onFileChange($event) {
-    console.log("onFileChange()!");
     const target: DataTransfer = <DataTransfer>($event.target);
     if (target.files.length !== 1) {
       console.log("XLSX can only load one file at a time");
@@ -42,8 +52,10 @@ export class DataComponent implements OnInit {
           record[this.columnNames[j]] = values[j];
         }
         this.columnData.push(record);
+        this.data = true;
       }
     }
     reader.readAsBinaryString(target.files[0]);
+    this.dataFile.emit(target.files[0].name);
   }
 }

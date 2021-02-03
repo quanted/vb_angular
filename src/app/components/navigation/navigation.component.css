@@ -1,1 +1,12 @@
+.buttons {
+    margin: 0px;
+    padding: 0px;
+}
 
+#greeting {
+    text-align: center;
+}
+
+#user-name {
+    color: #e4d2d2;
+}

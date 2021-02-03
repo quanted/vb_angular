@@ -42,11 +42,27 @@ export class LocationFormComponent implements OnInit {
 
   saveLocation() {
     if (this.locationForm.valid) {
-      console.log(this.locationForm.value);
+      const data = this.locationForm.value;
+      const location = {
+        name: data.name,
+        description: data.description,
+        type: "beach",
+        metadata: {
+          lat1: data.start_latitude,
+          lng1: data.start_longitude,
+          lat2: data.end_latitude,
+          lng2: data.end_longitude,
+          lat3: data.o_latitude,
+          lng3: data.o_longitude
+        }
+      }
+
       this.locationService
-        .addLocation(this.locationForm.value)
-        .subscribe((location) => {
-          this.router.navigateByUrl(`location/${location.id}`);
+        .addLocation(location)
+        .subscribe((savedLocation) => {
+          console.log("Location: ", JSON.stringify(location));
+          console.log("SavedLocation: ", savedLocation);
+          this.router.navigateByUrl(`project/${savedLocation.id}`);
         });
     } else {
       console.log("form invalid!");

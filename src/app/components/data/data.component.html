@@ -1,22 +1,28 @@
-<mat-card>
-  <mat-card-content>
-    <h4>Upload a data file</h4>
-    <input
-      type="file"
-      accept=".csv"
-      name="files[]"
-      (change)="onFileChange($event)"
-    />
-  </mat-card-content>
-</mat-card>
+<ng-container *ngIf="!data">
+  <h4>Upload a data file</h4>
+  <input
+    type="file"
+    accept=".csv"
+    name="files[]"
+    (change)="onFileChange($event)"
+  />
+</ng-container>
+<div>
+  <ng-container *ngIf="datasets">
+    Use existing dataset
+    <select>
+      <option *ngFor="let dataset of datasets">{{ dataset.name }}</option>
+    </select>
+  </ng-container>
+</div>
 
 <table mat-table [dataSource]="columnData">
-
   <ng-container *ngFor="let disCol of columnNames" matColumnDef="{{disCol}}">
     <th mat-header-cell *matHeaderCellDef>{{ disCol }}</th>
     <td mat-cell *matCellDef="let row">{{ row[disCol] }}</td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+
   <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
 </table>
