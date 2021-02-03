@@ -20,17 +20,17 @@ export class MapService {
   flag = L.icon({
     iconUrl: "../assets/images/icon_flag.png",
     iconSize: [32, 32], // size of the icon
-    iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+    iconAnchor: [16, 32], // point of the icon which will correspond to marker's project
   });
   water = L.icon({
     iconUrl: "../assets/images/icon_water.png",
     iconSize: [32, 32], // size of the icon
-    iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+    iconAnchor: [16, 32], // point of the icon which will correspond to marker's project
   });
   land = L.icon({
     iconUrl: "../assets/images/icon_land.png",
     iconSize: [32, 32], // size of the icon
-    iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+    iconAnchor: [16, 32], // point of the icon which will correspond to marker's project
   });
 
   mapProperties: any = {
@@ -106,7 +106,7 @@ export class MapService {
       lat: (beachEndpoints[0].lat + beachEndpoints[1].lat) / 2,
       lng: (beachEndpoints[0].lng + beachEndpoints[1].lng) / 2,
     };
-    // calculate radius of location circle
+    // calculate radius of project circle
     const radius = Math.sqrt(
       (beachCenterpoint.lat - beachEndpoints[0].lat) *
         (beachCenterpoint.lat - beachEndpoints[0].lat) +

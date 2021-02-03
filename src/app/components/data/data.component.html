@@ -9,6 +9,14 @@
     />
   </mat-card-content>
 </mat-card>
+<form [formGroup]="selectDataFormGroup">
+<mat-form-field>
+  <mat-label>Dependant Variable</mat-label>
+  <mat-select formControlName="dependantVar">
+    <mat-option></mat-option>
+  </mat-select>
+</mat-form-field>
+</form>
 
 <table mat-table [dataSource]="columnData">
 

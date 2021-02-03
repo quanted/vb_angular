@@ -1,5 +1,5 @@
-<h4>Select or create new experiment.</h4>
-<table mat-table [dataSource]="models" multiTemplateDataRows>
+<h4>Select or create new pipeline.</h4>
+<table mat-table [dataSource]="pipelines" multiTemplateDataRows>
 
   <!--Model Name Column-->
   <ng-container matColumnDef="name">
@@ -47,4 +47,4 @@
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 
 </table>
-<div *ngIf="display" class="no-experiments"><p>No experiments found.</p></div>
+<div *ngIf="display" class="no-experiments"><p>No pipelines found.</p></div>

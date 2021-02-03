@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
-import { environment } from '../../environments/environment';
-
-import { CookieService } from 'ngx-cookie-service';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {CookieService} from 'ngx-cookie-service';
+import {Observable, of} from 'rxjs';
+import {environment} from '../../environments/environment';
+import {catchError} from 'rxjs/operators';
+import {ProjectModel} from '../models/project.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class LocationService {
+export class ProjectService {
+
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   options = {
@@ -21,52 +20,52 @@ export class LocationService {
     }),
   };
 
-  getLocations(): Observable<any> {
+  getProjects(): Observable<any> {
     this.setHeaders();
     return this.http.get(environment.apiURL + 'api/project/', this.options).pipe(
       catchError((err) => {
         console.log(err);
-        return of({ error: `Failed to fetch locations!` });
+        return of({ error: `Failed to fetch projects!` });
       })
     );
   }
 
-  addLocation(newLocation): Observable<any> {
+  addProject(project: ProjectModel): Observable<any> {
     this.setHeaders();
     return this.http
-      .post(environment.apiURL + 'api/project/', newLocation, this.options)
+      .post(environment.apiURL + 'api/project/', project, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);
-          return of({ error: `Failed to add location!` });
+          return of({ error: `Failed to add project!` });
         })
       );
   }
 
-  updateLocation(updatedLocation, id): Observable<any> {
+  updateProject(updatedLocation, id): Observable<any> {
     this.setHeaders();
     return this.http
       .put(
-        environment.apiURL + `api/location/${id}/`,
+        environment.apiURL + `api/project/${id}/`,
         updatedLocation,
         this.options
       )
       .pipe(
         catchError((err) => {
           console.log(err);
-          return of({ error: `Failed to update location!` });
+          return of({ error: `Failed to update project!` });
         })
       );
   }
 
-  deleteLocation(id): Observable<any> {
+  deleteProject(id): Observable<any> {
     this.setHeaders();
     return this.http
-      .delete(environment.apiURL + `api/location/${id}/`, this.options)
+      .delete(environment.apiURL + `api/project/${id}/`, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);
-          return of({ error: `Failed to delete location!` });
+          return of({ error: `Failed to delete project!` });
         })
       );
   }

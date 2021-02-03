@@ -1,19 +1,18 @@
-import { Component, OnInit } from "@angular/core";
-
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { AuthService } from "src/app/services/auth.service";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   registeringUser = false;
   resetUserPW = false;
 
   loginForm: FormGroup;
-  statusMessage = "";
+  statusMessage = '';
 
   constructor(private auth: AuthService, private fb: FormBuilder) {}
 
@@ -28,8 +27,8 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.auth
         .login(
-          this.loginForm.get("username").value,
-          this.loginForm.get("password").value
+          this.loginForm.get('username').value,
+          this.loginForm.get('password').value
         )
         .subscribe((response) => {
           if (response.error) {
@@ -37,7 +36,7 @@ export class LoginComponent implements OnInit {
           }
         });
     } else {
-      this.statusMessage = "Username and Password are required";
+      this.statusMessage = 'Username and Password are required';
     }
   }
 

@@ -6,19 +6,20 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
-import { CreateModelComponent } from './create-model/create-model.component';
+import { CreatePipelineComponent } from './create-pipeline/create-pipeline.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { IconsModule } from '../icons/icons.module';
 import { ModelDialogComponent } from './analytical-models/model-dialog/model-dialog.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
     AnalyticalComponent,
     AnalyticalModelsComponent,
-    CreateModelComponent,
+    CreatePipelineComponent,
     ModelDialogComponent
   ],
   imports: [
@@ -32,7 +33,8 @@ import { ModelDialogComponent } from './analytical-models/model-dialog/model-dia
     MatCheckboxModule,
     FormsModule,
     ReactiveFormsModule,
-    IconsModule
+    IconsModule,
+    MatExpansionModule
   ],
   exports: [
     AnalyticalComponent

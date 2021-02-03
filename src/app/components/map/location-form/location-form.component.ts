@@ -1,13 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MapService } from "src/app/services/map.service";
-import { LocationService } from "src/app/services/location.service";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MapService } from 'src/app/services/map.service';
+import { LocationService } from 'src/app/services/location.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: "app-location-form",
-  templateUrl: "./location-form.component.html",
-  styleUrls: ["./location-form.component.css"],
+  selector: 'app-location-form',
+  templateUrl: './location-form.component.html',
+  styleUrls: ['./location-form.component.css'],
 })
 export class LocationFormComponent implements OnInit {
   locationForm: FormGroup;
@@ -23,6 +23,7 @@ export class LocationFormComponent implements OnInit {
   ngOnInit() {
     this.locationForm = this.fb.group({
       name: [null, Validators.required],
+      type: ['Beach', Validators.required],
       description: [null, Validators.required],
       start_latitude: [null, Validators.required],
       start_longitude: [null, Validators.required],
@@ -49,7 +50,7 @@ export class LocationFormComponent implements OnInit {
           this.router.navigateByUrl(`location/${location.id}`);
         });
     } else {
-      console.log("form invalid!");
+      console.log('form invalid!');
     }
   }
 
@@ -64,22 +65,22 @@ export class LocationFormComponent implements OnInit {
     // markers[2] = water
     // markers[3] = land
     this.locationForm
-      .get("start_latitude")
+      .get('start_latitude')
       .setValue(this.markers[0]._latlng.lat);
     this.locationForm
-      .get("start_longitude")
+      .get('start_longitude')
       .setValue(this.markers[0]._latlng.lng);
 
     if (this.markers[1]) {
       this.locationForm
-        .get("end_latitude")
+        .get('end_latitude')
         .setValue(this.markers[1]._latlng.lat);
       this.locationForm
-        .get("end_longitude")
+        .get('end_longitude')
         .setValue(this.markers[1]._latlng.lng);
-      this.locationForm.get("o_latitude").setValue(this.markers[2]._latlng.lat);
+      this.locationForm.get('o_latitude').setValue(this.markers[2]._latlng.lat);
       this.locationForm
-        .get("o_longitude")
+        .get('o_longitude')
         .setValue(this.markers[2]._latlng.lng);
     }
   }

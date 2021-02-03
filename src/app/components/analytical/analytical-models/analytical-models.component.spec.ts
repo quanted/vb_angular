@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AnalyticalModelsComponent } from './analytical-models.component';
-import { AnalyticalModelService } from '../../../services/analyticalmodel.service';
-import { HttpClientTestingModule, HttpTestingController }
-       from '@angular/common/http/testing';
+import { PipelineService } from '../../../services/pipeline.service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import {AnalyticalModelResponse, mockModel} from '../../../models/analytical-model-response';
 
@@ -10,7 +9,6 @@ describe('AnalyticalModelsComponent', () => {
   let component: AnalyticalModelsComponent;
   let fixture: ComponentFixture<AnalyticalModelsComponent>;
   let httpTestingController: HttpTestingController;
-  let mockModels: AnalyticalModelResponse[] = [mockModel]
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
@@ -19,7 +17,7 @@ describe('AnalyticalModelsComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule
       ],
-      providers: [ AnalyticalModelService ]
+      providers: [ PipelineService ]
     });
 
     await TestBed.compileComponents();
@@ -37,12 +35,5 @@ describe('AnalyticalModelsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should return model', () => {
-    component.getModels("1");
-    const req = httpTestingController.expectOne(`http://127.0.0.1:8080/api/analyticalmodel/1/`);
-    req.flush(mockModel);
-    expect(JSON.stringify(component.models)).toEqual(JSON.stringify(mockModels[0]));
   });
 });

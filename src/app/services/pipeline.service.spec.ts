@@ -1,21 +1,20 @@
 import { TestBed } from '@angular/core/testing';
-import { AnalyticalModelService } from './analyticalmodel.service';
+import { PipelineService } from './pipeline.service';
 import { AnalyticalModelResponse, mockModel } from '../models/analytical-model-response';
-import { HttpClientTestingModule, HttpTestingController } 
-    from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('AnalyticalModelService', () => {
   let httpTestingController: HttpTestingController;
-  let service : AnalyticalModelService;
+  let service: PipelineService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AnalyticalModelService],
+      providers: [PipelineService],
       imports: [HttpClientTestingModule]
     });
 
     httpTestingController = TestBed.inject(HttpTestingController);
-    service = TestBed.inject(AnalyticalModelService);
+    service = TestBed.inject(PipelineService);
   });
 
   afterEach(() => {
@@ -23,7 +22,7 @@ describe('AnalyticalModelService', () => {
   });
 
   it('should be created', () => {
-    const service: AnalyticalModelService = TestBed.inject(AnalyticalModelService);
+    const service: PipelineService = TestBed.inject(PipelineService);
     expect(service).toBeTruthy();
   });
 

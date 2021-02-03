@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AnalyticalModelService} from '../../services/analyticalmodel.service';
+import {PipelineService} from '../../services/pipeline.service';
 
 @Component({
   selector: 'app-results',
@@ -8,7 +8,7 @@ import {AnalyticalModelService} from '../../services/analyticalmodel.service';
 })
 export class ResultsComponent implements OnInit {
 
-  constructor(private analyticalService: AnalyticalModelService) { }
+  constructor(private analyticalService: PipelineService) { }
 
   ngOnInit() {
   }

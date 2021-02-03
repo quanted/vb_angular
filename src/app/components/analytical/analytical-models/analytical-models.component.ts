@@ -1,11 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AnalyticalModelService } from '../../../services/analyticalmodel.service';
+import { PipelineService } from '../../../services/pipeline.service';
 import { AnalyticalModelResponse, mockModel } from '../../../models/analytical-model-response';
 import { ActivatedRoute } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ModelDialogComponent } from './model-dialog/model-dialog.component';
+import {PipelineModel} from '../../../models/pipeline.model';
 
 @Component({
   selector: 'app-analytical-models',
@@ -23,9 +24,8 @@ export class AnalyticalModelsComponent implements OnInit {
 
   display: boolean;
   modelFormGroup: FormGroup;
-
-  // Holds models returned for project Id by the AnalyticalModelService
-  models: AnalyticalModelResponse[] = [];
+  projectID: string;
+  pipelines: PipelineModel[];
 
   // Column names displayed on table that shows the models
   columnsToDisplay: string[] = [
@@ -39,7 +39,7 @@ export class AnalyticalModelsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private analyticalModelService: AnalyticalModelService,
+    private pipelineService: PipelineService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog
   ) { }
@@ -48,22 +48,14 @@ export class AnalyticalModelsComponent implements OnInit {
     this.modelFormGroup = this.formBuilder.group({
       descriptionCtrl: [''],
     });
-    // this.getModels(this.route.snapshot.paramMap.get('id'));
-    this.getModels('1');
+    this.getPipelines();
   }
 
-  getModels(projectID: string): void {
-    if (projectID === 'undefined' || projectID === 'null') {
-      this.display = true;
-    } else {
-      this.analyticalModelService.getModels(projectID).subscribe(model => {
-        this.models = model;
-        console.log(this.models);
-      });
-      if (this.models.length === 0) {
-        this.display = true;
-      }
-    }
+  getPipelines() {
+    this.projectID = this.route.snapshot.paramMap.get('id');
+    this.pipelineService.getPipelinesForProject(this.projectID).subscribe(pipelines => {
+      this.pipelines = pipelines;
+    });
   }
 
   openDialog(obj): void {

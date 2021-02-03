@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {CreateModelComponent} from './create-model/create-model.component';
+import {CreatePipelineComponent} from './create-pipeline/create-pipeline.component';
 import {AnalyticalModelsComponent} from './analytical-models/analytical-models.component';
 import {utf8Encode} from '@angular/compiler/src/util';
 

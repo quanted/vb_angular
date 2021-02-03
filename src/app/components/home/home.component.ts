@@ -1,62 +1,75 @@
-import { Component, OnInit } from "@angular/core";
-import { LocationService } from "src/app/services/location.service";
-import { AuthService } from "src/app/services/auth.service";
-import { Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
+import { ProjectService } from '../../services/project.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ProjectModel} from '../../models/project.model';
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.css"],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  username = "";
-  statusMessage = "";
-  locations = [];
+  username = '';
+  statusMessage = '';
+  projects = [];
+  projectFormGroup: FormGroup;
 
   constructor(
-    private locationService: LocationService,
+    private projectService: ProjectService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
+    // Init forms
+    this.projectFormGroup = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required]
+    });
     this.username = this.authService.getUsername();
-    this.locationService.getLocations().subscribe((locations) => {
-      if (!locations.error) {
-        if (locations.length < 1) {
-          this.statusMessage = "You have no stored locations";
+    this.projectService.getProjects().subscribe(projects => {
+      if (!projects.error) {
+        if (projects.length < 1) {
+          this.statusMessage = 'You have no stored projects';
         } else {
-          this.locations = locations;
+          this.projects = projects;
         }
       } else {
-        console.log(locations.error);
+        console.log(projects.error);
       }
     });
   }
 
-  deleteLocation(location): void {
-    this.locationService.deleteLocation(location.id).subscribe(() => {
-      this.locationService.getLocations().subscribe((locations) => {
-        if (!locations.error) {
-          if (locations.length < 1) {
-            this.statusMessage = "You have no stored locations";
-            this.locations = [];
+  deleteProject(project): void {
+    this.projectService.deleteProject(project.id).subscribe(() => {
+      this.projectService.getProjects().subscribe(projects => {
+        if (!projects.error) {
+          if (projects.length < 1) {
+            this.statusMessage = 'You have no stored projects';
+            this.projects = [];
           } else {
-            this.locations = locations;
+            this.projects = projects;
           }
         } else {
-          console.log(locations.error);
+          console.log(projects.error);
         }
       });
     });
   }
 
-  gotoLocation(location) {
-    this.router.navigateByUrl(`location/${location.id}`);
+  gotoProject(project) {
+    this.router.navigateByUrl(`project/${project.id}`);
   }
 
-  addLocation(): void {
-    console.log("add location");
-    this.router.navigateByUrl("map");
+  addProject(): void {
+    if (this.projectFormGroup.valid) {
+      this.projectService.addProject(this.projectFormGroup.value)
+        .subscribe(project => {
+        this.router.navigateByUrl(`project/${project.id}`);
+      });
+    }
   }
 }

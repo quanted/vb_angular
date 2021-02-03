@@ -1,27 +1,35 @@
-import { Component, OnInit } from "@angular/core";
-import { DatasetService } from "src/app/services/dataset.service";
-
-import * as XLSX from "xlsx";
+import { Component, OnInit } from '@angular/core';
+import { DatasetService } from 'src/app/services/dataset.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import * as XLSX from 'xlsx';
 
 @Component({
-  selector: "app-data",
-  templateUrl: "./data.component.html",
-  styleUrls: ["./data.component.css"],
+  selector: 'app-data',
+  templateUrl: './data.component.html',
+  styleUrls: ['./data.component.css'],
 })
 export class DataComponent implements OnInit {
   importedData = [];
   columnData = [];
   columnNames = [];
+  selectDataFormGroup: FormGroup;
 
-  constructor(private dataService: DatasetService) {}
+  constructor(private dataService: DatasetService, private formBuilder: FormBuilder) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.selectDataFormGroup = this.formBuilder.group({
+      name: [null, Validators.required],
+      data: [null, Validators.required],
+      dependantVar: ['', Validators.required],
+      independentVars: ['']
+    });
+  }
 
   onFileChange($event) {
-    console.log("onFileChange()!");
-    const target: DataTransfer = <DataTransfer>($event.target);
+    console.log('onFileChange()!');
+    const target: DataTransfer = ($event.target) as DataTransfer;
     if (target.files.length !== 1) {
-      console.log("XLSX can only load one file at a time");
+      console.log('XLSX can only load one file at a time');
       return;
     }
     const reader: FileReader = new FileReader();
@@ -43,7 +51,11 @@ export class DataComponent implements OnInit {
         }
         this.columnData.push(record);
       }
-    }
+    };
     reader.readAsBinaryString(target.files[0]);
+  }
+
+  saveDataset(): void {
+    //
   }
 }
