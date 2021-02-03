@@ -109,15 +109,13 @@ export class CreatePipelineComponent implements OnInit {
     let newPipeline: PipelineModel = {
       project: this.route.snapshot.paramMap.get('id'),
       name: this.pipelineFormGroup.controls.pipelineNameCtrl.value,
-      type: 'enet',
+      type: '',
       description: this.pipelineFormGroup.controls.pipelineDescCtrl.value,
     };
-    // Get type
-    /*
     newPipeline.type = this.pipelineInfo.find(pipeline => {
-      return newPipeline.name === pipeline.name;
-    }).pType;
-    */
+      return this.pipelineFormGroup.controls.estimatorCtrl.value === pipeline.name;
+    }).ptype;
     this.pipelineService.addPipeline(newPipeline).subscribe();
+    this.sendMessage.next();
   }
 }

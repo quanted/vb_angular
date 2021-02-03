@@ -1,6 +1,6 @@
 export interface PipelineInfoModel {
   name: string;
-  pType: string;
+  ptype: string;
   description: string;
   hyperParameters: {
     name: string;

@@ -14,6 +14,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { IconsModule } from '../icons/icons.module';
 import { ModelDialogComponent } from './analytical-models/model-dialog/model-dialog.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSortModule} from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     FormsModule,
     ReactiveFormsModule,
     IconsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSortModule
   ],
   exports: [
     AnalyticalComponent

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import { PipelineService } from '../../../services/pipeline.service';
 import { AnalyticalModelResponse, mockModel } from '../../../models/analytical-model-response';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +7,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ModelDialogComponent } from './model-dialog/model-dialog.component';
 import {PipelineModel} from '../../../models/pipeline.model';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-analytical-models',
@@ -26,11 +28,12 @@ export class AnalyticalModelsComponent implements OnInit {
   modelFormGroup: FormGroup;
   projectID: string;
   pipelines: PipelineModel[];
+  @ViewChild(MatSort) sort: MatSort;
+  dataSource: MatTableDataSource<PipelineModel>;
 
   // Column names displayed on table that shows the models
   columnsToDisplay: string[] = [
     'name',
-    'type',
     'action'
   ];
 
@@ -49,12 +52,13 @@ export class AnalyticalModelsComponent implements OnInit {
       descriptionCtrl: [''],
     });
     this.getPipelines();
+    this.dataSource.sort = this.sort;
   }
 
   getPipelines() {
     this.projectID = this.route.snapshot.paramMap.get('id');
     this.pipelineService.getPipelinesForProject(this.projectID).subscribe(pipelines => {
-      this.pipelines = pipelines;
+      this.dataSource = new MatTableDataSource(pipelines);
     });
   }
 
