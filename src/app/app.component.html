@@ -1,9 +1,13 @@
 <app-header></app-header>
 <ng-container *ngIf="userIsAuthenticated()">
-  <app-navigation></app-navigation>
-  <router-outlet></router-outlet>
+  <div id="app">
+    <app-navigation></app-navigation>
+    <router-outlet></router-outlet>
+  </div>
 </ng-container>
 <ng-container *ngIf="!userIsAuthenticated()">
-  <app-login></app-login>
+  <div id="login">
+    <app-login></app-login>
+  </div>
 </ng-container>
 <app-footer></app-footer>

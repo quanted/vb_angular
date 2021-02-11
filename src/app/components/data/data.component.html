@@ -1,28 +1,63 @@
-<ng-container *ngIf="!data">
+<ng-container *ngIf="!dataset">
+  <div>
+    <ng-container *ngIf="datasets">
+      <h4>Use an existing dataset</h4>
+      <div *ngFor="let dataset of datasets">{{ dataset }}<button type="button" (click)="selectData(dataset)" mat-button>Use this dataset</button></div>
+      <h4>- Or -</h4>
+    </ng-container>
+  </div>
   <h4>Upload a data file</h4>
   <input
     type="file"
-    accept=".csv"
+    accept=".csv, .xls, .xlsx"
     name="files[]"
     (change)="onFileChange($event)"
   />
 </ng-container>
-<div>
-  <ng-container *ngIf="datasets">
-    Use existing dataset
-    <select>
-      <option *ngFor="let dataset of datasets">{{ dataset.name }}</option>
-    </select>
+
+<ng-container *ngIf="dataset">
+  <div>
+    Independent Variable: {{ iv }}
+  </div>
+  <div>
+    {{ dv.length }} Dependent Variables: {{ dv }}
+  </div>
+
+  <div>
+    Start row: <span id="start-row">{{ startRow }}</span>
+  </div>
+  <div>
+    End row: <span id="end-row">{{ endRow }}</span>
+  </div>
+  <div>
+    Total rows: <span id="total-rows">{{ totalRows }}</span>
+  </div>
+
+  <div (click)="toggle()">Generate A/O values? <input type="checkbox" /></div>
+
+  <ng-container *ngIf="generateAO">
+    <div>A: {{ a }}</div>
+    <div>O: {{ o }}</div>
   </ng-container>
-</div>
 
-<table mat-table [dataSource]="columnData">
-  <ng-container *ngFor="let disCol of columnNames" matColumnDef="{{disCol}}">
-    <th mat-header-cell *matHeaderCellDef>{{ disCol }}</th>
-    <td mat-cell *matCellDef="let row">{{ row[disCol] }}</td>
-  </ng-container>
+  <div><button mat-button type="button">Save Dataset</button></div>
 
-  <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+  <table mat-table [dataSource]="columnData">
+    <ng-container *ngFor="let disCol of columnNames" matColumnDef="{{disCol}}">
+      <th mat-header-cell *matHeaderCellDef>
+        <div>{{ disCol }}</div>
+        <div><input type="radio" name="IV" (click)="setIV(disCol)"/></div>
+        <div><input type="checkbox" id="DV" (click)="addDV(disCol)"/></div>
+        <div *ngIf="generateAO">
+          <input type="radio" name="A" (click)="setA(disCol)"/>
+          <input type="radio" name="O" (click)="setO(disCol)" />
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let row">{{ row[disCol] }}</td>
+    </ng-container>
 
-  <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
-</table>
+    <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+
+    <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
+  </table>
+</ng-container>

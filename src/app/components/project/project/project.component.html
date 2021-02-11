@@ -23,28 +23,13 @@
                                 (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
             <mat-panel-title>
-                Create Model(s)
+                Model Selection and Validation
             </mat-panel-title>
             <mat-panel-description>
-                Models created
+                Status
             </mat-panel-description>
             </mat-expansion-panel-header>
             <app-analytical></app-analytical>
-        </mat-expansion-panel>
-    </mat-accordion>
-    <!-- Training Results -->
-    <mat-accordion>
-        <mat-expansion-panel (opened)="panelOpenState = true"
-                                (closed)="panelOpenState = false">
-            <mat-expansion-panel-header>
-            <mat-panel-title>
-                Training Dashboard
-            </mat-panel-title>
-            <mat-panel-description>
-                Training status
-            </mat-panel-description>
-            </mat-expansion-panel-header>
-            <app-prediction></app-prediction>
         </mat-expansion-panel>
     </mat-accordion>
 </mat-card>

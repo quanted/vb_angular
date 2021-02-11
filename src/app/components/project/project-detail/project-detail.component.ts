@@ -13,6 +13,7 @@ export class ProjectDetailComponent implements OnInit {
   
   @Input() project;
 
+  status = "working..."
   hasDashboard = false;
 
   constructor(
@@ -25,11 +26,17 @@ export class ProjectDetailComponent implements OnInit {
 
   deleteProject(project) {
     console.log("delete project: ", project);
+    this.projectService.deleteProject(project.id).subscribe();
+    this.router.navigateByUrl('');
   }
 
   editProject(project) {
     console.log("edit project: ", project);
     this.router.navigateByUrl(`project/${project.id}`);
+  }
+
+  cloneProject(project) {
+    console.log("project cloning not implemented yet!");
   }
 
   gotoDashboard(project) {

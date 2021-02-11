@@ -1,9 +1,1 @@
-.location-form {
-  position: absolute;
-  top: 25%;
-  left: 2rem;
-  z-index: 999;
-  width: 250px;
 
-  background-color: rgba(211, 211, 211, 0.8);
-}

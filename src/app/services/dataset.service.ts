@@ -33,6 +33,16 @@ export class DatasetService {
     );
   }
 
+  getDataset(id): Observable<any> {
+    this.setHeaders();
+    return this.http.get(environment.apiURL + "dataset/" + id, this.options).pipe(
+      catchError((err) => {
+        console.log(err);
+        return of({ error: `Failed to fetch datasets!` });
+      })
+    );
+  }
+
   addDataset(newDataset): Observable<any> {
     this.setHeaders();
     return this.http

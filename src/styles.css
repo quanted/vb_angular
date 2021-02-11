@@ -25,12 +25,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.content {
-  display: grid;
-  justify-content: center;
-  width: 100%;
-}
-
 .title {
   padding: 1em;
 }

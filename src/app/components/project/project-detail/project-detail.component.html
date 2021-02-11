@@ -7,41 +7,21 @@
         Description: {{ project.description || "no project description" }}
       </h3>
     </div>
+    
+    
 
     <mat-accordion class="info-b">
       <mat-expansion-panel (opened)="panelOpenState = true"
-                              (closed)="panelOpenState = false">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-                Experiments
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-expansion-panel (opened)="panelOpenState = true"
-                              (closed)="panelOpenState = false">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-                Experiment 1
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <div>Pipelines</div>
-          <div>Pipeline 1 Status Cancel</div>
-          <div>Pipeline 2 Status Cancel</div>
-          <div>Pipeline 3 Status Cancel</div>
-          <div>Pipeline 4 Status Cancel</div>
-      </mat-expansion-panel>
-      <mat-expansion-panel (opened)="panelOpenState = true"
-      (closed)="panelOpenState = false">
+                                (closed)="panelOpenState = false">
         <mat-expansion-panel-header>
           <mat-panel-title>
-          Experiment 2
+              Pipelines
           </mat-panel-title>
-          </mat-expansion-panel-header>
-          <div>Pipelines</div>
-          <div>Pipeline 1 Status Cancel</div>
-          <div>Pipeline 2 Status Cancel</div>
-          <div>Pipeline 3 Status Cancel</div>
-          <div>Pipeline 4 Status Cancel</div>
-        </mat-expansion-panel>
+        </mat-expansion-panel-header>
+        <div>Pipeline 1 {{ status }}<button mat-button type="button">Cancel</button></div>
+        <div>Pipeline 2 {{ status }}<button mat-button type="button">Cancel</button></div>
+        <div>Pipeline 3 {{ status }}<button mat-button type="button">Cancel</button></div>
+        <div>Pipeline 4 {{ status }}<button mat-button type="button">Cancel</button></div>
       </mat-expansion-panel>
     </mat-accordion>
     <div class="buttons">
@@ -49,6 +29,7 @@
       <ng-container *ngIf="true">
         <button mat-button type="button" (click)="gotoDashboard(project)">Project dashboard</button>
       </ng-container> 
+      <button mat-button type="button" (click)="cloneProject(project)">Clone Project</button>
       <button mat-button type="button" (click)="deleteProject(project)">Delete Project</button>
     </div>
     <app-mini-map [location]="project" class="map"></app-mini-map>

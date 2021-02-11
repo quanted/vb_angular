@@ -80,14 +80,12 @@
           #o_longitude
         />
       </mat-form-field>
+      <button mat-raised-button class="control" (click)="saveLocation()">
+        Save Location
+      </button>
+      <button mat-raised-button class="control" (click)="clearForm()">
+        Clear Form
+      </button>
     </mat-card-content>
   </mat-card-content>
-  <mat-card-actions class="controls">
-    <button mat-raised-button class="control" (click)="saveLocation()">
-      Save Location
-    </button>
-    <button mat-raised-button class="control" (click)="clearForm()">
-      Clear Form
-    </button>
-  </mat-card-actions>
 </mat-card>

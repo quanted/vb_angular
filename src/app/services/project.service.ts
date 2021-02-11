@@ -29,10 +29,17 @@ export class ProjectService {
 
   getProjects(): Observable<any> {
     this.setHeaders();
-    // currentlyy getting loctions from backend to use as 'project' list,
-    // will change to get from session data store
-    // a project liet will be compiled and stored on login.
     return this.http.get(environment.apiURL + "location/", this.options).pipe(
+      catchError((err) => {
+        console.log(err);
+        return of({ error: `Failed to fetch locations!` });
+      })
+    );
+  }
+
+  deleteProject(id): Observable<any> {
+    this.setHeaders();
+    return this.http.delete(environment.apiURL + "location/" + id, this.options).pipe(
       catchError((err) => {
         console.log(err);
         return of({ error: `Failed to fetch locations!` });

@@ -19,7 +19,7 @@ export class MapService {
   testTileSet = L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
-      attribution: "edupala.com © Angular LeafLet",
+      attribution: "",
     }
   );
 

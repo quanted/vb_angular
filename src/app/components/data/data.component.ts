@@ -10,11 +10,18 @@ import * as XLSX from "xlsx";
 })
 export class DataComponent implements OnInit {
   datasets;
-  data = false;
+  dataset = false;
+
+  generateAO = false;
+  iv;
+  dv = [];
+  a;
+  o;
+  startRow = 0;
+  endRow = 0;
+  totalRows = 0;
 
   @Output() dataFile: EventEmitter<any> = new EventEmitter<any>();
-  fileName = '';
-
   importedData = [];
   columnData = [];
   columnNames = [];
@@ -23,9 +30,53 @@ export class DataComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.getDatasets().subscribe(datasets => {
-      this.datasets = {...datasets};
+      console.log("datasets: ", datasets);
+      // this.datasets = {...datasets};
+      this.datasets = ["set1", "set2", "set3"];
+    });
+  }
+
+  selectData(dataset) {
+    // this.dataService.getDataset(dataset.id).subscribe(dataset => {
+    //   console.log("dataset: ", dataset);
+    //   this.dataset = dataset;
+    //   this.dataFile.emit(dataset);
+    // })
+    this.dataFile.emit(dataset);
+    this.dataset = dataset;
+  }
+
+  setIV(variable) {
+    this.iv = variable;
+    if (this.dv.includes(variable)) {
+      this.dv = this.dv.filter((v1) => {
+        return v1 != variable;
+      });
     }
-    );
+  }
+
+  addDV(variable) {
+    if (!this.dv.includes(variable)) {
+      this.dv.push(variable);
+    }
+  }
+
+  setA(variable) {
+    this.a = variable;
+    if (this.dv.includes(variable)) {
+      this.dv = this.dv.filter((v1) => {
+        return v1 != variable;
+      });
+    }
+  }
+
+  setO(variable) {
+    this.o = variable;
+    if (this.dv.includes(variable)) {
+      this.dv = this.dv.filter((v1) => {
+        return v1 != variable;
+      });
+    }
   }
 
   onFileChange($event) {
@@ -52,10 +103,16 @@ export class DataComponent implements OnInit {
           record[this.columnNames[j]] = values[j];
         }
         this.columnData.push(record);
-        this.data = true;
+        this.dataset = true;
       }
+      this.totalRows = this.columnData.length;
+      this.endRow = this.totalRows - 1;
     }
     reader.readAsBinaryString(target.files[0]);
     this.dataFile.emit(target.files[0].name);
+  }
+
+  toggle() {
+    this.generateAO = !this.generateAO;
   }
 }
