@@ -29,7 +29,7 @@ export class ProjectService {
 
   getProjects(): Observable<any> {
     this.setHeaders();
-    return this.http.get(environment.apiURL + "location/", this.options).pipe(
+    return this.http.get(environment.apiURL + "project/", this.options).pipe(
       catchError((err) => {
         console.log(err);
         return of({ error: `Failed to fetch locations!` });
@@ -39,7 +39,7 @@ export class ProjectService {
 
   deleteProject(id): Observable<any> {
     this.setHeaders();
-    return this.http.delete(environment.apiURL + "location/" + id, this.options).pipe(
+    return this.http.delete(environment.apiURL + "project/" + id, this.options).pipe(
       catchError((err) => {
         console.log(err);
         return of({ error: `Failed to fetch locations!` });

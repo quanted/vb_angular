@@ -4,9 +4,9 @@ import { Router } from "@angular/router";
 import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.css"],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
   statusMessage: string;

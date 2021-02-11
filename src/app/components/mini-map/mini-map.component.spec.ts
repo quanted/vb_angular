@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { LocationComponent } from '../location/location.component';
 
 import { MiniMapComponent } from './mini-map.component';
+import { HttpClientTestingModule, HttpTestingController } 
+    from '@angular/common/http/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 describe('MiniMapComponent', () => {
   let component: MiniMapComponent;
@@ -8,7 +13,8 @@ describe('MiniMapComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MiniMapComponent ]
+      declarations: [ LocationComponent ],
+      imports: [RouterModule.forRoot([]), HttpClientTestingModule, ReactiveFormsModule]
     })
     .compileComponents();
   });

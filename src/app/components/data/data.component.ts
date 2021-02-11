@@ -4,9 +4,9 @@ import { DatasetService } from "src/app/services/dataset.service";
 import * as XLSX from "xlsx";
 
 @Component({
-  selector: "app-data",
-  templateUrl: "./data.component.html",
-  styleUrls: ["./data.component.css"],
+  selector: 'app-data',
+  templateUrl: './data.component.html',
+  styleUrls: ['./data.component.css'],
 })
 export class DataComponent implements OnInit {
   datasets;
@@ -82,7 +82,7 @@ export class DataComponent implements OnInit {
   onFileChange($event) {
     const target: DataTransfer = <DataTransfer>($event.target);
     if (target.files.length !== 1) {
-      console.log("XLSX can only load one file at a time");
+      console.log('XLSX can only load one file at a time');
       return;
     }
     const reader: FileReader = new FileReader();
@@ -114,5 +114,9 @@ export class DataComponent implements OnInit {
 
   toggle() {
     this.generateAO = !this.generateAO;
+  }
+
+  saveDataset(): void {
+    //
   }
 }

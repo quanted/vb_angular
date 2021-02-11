@@ -1,29 +1,29 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, of } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
-import { environment } from "../../environments/environment";
+import { environment } from '../../environments/environment';
 
-import { CookieService } from "ngx-cookie-service";
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class LocationService {
   constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   options = {
     headers: new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: `Token ${this.cookieService.get("TOKEN")}`,
+      'Content-Type': 'application/json',
+      Authorization: `Token ${this.cookieService.get('TOKEN')}`,
     }),
   };
 
   getLocations(): Observable<any> {
     this.setHeaders();
-    return this.http.get(environment.apiURL + "location/", this.options).pipe(
+    return this.http.get(environment.apiURL + 'project/', this.options).pipe(
       catchError((err) => {
         console.log(err);
         return of({ error: `Failed to fetch locations!` });
@@ -34,7 +34,7 @@ export class LocationService {
   addLocation(newLocation): Observable<any> {
     this.setHeaders();
     return this.http
-      .post(environment.apiURL + "location/", newLocation, this.options)
+      .post(environment.apiURL + 'project/', newLocation, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);
@@ -73,9 +73,8 @@ export class LocationService {
 
   setHeaders(): void {
     this.options.headers = new HttpHeaders({
-      "Content-Type": "application/json",
-      // "Content-Type": "multipart/form-data",
-      Authorization: `Token ${this.cookieService.get("TOKEN")}`,
+      'Content-Type': 'application/json',
+      Authorization: `Token ${this.cookieService.get('TOKEN')}`,
     });
   }
 }
