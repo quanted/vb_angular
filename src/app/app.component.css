@@ -1,9 +1,5 @@
-.app, .login {
-    min-height: 80%;
-}
-
-.login {
+#login {
     display: flex;
-    justify-content: center;
     align-content: center;
+    justify-content: center;
 }

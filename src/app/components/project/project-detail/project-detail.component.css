@@ -14,15 +14,12 @@ h3 {
 .info-a {
     grid-area: info-a;
     padding-bottom: 0px;
-    outline: 1px solid blue;
 }
 .info-b {
     grid-area: info-b;
-    outline: 1px solid green;
 }
 .buttons {
     grid-area: buttons;
-    outline: 1px solid red;
     margin-top: 1rem;
     padding: 0px;
     display: grid;
@@ -32,5 +29,4 @@ h3 {
 
 .map {
     grid-area: map;
-    outline: 1px solid magenta;
 }
