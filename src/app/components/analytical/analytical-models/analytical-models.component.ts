@@ -1,13 +1,12 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import { PipelineService } from '../../../services/pipeline.service';
-import { AnalyticalModelResponse, mockModel } from '../../../models/analytical-model-response';
+import { AnalyticalModelResponse } from '../../../models/analytical-model-response';
 import { ActivatedRoute } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ModelDialogComponent } from './model-dialog/model-dialog.component';
 import {PipelineModel} from '../../../models/pipeline.model';
-import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
@@ -28,7 +27,6 @@ export class AnalyticalModelsComponent implements OnInit {
   modelFormGroup: FormGroup;
   projectID: string;
   pipelines: PipelineModel[];
-  @ViewChild(MatSort) sort: MatSort;
   dataSource: MatTableDataSource<PipelineModel>;
 
   // Column names displayed on table that shows the models
@@ -38,7 +36,7 @@ export class AnalyticalModelsComponent implements OnInit {
   ];
 
   // State variable for opening closing table elements on click
-  expandedElement: AnalyticalModelResponse | null;
+  expandedElement: PipelineModel | null;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,7 +50,6 @@ export class AnalyticalModelsComponent implements OnInit {
       descriptionCtrl: [''],
     });
     this.getPipelines();
-    this.dataSource.sort = this.sort;
   }
 
   getPipelines() {

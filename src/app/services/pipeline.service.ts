@@ -31,7 +31,7 @@ export class PipelineService {
   getPipelines(): Observable<PipelineInfoModel[]> {
     this.setHeaders();
     return this.http.get<PipelineInfoModel[]>
-    (environment.apiURL + `info/pipelines/`, this.options)
+    (environment.apiURL.replace('api/', '') + `info/pipelines/`, this.options)
     .pipe(
       catchError(this.handleError<PipelineInfoModel[]>('getPipelines', []))
     );
