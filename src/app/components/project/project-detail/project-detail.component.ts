@@ -40,6 +40,6 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   gotoDashboard(project) {
-    console.log("goto dashboard: ", project);
+    this.router.navigateByUrl(`dashboard/${project.id}`);
   }
 }
