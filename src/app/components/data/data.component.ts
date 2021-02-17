@@ -60,16 +60,26 @@ export class DataComponent implements OnInit {
         });
         if (inputA) {
           inputA["checked"] = false;
-          this.a = "";
+          if (value === this.a){
+            this.a = "";
+          }
         }
         if (inputO) {
           inputO["checked"] = false;
-          this.o = "";
+          if (value === this.o){
+            this.o = "";
+          }
         }
         break;
       case "DV":
-        if (!this.dv.includes(value)) {
-          this.dv.push(value);
+        if (inputDV["checked"] === false) {
+          this.dv = this.dv.filter((val) => {
+            return val != value;
+          })
+        } else {
+          if (!this.dv.includes(value)) {
+            this.dv.push(value);
+          }
         }
         inputIV["checked"] = false;
         if (value === this.iv){
@@ -77,11 +87,15 @@ export class DataComponent implements OnInit {
         }
         if (inputA) {
           inputA["checked"] = false;
-          this.a = "";
+          if (value === this.a){
+            this.a = "";
+          }
         }
         if (inputO) {
           inputO["checked"] = false;
-          this.o = "";
+          if (value === this.o){
+            this.o = "";
+          }
         }
         break;
       case "A":
@@ -97,7 +111,9 @@ export class DataComponent implements OnInit {
         if (inputO) {
           if (inputO["checked"]) {
             inputO["checked"] = false;
-            this.o = "";
+            if (value === this.o){
+              this.o = "";
+            }
           }
         }
         break;
@@ -114,7 +130,9 @@ export class DataComponent implements OnInit {
         if (inputA) {
           if (inputA["checked"]) {
             inputA["checked"] = false;
-            this.a = "";
+            if (value === this.a){
+              this.a = "";
+            }
           }
         }
         break;
