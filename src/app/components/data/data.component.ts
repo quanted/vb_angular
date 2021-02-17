@@ -72,7 +72,9 @@ export class DataComponent implements OnInit {
           this.dv.push(value);
         }
         inputIV["checked"] = false;
-        this.iv = "";
+        if (value === this.iv){
+          this.iv = "";
+        }
         if (inputA) {
           inputA["checked"] = false;
           this.a = "";
@@ -85,7 +87,9 @@ export class DataComponent implements OnInit {
       case "A":
         this.a = value;
         inputIV["checked"] = false;
-        this.iv = "";
+        if (value === this.iv){
+          this.iv = "";
+        }
         inputDV["checked"] = false;
         this.dv = this.dv.filter((val) => {
           return val != value;
@@ -100,7 +104,9 @@ export class DataComponent implements OnInit {
       case "O":
         this.o = value;
         inputIV["checked"] = false;
-        this.iv = "";
+        if (value === this.iv){
+          this.iv = "";
+        }
         inputDV["checked"] = false;
         this.dv = this.dv.filter((val) => {
           return val != value;
