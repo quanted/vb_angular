@@ -46,36 +46,74 @@ export class DataComponent implements OnInit {
     this.dataset = dataset;
   }
 
-  setIV(variable) {
-    this.iv = variable;
-    if (this.dv.includes(variable)) {
-      this.dv = this.dv.filter((v1) => {
-        return v1 != variable;
-      });
-    }
-  }
-
-  addDV(variable) {
-    if (!this.dv.includes(variable)) {
-      this.dv.push(variable);
-    }
-  }
-
-  setA(variable) {
-    this.a = variable;
-    if (this.dv.includes(variable)) {
-      this.dv = this.dv.filter((v1) => {
-        return v1 != variable;
-      });
-    }
-  }
-
-  setO(variable) {
-    this.o = variable;
-    if (this.dv.includes(variable)) {
-      this.dv = this.dv.filter((v1) => {
-        return v1 != variable;
-      });
+  updateInputs(varSet, value) {
+    let inputIV = document.getElementById(value + "IV");
+    let inputDV = document.getElementById(value + "DV");
+    let inputA = document.getElementById(value + "A");
+    let inputO = document.getElementById(value + "O");
+    switch(varSet) {
+      case "IV":
+        this.iv = value;
+        inputDV["checked"] = false;
+        this.dv = this.dv.filter((val) => {
+          return val != value;
+        });
+        if (inputA) {
+          inputA["checked"] = false;
+          this.a = "";
+        }
+        if (inputO) {
+          inputO["checked"] = false;
+          this.o = "";
+        }
+        break;
+      case "DV":
+        if (!this.dv.includes(value)) {
+          this.dv.push(value);
+        }
+        inputIV["checked"] = false;
+        this.iv = "";
+        if (inputA) {
+          inputA["checked"] = false;
+          this.a = "";
+        }
+        if (inputO) {
+          inputO["checked"] = false;
+          this.o = "";
+        }
+        break;
+      case "A":
+        this.a = value;
+        inputIV["checked"] = false;
+        this.iv = "";
+        inputDV["checked"] = false;
+        this.dv = this.dv.filter((val) => {
+          return val != value;
+        });
+        if (inputO) {
+          if (inputO["checked"]) {
+            inputO["checked"] = false;
+            this.o = "";
+          }
+        }
+        break;
+      case "O":
+        this.o = value;
+        inputIV["checked"] = false;
+        this.iv = "";
+        inputDV["checked"] = false;
+        this.dv = this.dv.filter((val) => {
+          return val != value;
+        });
+        if (inputA) {
+          if (inputA["checked"]) {
+            inputA["checked"] = false;
+            this.a = "";
+          }
+        }
+        break;
+      default:
+        console.log(`ERROR: invalid input! ${varSet} | ${value}`);
     }
   }
 
@@ -117,6 +155,6 @@ export class DataComponent implements OnInit {
   }
 
   saveDataset(): void {
-    //
+    // this.dataService.saveDataset().subscribe();
   }
 }
