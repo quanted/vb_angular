@@ -1,6 +1,5 @@
-import {Component, OnInit, QueryList, ViewChild, ViewChildren, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatCheckbox} from '@angular/material/checkbox';
 import {PipelineService} from '../../../services/pipeline.service';
 import {PipelineInfoModel} from '../../../models/pipeline-info.model';
 import {PipelineModel} from '../../../models/pipeline.model';
@@ -13,21 +12,13 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class CreatePipelineComponent implements OnInit {
 
-  isLinear = false;
   panelOpenState = false;
   // FormGroups
   resamplingApproachFormGroup: FormGroup;
   pipelineFormGroup: FormGroup;
 
-  // Data
-  vars: string[] = ['mpg', 'cyl', 'displ', 'hp', 'weight', 'accel', 'yr', 'origin', 'name'];
-  @ViewChild('selectAll') private selectAllCheckbox: MatCheckbox;
-  @ViewChildren('checkboxes') private checkboxes: QueryList<MatCheckbox>;
-  //
   @Output() sendMessage = new EventEmitter();
   pipelineInfo: PipelineInfoModel[];
-  pipelines: PipelineModel[];
-  private group: any;
 
   constructor(private route: ActivatedRoute,
               private formBuilder: FormBuilder,
@@ -37,7 +28,6 @@ export class CreatePipelineComponent implements OnInit {
   ngOnInit() {
     // Get the pipeline info and populate necessary fields.
     this.getPipelineInfo();
-    this.getPipelines();
     this.resamplingApproachFormGroup = this.formBuilder.group({
       gridpointsCtrl: ['5'],
       cvFoldsCtrl: ['5'],
@@ -63,41 +53,6 @@ export class CreatePipelineComponent implements OnInit {
     });
   }
 
-  getPipelines() {
-    const projectID = this.route.snapshot.paramMap.get('id');
-    this.pipelineService.getPipelinesForProject(projectID).subscribe(pipelines => {
-      this.pipelines = pipelines;
-    });
-  }
-
-  onChangeDependantSelection(e) {
-    const dependant = e.source.value ?? '';
-    this.checkboxes.forEach(checkbox => {
-      if (dependant === checkbox.value) {
-        checkbox.disabled = true;
-        checkbox.checked = false;
-      } else {
-        checkbox.disabled = false;
-      }
-    });
-  }
-
-  onSelectAll(e) {
-    if (this.selectAllCheckbox.checked) {
-      this.checkboxes.forEach(checkbox => {
-        if (!checkbox.checked && !checkbox.disabled) {
-          checkbox.checked = true;
-        }
-      });
-    } else {
-      this.checkboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-          checkbox.checked = false;
-        }
-      });
-    }
-  }
-
   estimatorChange(e): void {
     this.pipelineFormGroup.controls.pipelineNameCtrl.setValue(e.source.triggerValue);
     this.pipelineFormGroup.controls.pipelineDescCtrl.setValue(
@@ -106,7 +61,7 @@ export class CreatePipelineComponent implements OnInit {
   }
 
   addPipeline() {
-    let newPipeline: PipelineModel = {
+    const newPipeline: PipelineModel = {
       project: this.route.snapshot.paramMap.get('id'),
       name: this.pipelineFormGroup.controls.pipelineNameCtrl.value,
       type: '',

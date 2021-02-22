@@ -1,7 +1,5 @@
-import {AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {CreatePipelineComponent} from './create-pipeline/create-pipeline.component';
-import {AnalyticalModelsComponent} from './analytical-models/analytical-models.component';
-import {utf8Encode} from '@angular/compiler/src/util';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+
 
 @Component({
   selector: 'app-analytical',
