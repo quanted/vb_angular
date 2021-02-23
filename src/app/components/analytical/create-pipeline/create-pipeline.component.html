@@ -20,7 +20,9 @@
       </mat-form-field>
       <br>
     </form>
+<!--------------------------------- -->
       <mat-expansion-panel
+        *ngIf="hasHyperParams"
         (opened)="panelOpenState = true"
         (closed)="panelOpenState = false">
         <mat-expansion-panel-header style="width: 200px;" class="mat-expansion-toggle-indicator-before">
@@ -28,49 +30,7 @@
             Advanced
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <form [formGroup]="resamplingApproachFormGroup">
-          <h4>Choose resampling options.</h4>
-          <h3 style="color: grey">Cross-Validation</h3>
-          <ng-template matStepLabel>Resampling Approach</ng-template>
-          <mat-form-field>
-            <mat-label>Cross-Validation Folds</mat-label>
-            <input matInput formControlName="cvFoldsCtrl">
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Cross-Validation Repetitions</mat-label>
-            <input matInput formControlName="cvRepsCtrl">
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Cross-Validation Group Count</mat-label>
-            <input matInput formControlName="cvGroupCountCtrl">
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Cross-Validation Strategy</mat-label>
-            <mat-select formControlName="cvStrategyCtrl">
-              <mat-option value="Quantile">
-                Quantile
-              </mat-option>
-              <mat-option value="Linear">
-                Linear
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <h3 style="color: grey;">Bootstrap</h3>
-          <mat-form-field>
-            <mat-label>Bootstrap Strategy</mat-label>
-            <mat-select formControlName="bootStrategyCtrl">
-              <mat-option value="None">
-                None
-              </mat-option>
-              <mat-option value="Linear">
-                Linear
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Bootstrap Repetitions</mat-label>
-            <input matInput formControlName="bootRepsCtrl">
-          </mat-form-field>
+        <form [formGroup]="advancedOptionsFormGroup">
         </form>
         <br>
       </mat-expansion-panel>

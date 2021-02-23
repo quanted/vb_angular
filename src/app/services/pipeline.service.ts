@@ -113,7 +113,7 @@ export class PipelineService {
    * @param pipeline - The pipeline to be executed.
    * @param datasetID - ID for dataset to be used.
    */
-  execute(pipeline: PipelineModel, datasetID: string): Observable<any> {
+  execute(pipeline: PipelineModel, datasetID: number): Observable<any> {
     this.setHeaders();
     return this.http
       .post(environment.apiURL + 'pipeline/execute/', {
@@ -124,7 +124,7 @@ export class PipelineService {
       .pipe(
         catchError((err) => {
           console.log(err);
-          return of({ error: `Failed to add pipeline!` });
+          return of({ error: `Failed to execute pipeline!` });
         })
       );
   }

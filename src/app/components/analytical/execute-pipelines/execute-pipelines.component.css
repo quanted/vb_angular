@@ -5,13 +5,6 @@ button {
   height: 50px;
   color: white;
   margin: 10px auto;
+  background-color: #0e6993;
   width: 110px;
-}
-
-.new {
-  background-color: #2e8540;
-}
-
-.cancel {
-  background-color: red;
 }

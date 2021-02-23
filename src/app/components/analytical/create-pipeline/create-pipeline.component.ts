@@ -12,9 +12,11 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class CreatePipelineComponent implements OnInit {
 
+  // State management variable for Advanced options expansion panel.
   panelOpenState = false;
+  hasHyperParams = false;
   // FormGroups
-  resamplingApproachFormGroup: FormGroup;
+  advancedOptionsFormGroup: FormGroup;
   pipelineFormGroup: FormGroup;
 
   @Output() sendMessage = new EventEmitter();
@@ -28,15 +30,7 @@ export class CreatePipelineComponent implements OnInit {
   ngOnInit() {
     // Get the pipeline info and populate necessary fields.
     this.getPipelineInfo();
-    this.resamplingApproachFormGroup = this.formBuilder.group({
-      gridpointsCtrl: ['5'],
-      cvFoldsCtrl: ['5'],
-      cvRepsCtrl: ['3'],
-      cvGroupCountCtrl: ['5'],
-      cvStrategyCtrl: ['Quantile'],
-      bootStrategyCtrl: ['None'],
-      bootRepsCtrl: ['3']
-    });
+    this.advancedOptionsFormGroup = this.formBuilder.group({});
     this.pipelineFormGroup = this.formBuilder.group({
       estimatorCtrl: ['', Validators.required],
       pipelineNameCtrl: [''],
@@ -53,24 +47,62 @@ export class CreatePipelineComponent implements OnInit {
     });
   }
 
+  /**
+   * Changes the pipeline name/description fields with default info when user
+   * selects a different pipeline option and changes the advanced options form inputs.
+   * @param e - Event object sent by the HTML input.
+   */
   estimatorChange(e): void {
-    this.pipelineFormGroup.controls.pipelineNameCtrl.setValue(e.source.triggerValue);
-    this.pipelineFormGroup.controls.pipelineDescCtrl.setValue(
-      this.pipelineInfo.find(pipeline => e.source.triggerValue === pipeline.name).description
-    );
+    // Get the selected pipeline.
+    const selectedPipeline = this.pipelineInfo.find(pipeline => {
+      return e.source.triggerValue === pipeline.name;
+    });
+    // Update name and description with defaults.
+    this.pipelineFormGroup.controls.pipelineNameCtrl.setValue(selectedPipeline.name);
+    this.pipelineFormGroup.controls.pipelineDescCtrl.setValue(selectedPipeline.description);
+    /*
+    // Remove controls from advanced options form.
+    Object.keys(this.advancedOptionsFormGroup.controls).forEach((key) => {
+      this.advancedOptionsFormGroup.removeControl(key);
+    });
+    // Add new controls
+    selectedPipeline.hyperParameters.forEach(param => {
+      this.advancedOptionsFormGroup.addControl(param.name,
+        this.formBuilder.control([param.value, Validators.required]));
+    });
+     */
   }
 
+  /**
+   * Function that adds a new pipeline to the users project.
+   */
   addPipeline() {
+    // Populate a pipeline object.
     const newPipeline: PipelineModel = {
       project: this.route.snapshot.paramMap.get('id'),
       name: this.pipelineFormGroup.controls.pipelineNameCtrl.value,
-      type: '',
-      description: this.pipelineFormGroup.controls.pipelineDescCtrl.value,
+      type: this.pipelineInfo.find(pipeline => {
+        return this.pipelineFormGroup.controls.estimatorCtrl.value === pipeline.name;
+      }).ptype,
+      description: this.pipelineFormGroup.controls.pipelineDescCtrl.value
     };
-    newPipeline.type = this.pipelineInfo.find(pipeline => {
-      return this.pipelineFormGroup.controls.estimatorCtrl.value === pipeline.name;
-    }).ptype;
+
+    /*
+    // Check if Hyper params exist
+    if (Object.keys(this.advancedOptionsFormGroup.controls).length > 0) {
+      // Push hyper param to array of params
+      Object.keys(this.advancedOptionsFormGroup.controls).forEach(key => {
+        newPipeline.hyperParameters.push({
+          name: this.advancedOptionsFormGroup.controls.key.value,
+          value: ''
+        });
+      });
+    }
+    */
+
+    // Add pipeline
     this.pipelineService.addPipeline(newPipeline).subscribe();
+    // Send message to parent component to update UI.
     this.sendMessage.next();
   }
 }

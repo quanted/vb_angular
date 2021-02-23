@@ -4,13 +4,13 @@ export interface PipelineModel {
   name: string;
   type: string;
   description: string;
+  hyperParameters?: {
+    name: string;
+    vType?: string;
+    value: string;
+    options?: string;
+  }[];
   metadata?: {
-    hyperParameters?: {
-      name: string;
-      vType: string;
-      value: string;
-      options: string;
-    }[];
     total_runs?: number;
     avg_runtime?: number;
     avg_runtimeN?: number;
