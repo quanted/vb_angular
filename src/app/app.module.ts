@@ -42,7 +42,7 @@ import { LocationFormComponent } from "./components/map/location-form/location-f
 import { LocationDetailComponent } from './components/location/location-detail/location-detail.component';
 import { DataComponent } from "./components/data/data.component";
 import { PredictionComponent } from "./components/prediction/prediction.component";
-import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AnalyticalComponent } from './components/analytical/analytical.component';
 import { AnalyticalModelsComponent } from './components/analytical/analytical-models/analytical-models.component';
 import { ModelDialogComponent } from './components/analytical/analytical-models/model-dialog/model-dialog.component';
@@ -51,6 +51,7 @@ import { ElipseComponent } from './components/icons/elipse/elipse.component';
 import { CreateProjectComponent } from './components/project/create-project/create-project.component';
 import { LocationComponent } from './components/location/location/location.component';
 import { ExecutePipelinesComponent } from './components/analytical/execute-pipelines/execute-pipelines.component';
+import { ModelSelectionComponent } from './components/dashboard/model-selection/model-selection.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { ExecutePipelinesComponent } from './components/analytical/execute-pipel
     ElipseComponent,
     CreateProjectComponent,
     LocationComponent,
-    ExecutePipelinesComponent
+    ExecutePipelinesComponent,
+    ModelSelectionComponent
   ],
   imports: [
     BrowserModule,
