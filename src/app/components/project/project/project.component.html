@@ -1,8 +1,10 @@
 <mat-card id='project'>
     <ng-container *ngIf="project">
         <!-- Project Details-->
-        <h1 class="centered">{{ project.name }}</h1>
-        <p class="centered">{{ project.description }}</p>
+        <div id="project-name">
+            <span id="name">{{ project.name }}</span>
+            <span id="description">{{ project.description }}</span>
+        </div>
         <!-- Location -->
         <mat-accordion>
             <mat-expansion-panel (opened)="panelOpenState = true"
