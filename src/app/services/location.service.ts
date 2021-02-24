@@ -23,7 +23,7 @@ export class LocationService {
 
   getLocations(): Observable<any> {
     this.setHeaders();
-    return this.http.get(environment.apiURL + 'project/', this.options).pipe(
+    return this.http.get(environment.apiURL + 'location/', this.options).pipe(
       catchError((err) => {
         console.log(err);
         return of({ error: `Failed to fetch locations!` });
@@ -34,7 +34,7 @@ export class LocationService {
   addLocation(newLocation): Observable<any> {
     this.setHeaders();
     return this.http
-      .post(environment.apiURL + 'project/', newLocation, this.options)
+      .post(environment.apiURL + 'location/', newLocation, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);

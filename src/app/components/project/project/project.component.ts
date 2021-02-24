@@ -11,9 +11,10 @@ import { ProjectService } from 'src/app/services/project.service';
 export class ProjectComponent implements OnInit {
   panelOpenState = false;
 
-  project_ID: string;
+  projectID: string;
   project;
-  
+
+  locationName = 'No location selected';
   dataFileName = 'No data selected';
 
   constructor(
@@ -23,13 +24,17 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.route.paramMap) {
-      this.project_ID = this.route.snapshot.paramMap.get('id');
+      this.projectID = this.route.snapshot.paramMap.get('id');
       this.projectService.getProjects().subscribe((projects) => {
         this.project = projects.find((project) => {
-          return project.id == this.project_ID;
+          return project.id == this.projectID;
         });
       });
     }
+  }
+
+  setLocationName(locationName): void {
+    this.locationName = locationName;
   }
 
   setDataFileName(fileName): void {

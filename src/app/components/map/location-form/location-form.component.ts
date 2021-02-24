@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MapService } from 'src/app/services/map.service';
 import { LocationService } from 'src/app/services/location.service';
@@ -13,6 +13,8 @@ export class LocationFormComponent implements OnInit {
   locationForm: FormGroup;
   markers = [];
 
+  @Input() projectID;
+
   constructor(
     private fb: FormBuilder,
     private mapService: MapService,
@@ -23,7 +25,7 @@ export class LocationFormComponent implements OnInit {
   ngOnInit() {
     this.locationForm = this.fb.group({
       name: [null, Validators.required],
-      type: ['Beach', Validators.required],
+      type: ['beach', Validators.required],
       description: [null, Validators.required],
       start_latitude: [null, Validators.required],
       start_longitude: [null, Validators.required],
@@ -47,7 +49,7 @@ export class LocationFormComponent implements OnInit {
       const location = {
         name: data.name,
         description: data.description,
-        type: "beach",
+        type: data.type,
         metadata: {
           lat1: data.start_latitude,
           lng1: data.start_longitude,
@@ -61,9 +63,8 @@ export class LocationFormComponent implements OnInit {
       this.locationService
         .addLocation(location)
         .subscribe((savedLocation) => {
-          console.log("Location: ", JSON.stringify(location));
-          console.log("SavedLocation: ", savedLocation);
-          this.router.navigateByUrl(`project/${savedLocation.id}`);
+          console.log('savedLocation: ', savedLocation);
+          this.router.navigateByUrl(`project/${this.projectID}`);
         });
     } else {
       console.log('form invalid!');

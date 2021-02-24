@@ -1,35 +1,52 @@
 <mat-card id='project'>
-    <h1 class="centered">Project Creation</h1>
-    <!-- Project Details-->
-    <app-location-detail [location]="project"></app-location-detail>
-    <!-- Data -->
-    <mat-accordion>
-        <mat-expansion-panel (opened)="panelOpenState = true"
-                                (closed)="panelOpenState = false">
-            <mat-expansion-panel-header>
-            <mat-panel-title>
-                Training Data
-            </mat-panel-title>
-            <mat-panel-description>
-                {{ dataFileName }}
-            </mat-panel-description>
-            </mat-expansion-panel-header>
-            <app-data (dataFile)="setDataFileName($event)"></app-data>
-        </mat-expansion-panel>
-    </mat-accordion>
-    <!-- Analytical -->
-    <mat-accordion>
-        <mat-expansion-panel (opened)="panelOpenState = true"
-                                (closed)="panelOpenState = false">
-            <mat-expansion-panel-header>
-            <mat-panel-title>
-                Model Selection and Validation
-            </mat-panel-title>
-            <mat-panel-description>
-                Status
-            </mat-panel-description>
-            </mat-expansion-panel-header>
-            <app-analytical></app-analytical>
-        </mat-expansion-panel>
-    </mat-accordion>
+    <ng-container *ngIf="project">
+        <!-- Project Details-->
+        <h1 class="centered">{{ project.name }}</h1>
+        <p class="centered">{{ project.description }}</p>
+        <!-- Location -->
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                    (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Location
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{ locationName }}
+                </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-location (locationName)="setLocationName($event)" [location]="project.location" [projectID]="project.id"></app-location>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <!-- Data -->
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                    (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Training Data
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{ dataFileName }}
+                </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-data (dataFile)="setDataFileName($event)"></app-data>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <!-- Analytical -->
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                    (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Model Selection and Validation
+                </mat-panel-title>
+                <mat-panel-description>
+                    Status
+                </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-analytical></app-analytical>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </ng-container>
 </mat-card>

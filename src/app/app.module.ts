@@ -48,6 +48,8 @@ import { AnalyticalModelsComponent } from './components/analytical/analytical-mo
 import { ModelDialogComponent } from './components/analytical/analytical-models/model-dialog/model-dialog.component';
 import { CreatePipelineComponent } from './components/analytical/create-pipeline/create-pipeline.component';
 import { ElipseComponent } from './components/icons/elipse/elipse.component';
+import { CreateProjectComponent } from './components/project/create-project/create-project.component';
+import { LocationComponent } from './components/location/location/location.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +75,9 @@ import { ElipseComponent } from './components/icons/elipse/elipse.component';
     AnalyticalModelsComponent,
     CreatePipelineComponent,
     ModelDialogComponent,
-    ElipseComponent
+    ElipseComponent,
+    CreateProjectComponent,
+    LocationComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,25 @@
+<mat-card id='project' (keyup.enter)="createProject()">
+    <h1 class="centered">Project Creation</h1>
+    <form class="fields" [formGroup]="projectForm">
+        <mat-form-field>
+          <mat-label>Project Name</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="name"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Project Description</mat-label>
+          <input 
+            matInput 
+            type="test"
+             formControlName="description" />
+        </mat-form-field>
+      </form>
+    <mat-card-actions>
+        <button mat-raised-button (click)="cancel()">Cancel</button>
+        <button mat-raised-button (click)="createProject()">Create Project</button>
+        {{ statusMessage }}
+    </mat-card-actions>
+</mat-card>

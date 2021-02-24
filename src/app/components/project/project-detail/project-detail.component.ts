@@ -13,8 +13,10 @@ export class ProjectDetailComponent implements OnInit {
   
   @Input() project;
 
-  status = "working..."
-  hasDashboard = false;
+  pipeline = {
+    status:"working..."
+  };
+  hasDashboard = true;
 
   constructor(
     private router: Router,

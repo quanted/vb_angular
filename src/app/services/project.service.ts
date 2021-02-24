@@ -27,6 +27,16 @@ export class ProjectService {
     }),
   };
 
+  createProject(project): Observable<any> {
+    this.setHeaders();
+    return this.http.post(environment.apiURL + "project/", project, this.options).pipe(
+      catchError((err) => {
+        console.log(err);
+        return of({ error: `Failed to create project!` });
+      })
+    );
+  }
+
   getProjects(): Observable<any> {
     this.setHeaders();
     return this.http.get(environment.apiURL + "project/", this.options).pipe(

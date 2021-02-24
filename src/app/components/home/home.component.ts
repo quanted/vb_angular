@@ -36,7 +36,6 @@ export class HomeComponent implements OnInit {
   }
   
   createProject(): void {
-    console.log("createing new project");
-    this.router.navigateByUrl("map");
+    this.router.navigateByUrl("create-project");
   }
 }

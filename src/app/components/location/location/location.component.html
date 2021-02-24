@@ -1,0 +1,13 @@
+<ng-container *ngIf="!location">
+    <div>
+        <ng-container *ngIf="locations">
+            <h4>Use an existing location</h4>
+            <div *ngFor="let location of locations">{{ location.name }}, {{ location.description }}    <button type="button" (click)="selectLocation(location)" mat-button>Use this location</button></div>
+            <h4>- Or -</h4>
+        </ng-container>
+        <button mat-button (click)="createLocation()">Create Location</button>
+    </div>
+</ng-container>
+<ng-container *ngIf="location">
+    <app-location-detail [location]="location"></app-location-detail>
+</ng-container>
