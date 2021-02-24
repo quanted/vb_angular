@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ProjectService } from 'src/app/services/project.service';
@@ -12,6 +12,7 @@ export class ProjectDetailComponent implements OnInit {
   panelOpenState = false;
   
   @Input() project;
+  @Output() projectDeleted: EventEmitter<any> = new EventEmitter<any>();
 
   pipeline = {
     status:"working..."
@@ -26,22 +27,24 @@ export class ProjectDetailComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  deleteProject(project) {
-    console.log("delete project: ", project);
-    this.projectService.deleteProject(project.id).subscribe();
-    this.router.navigateByUrl('');
-  }
-
   editProject(project) {
     console.log("edit project: ", project);
     this.router.navigateByUrl(`project/${project.id}`);
   }
 
-  cloneProject(project) {
-    console.log("project cloning not implemented yet!");
-  }
-
   gotoDashboard(project) {
     this.router.navigateByUrl(`dashboard/${project.id}`);
   }
+
+  cloneProject(project) {
+    console.log("project cloning not implemented yet!");
+  }
+  
+  deleteProject(project) {
+    this.projectService.deleteProject(project.id).subscribe(() => {
+      this.projectDeleted.emit();
+    });
+  }
+
+  
 }
