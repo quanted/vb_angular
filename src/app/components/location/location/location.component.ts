@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocationData } from 'src/app/models/location-data';
 import { LocationService } from 'src/app/services/location.service';
 
 @Component({
@@ -16,15 +15,13 @@ export class LocationComponent implements OnInit {
     ) { }
 
   @Input() projectID;
-  @Input() location: LocationData;
+  @Input() location;
   @Output() locationName: EventEmitter<any> = new EventEmitter<any>();
-  locations;
+  locations = [];
 
   ngOnInit(): void {
-    console.log(this.location);
     this.locationService.getLocations().subscribe((locations) => {
       this.locations = [...locations];
-      console.log(locations);
     });
   }
 
@@ -35,6 +32,7 @@ export class LocationComponent implements OnInit {
   }
 
   createLocation() {
+    // passing projectID so the map knows which project to go back to
     this.router.navigateByUrl(`map/${this.projectID}`);
   }
 

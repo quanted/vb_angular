@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DatasetService } from "src/app/services/dataset.service";
 
 import * as XLSX from "xlsx";
@@ -9,8 +10,10 @@ import * as XLSX from "xlsx";
   styleUrls: ['./data.component.css'],
 })
 export class DataComponent implements OnInit {
-  datasets;
+  datasets = [];
   dataset = false;
+
+  rowsForm: FormGroup;
 
   generateAO = false;
   iv;
@@ -19,6 +22,7 @@ export class DataComponent implements OnInit {
   o;
   startRow = 0;
   endRow = 0;
+  selectedRows = [];
   totalRows = 0;
 
   @Output() dataFile: EventEmitter<any> = new EventEmitter<any>();
@@ -26,13 +30,21 @@ export class DataComponent implements OnInit {
   columnData = [];
   columnNames = [];
 
-  constructor(private dataService: DatasetService) {}
+  constructor(
+    private dataService: DatasetService, 
+    private fb: FormBuilder
+    ) {}
 
   ngOnInit() {
     this.dataService.getDatasets().subscribe(datasets => {
       console.log("datasets: ", datasets);
-      // this.datasets = {...datasets};
-      this.datasets = ["set1", "set2", "set3"];
+      this.datasets = {...datasets};
+      // this.datasets = ["set1", "set2", "set3"];
+    });
+    
+    this.rowsForm = this.fb.group({
+      startRow: [null, Validators.required],
+      endRow: [null, Validators.required],
     });
   }
 
@@ -44,6 +56,54 @@ export class DataComponent implements OnInit {
     // })
     this.dataFile.emit(dataset);
     this.dataset = dataset;
+  }
+
+  selectAllRows(): void {
+    this.selectedRows = [];
+    this.addRange(
+      {
+        start: 0,
+        end: this.columnData.length - 1
+      });
+  }
+
+  selectRows(): void {
+    if (this.rowsForm.valid) {
+      let newRange = {
+        start: this.rowsForm.get('startRow').value,
+        end:  this.rowsForm.get('endRow').value,
+      }
+
+      if (newRange.end - newRange.start > 0) { // should probably do a custom formgroup validator
+        let isNewRange = true;
+        for (let range of this.selectedRows) {
+          newRange.start < range.start && newRange.end > range.start? true : newRange.start = range.start;
+          newRange.end > range.end && newRange.start < range.end? true : newRange.end = range.end;
+          range.start = newRange.start;
+          range.end = newRange.end;
+        }
+        if (isNewRange) {
+          this.addRange(newRange);
+        }
+      }
+    }
+  }
+
+  clearSelectedRows(): void {
+    this.selectedRows = [];
+    this.totalRows = 0;
+  }
+
+  addRange(range) {
+    this.selectedRows.push(range);
+    this.totalRows = 0;
+    for (let range of this.selectedRows) {
+      this.totalRows += (range.end - range.start);
+    }
+  }
+
+  saveDataset(): void {
+    // this.dataService.saveDataset().subscribe();
   }
 
   updateInputs(varSet, value) {
@@ -176,9 +236,5 @@ export class DataComponent implements OnInit {
 
   toggle() {
     this.generateAO = !this.generateAO;
-  }
-
-  saveDataset(): void {
-    // this.dataService.saveDataset().subscribe();
   }
 }

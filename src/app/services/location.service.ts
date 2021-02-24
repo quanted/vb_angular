@@ -16,7 +16,7 @@ export class LocationService {
 
   options = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form',
       Authorization: `Token ${this.cookieService.get('TOKEN')}`,
     }),
   };
