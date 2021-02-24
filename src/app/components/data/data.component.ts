@@ -12,21 +12,22 @@ import * as XLSX from "xlsx";
 export class DataComponent implements OnInit {
   datasets = [];
   dataset = false;
+  creatingDataset = false;
 
   rowsForm: FormGroup;
+  nameForm: FormGroup;
 
   generateAO = false;
   iv;
   dv = [];
-  a;
-  o;
-  startRow = 0;
-  endRow = 0;
+  speed;
+  magnatude;
   selectedRows = [];
   totalRows = 0;
 
   @Output() dataFile: EventEmitter<any> = new EventEmitter<any>();
-  importedData = [];
+  dataCSV = '';
+  dataArray = [];
   columnData = [];
   columnNames = [];
 
@@ -37,9 +38,12 @@ export class DataComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.getDatasets().subscribe(datasets => {
-      console.log("datasets: ", datasets);
-      this.datasets = {...datasets};
-      // this.datasets = ["set1", "set2", "set3"];
+      this.datasets = [...datasets];
+    });
+    
+    this.nameForm = this.fb.group({
+      name: [null, Validators.required],
+      description: [null, Validators.required],
     });
     
     this.rowsForm = this.fb.group({
@@ -49,12 +53,7 @@ export class DataComponent implements OnInit {
   }
 
   selectData(dataset) {
-    // this.dataService.getDataset(dataset.id).subscribe(dataset => {
-    //   console.log("dataset: ", dataset);
-    //   this.dataset = dataset;
-    //   this.dataFile.emit(dataset);
-    // })
-    this.dataFile.emit(dataset);
+    this.dataFile.emit(dataset.name);
     this.dataset = dataset;
   }
 
@@ -65,45 +64,70 @@ export class DataComponent implements OnInit {
         start: 0,
         end: this.columnData.length - 1
       });
+    this.rowsForm.setValue({
+      startRow: 0,
+      endRow: this.columnData.length - 1
+    })
   }
 
   selectRows(): void {
     if (this.rowsForm.valid) {
-      let newRange = {
-        start: this.rowsForm.get('startRow').value,
-        end:  this.rowsForm.get('endRow').value,
-      }
-
-      if (newRange.end - newRange.start > 0) { // should probably do a custom formgroup validator
-        let isNewRange = true;
-        for (let range of this.selectedRows) {
-          newRange.start < range.start && newRange.end > range.start? true : newRange.start = range.start;
-          newRange.end > range.end && newRange.start < range.end? true : newRange.end = range.end;
-          range.start = newRange.start;
-          range.end = newRange.end;
+      const start = this.rowsForm.get('startRow').value;
+      const end = this.rowsForm.get('endRow').value;
+      if (start >= 0 && start < end && end < this.columnData.length - 1) {
+        let newRange = {
+          start,
+          end
         }
-        if (isNewRange) {
-          this.addRange(newRange);
-        }
+        this.addRange(newRange);
       }
     }
   }
 
   clearSelectedRows(): void {
     this.selectedRows = [];
+    this.rowsForm.get('startRow').setValue(null);
+    this.rowsForm.get('endRow').setValue(null);
     this.totalRows = 0;
   }
 
   addRange(range) {
+    this.selectedRows = [];
     this.selectedRows.push(range);
     this.totalRows = 0;
     for (let range of this.selectedRows) {
-      this.totalRows += (range.end - range.start);
+      this.totalRows += (range.end - range.start + 1);
     }
   }
 
-  saveDataset(): void {
-    // this.dataService.saveDataset().subscribe();
+  createDataset(): void {
+    const newDataset = {
+      name: this.nameForm.get('name').value,
+      description: this.nameForm.get('description').value,
+      data: this.dataCSV,
+      metadata: JSON.stringify({
+        target: this.iv,
+        features: this.dv,
+        wind: { 
+          speed: this.speed || null, 
+          magnatude: this.magnatude || null
+        }
+      })
+    }
+    this.dataService.createDataset(newDataset).subscribe((newDataset) => {
+      this.dataService.getDatasets().subscribe((datasets) => {
+        this.datasets = [...datasets];
+      })
+      this.dataset = newDataset;
+    });
+  }
+
+  deleteData(dataset): void {
+    this.dataService.deleteDataset(dataset).subscribe(() => {
+      this.dataService.getDatasets().subscribe((datasets) => {
+        this.datasets = [...datasets];
+      })
+    })
   }
 
   updateInputs(varSet, value) {
@@ -120,14 +144,14 @@ export class DataComponent implements OnInit {
         });
         if (inputA) {
           inputA["checked"] = false;
-          if (value === this.a){
-            this.a = "";
+          if (value === this.speed){
+            this.speed = "";
           }
         }
         if (inputO) {
           inputO["checked"] = false;
-          if (value === this.o){
-            this.o = "";
+          if (value === this.magnatude){
+            this.magnatude = "";
           }
         }
         break;
@@ -147,19 +171,19 @@ export class DataComponent implements OnInit {
         }
         if (inputA) {
           inputA["checked"] = false;
-          if (value === this.a){
-            this.a = "";
+          if (value === this.speed){
+            this.speed = "";
           }
         }
         if (inputO) {
           inputO["checked"] = false;
-          if (value === this.o){
-            this.o = "";
+          if (value === this.magnatude){
+            this.magnatude = "";
           }
         }
         break;
       case "A":
-        this.a = value;
+        this.speed = value;
         inputIV["checked"] = false;
         if (value === this.iv){
           this.iv = "";
@@ -171,14 +195,14 @@ export class DataComponent implements OnInit {
         if (inputO) {
           if (inputO["checked"]) {
             inputO["checked"] = false;
-            if (value === this.o){
-              this.o = "";
+            if (value === this.magnatude){
+              this.magnatude = "";
             }
           }
         }
         break;
       case "O":
-        this.o = value;
+        this.magnatude = value;
         inputIV["checked"] = false;
         if (value === this.iv){
           this.iv = "";
@@ -190,8 +214,8 @@ export class DataComponent implements OnInit {
         if (inputA) {
           if (inputA["checked"]) {
             inputA["checked"] = false;
-            if (value === this.a){
-              this.a = "";
+            if (value === this.speed){
+              this.speed = "";
             }
           }
         }
@@ -214,10 +238,11 @@ export class DataComponent implements OnInit {
       const wsname: string = wb.SheetNames[0];
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
-      this.importedData = (XLSX.utils.sheet_to_json(ws, {header: 1}));
+      this.dataArray = XLSX.utils.sheet_to_json(ws, {header: 1});
+      this.dataCSV = XLSX.utils.sheet_to_csv(ws);
 
-      this.columnNames = this.importedData[0];
-      const columnValues = this.importedData.slice(1);
+      this.columnNames = this.dataArray[0];
+      const columnValues = this.dataArray.slice(1);
       for (let i = 0; i < columnValues.length; i++) {
         const record = {};
         const values = columnValues[i];
@@ -225,13 +250,12 @@ export class DataComponent implements OnInit {
           record[this.columnNames[j]] = values[j];
         }
         this.columnData.push(record);
-        this.dataset = true;
       }
-      this.totalRows = this.columnData.length;
-      this.endRow = this.totalRows - 1;
     }
     reader.readAsBinaryString(target.files[0]);
     this.dataFile.emit(target.files[0].name);
+    this.nameForm.get('name').setValue(target.files[0].name);
+    this.creatingDataset = true;
   }
 
   toggle() {

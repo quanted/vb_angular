@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import * as L from "leaflet";
-
 import { LocationData } from '../models/location-data';
 
 @Injectable({

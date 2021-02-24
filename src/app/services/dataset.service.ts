@@ -43,10 +43,10 @@ export class DatasetService {
     );
   }
 
-  addDataset(newDataset): Observable<any> {
+  createDataset(newDataset): Observable<any> {
     this.setHeaders();
     return this.http
-      .post(environment.apiURL + 'api/dataset/', newDataset, this.options)
+      .post(environment.apiURL + 'dataset/', newDataset, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);
@@ -58,7 +58,7 @@ export class DatasetService {
   updateDataset(updatedDataset, id): Observable<any> {
     this.setHeaders();
     return this.http
-      .put(environment.apiURL + `api/dataset/${id}/`, updatedDataset, this.options)
+      .put(environment.apiURL + `dataset/${id}/`, updatedDataset, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);
@@ -67,10 +67,10 @@ export class DatasetService {
       );
   }
 
-  deleteDataset(id): Observable<any> {
+  deleteDataset(dataset): Observable<any> {
     this.setHeaders();
     return this.http
-      .delete(environment.apiURL + `api/dataset/${id}/`, this.options)
+      .delete(environment.apiURL + `dataset/${dataset.id}/`, this.options)
       .pipe(
         catchError((err) => {
           console.log(err);

@@ -28,7 +28,6 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   editProject(project) {
-    console.log("edit project: ", project);
     this.router.navigateByUrl(`project/${project.id}`);
   }
 

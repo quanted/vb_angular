@@ -16,6 +16,6 @@ export class MiniMapComponent implements OnInit {
   @Input() location: LocationData;
 
   ngOnInit(): void {
-    this.mapService.initMap();
+    // this.mapService.initMap();
   }
 }

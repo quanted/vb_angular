@@ -52,6 +52,7 @@ import { CreateProjectComponent } from './components/project/create-project/crea
 import { LocationComponent } from './components/location/location/location.component';
 import { ExecutePipelinesComponent } from './components/analytical/execute-pipelines/execute-pipelines.component';
 import { ModelSelectionComponent } from './components/dashboard/model-selection/model-selection.component';
+import { DataDetailComponent } from './components/data/data-detail/data-detail.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { ModelSelectionComponent } from './components/dashboard/model-selection/
     CreateProjectComponent,
     LocationComponent,
     ExecutePipelinesComponent,
-    ModelSelectionComponent
+    ModelSelectionComponent,
+    DataDetailComponent
   ],
   imports: [
     BrowserModule,

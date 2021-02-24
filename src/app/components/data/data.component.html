@@ -1,79 +1,99 @@
 <ng-container *ngIf="!dataset">
-  <div>
-    <ng-container *ngIf="datasets.length > 0">
-      <h4>Use an existing dataset</h4>
-      <div *ngFor="let dataset of datasets">{{ dataset }}<button type="button" (click)="selectData(dataset)" mat-button>Use this dataset</button></div>
-      <h4>- Or -</h4>
-    </ng-container>
-  </div>
-  <label for="file-upload" class="file-upload">Upload a dataset</label>
-  <input
-    id="file-upload"
-    type="file"
-    accept=".csv, .xls, .xlsx"
-    name="files[]"
-    (change)="onFileChange($event)"
-  />
-</ng-container>
-
-<ng-container *ngIf="dataset">
-  <div>
-    Independent Variable: {{ iv }}
-  </div>
-  <div>
-    {{ dv.length }} Dependent Variables: {{ dv }}
-  </div>
-
-  <form class="fields" [formGroup]="rowsForm" (keyup.enter)="selectRows()">
-    <mat-form-field>
-      <mat-label>start row</mat-label>
-      <input
-        matInput
-        type="number"
-        formControlName="startRow"
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>end row</mat-label>
-      <input matInput type="number" formControlName="endRow" />
-    </mat-form-field>
-  </form>
-  <button type="button" mat-button (click)="selectAllRows()">Select all rows</button>
-  <button type="button" mat-button (click)="selectRows()">Select rows</button>
-  <button type="button" mat-button (click)="clearSelectedRows()">Clear selected rows</button>
-
-  <div>
-    Selected rows: <ng-container *ngFor="let range of selectedRows">{{ range.start }}, {{ range.end }}</ng-container>
-  </div>
-  <div>
-    Total rows: <span id="total-rows">{{ totalRows }}</span>
-  </div>
-
-  <div>Generate A/O values? <input type="checkbox" (click)="toggle()" /></div>
-
-  <ng-container *ngIf="generateAO">
-    <div>Speed: {{ a }}</div>
-    <div>Magnatude: {{ o }}</div>
+  <ng-container *ngIf="!creatingDataset">
+    <div>
+      <ng-container *ngIf="datasets.length > 0">
+        <h4>Use an existing dataset</h4>
+        <div *ngFor="let dataset of datasets">
+          {{ dataset.name }}
+          <button type="button" (click)="selectData(dataset)" mat-button>Use this dataset</button>
+          <button type="button" (click)="deleteData(dataset)" mat-button>dev delete dataset</button>
+        </div>
+        <h4>- Or -</h4>
+      </ng-container>
+    </div>
+    <label for="file-upload" class="file-upload">Upload a dataset</label>
+    <input
+      id="file-upload"
+      type="file"
+      accept=".csv, .xls, .xlsx"
+      name="files[]"
+      (change)="onFileChange($event)"
+    />
   </ng-container>
 
-  <div><button mat-button type="button">Save Dataset</button></div>
-
-  <table mat-table [dataSource]="columnData">
-    <ng-container *ngFor="let disCol of columnNames" matColumnDef="{{disCol}}">
-      <th mat-header-cell *matHeaderCellDef>
-        <div>{{ disCol }}</div>
-        <div><input type="radio" name="IV" (click)="updateInputs('IV', disCol)" id="{{disCol}}IV" /></div>
-        <div><input type="checkbox" id="DV" (click)="updateInputs('DV', disCol)" id="{{disCol}}DV" /></div>
-        <div *ngIf="generateAO">
-          <input type="radio" name="A" (click)="updateInputs('A', disCol)" id="{{disCol}}A" />
-          <input type="radio" name="O" (click)="updateInputs('O', disCol)"  id="{{disCol}}O" />
-        </div>
-      </th>
-      <td mat-cell *matCellDef="let row">{{ row[disCol] }}</td>
+  <ng-container *ngIf="creatingDataset">
+    <form  class="fields" [formGroup]="nameForm">
+      <mat-form-field>
+        <mat-label>Dataset name: </mat-label>
+        <input matInput type="text" formControlName="name" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Dataset description: </mat-label>
+        <input matInput type="text" formControlName="description" />
+      </mat-form-field>
+    </form>
+    <div>
+      Selected rows: <ng-container *ngFor="let range of selectedRows">{{ range.start }}, {{ range.end }}</ng-container>
+    </div>
+    <div>
+      Total rows: <span id="total-rows">{{ totalRows }}</span>
+    </div>
+  
+    <form class="fields" [formGroup]="rowsForm" (keyup.enter)="selectRows()">
+      <mat-form-field>
+        <mat-label>start row</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="startRow"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>end row</mat-label>
+        <input matInput type="number" formControlName="endRow" />
+      </mat-form-field>
+      <button type="button" mat-button (click)="selectRows()">Select rows</button>
+    </form>
+    <button type="button" mat-button (click)="selectAllRows()">Select all rows</button>
+    <button type="button" mat-button (click)="clearSelectedRows()">Clear selected rows</button>
+  
+    <div>
+      Independent Variable: {{ iv }}
+    </div>
+    <div>
+      {{ dv.length }} Dependent Variables: {{ dv }}
+    </div>
+    
+    <div>Generate A/O values? <input type="checkbox" (click)="toggle()" /></div>
+  
+    <ng-container *ngIf="generateAO">
+      <div>Speed: {{ speed }}</div>
+      <div>Magnatude: {{ magnatude }}</div>
     </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
-
-    <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
-  </table>
+  
+    <div><button mat-button type="button" (click)="createDataset()">Create Dataset</button></div>
+  
+    <table mat-table [dataSource]="columnData">
+      <ng-container *ngFor="let disCol of columnNames" matColumnDef="{{disCol}}">
+        <th mat-header-cell *matHeaderCellDef>
+          <div>{{ disCol }}</div>
+          <div><input type="radio" name="IV" (click)="updateInputs('IV', disCol)" id="{{disCol}}IV" /></div>
+          <div><input type="checkbox" id="DV" (click)="updateInputs('DV', disCol)" id="{{disCol}}DV" /></div>
+          <div *ngIf="generateAO">
+            <input type="radio" name="A" (click)="updateInputs('A', disCol)" id="{{disCol}}A" />
+            <input type="radio" name="O" (click)="updateInputs('O', disCol)"  id="{{disCol}}O" />
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row[disCol] }}</td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+  
+      <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
+    </table>
+  </ng-container>
 </ng-container>
+<ng-container *ngIf="dataset">
+  <app-data-detail [dataset]="dataset"></app-data-detail>
+</ng-container>
+
