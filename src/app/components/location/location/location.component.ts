@@ -37,4 +37,12 @@ export class LocationComponent implements OnInit {
   createLocation() {
     this.router.navigateByUrl(`map/${this.projectID}`);
   }
+
+  deleteLocation(location) {
+    this.locationService.deleteLocation(location.id).subscribe(() => {
+      this.locationService.getLocations().subscribe((locations) => {
+        this.locations = [...locations];
+      })
+    });
+  }
 }
