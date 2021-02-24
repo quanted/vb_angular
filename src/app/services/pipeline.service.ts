@@ -108,6 +108,27 @@ export class PipelineService {
       );
   }
 
+  /**
+   * Function that executes a pipeline.
+   * @param pipeline - The pipeline to be executed.
+   * @param datasetID - ID for dataset to be used.
+   */
+  execute(pipeline: PipelineModel, datasetID: number): Observable<any> {
+    this.setHeaders();
+    return this.http
+      .post(environment.apiURL + 'pipeline/execute/', {
+        project_id: pipeline.project,
+        pipeline_id: pipeline.id,
+        dataset_id: datasetID
+      }, this.options)
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+          return of({ error: `Failed to execute pipeline!` });
+        })
+      );
+  }
+
   setHeaders(): void {
     this.options.headers = new HttpHeaders({
       'Content-Type' : 'application/json',

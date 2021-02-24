@@ -1,6 +1,5 @@
-import {Component, OnInit, QueryList, ViewChild, ViewChildren, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatCheckbox} from '@angular/material/checkbox';
 import {PipelineService} from '../../../services/pipeline.service';
 import {PipelineInfoModel} from '../../../models/pipeline-info.model';
 import {PipelineModel} from '../../../models/pipeline.model';
@@ -13,21 +12,15 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class CreatePipelineComponent implements OnInit {
 
-  isLinear = false;
+  // State management variable for Advanced options expansion panel.
   panelOpenState = false;
+  hasHyperParams = false;
   // FormGroups
-  resamplingApproachFormGroup: FormGroup;
+  advancedOptionsFormGroup: FormGroup;
   pipelineFormGroup: FormGroup;
 
-  // Data
-  vars: string[] = ['mpg', 'cyl', 'displ', 'hp', 'weight', 'accel', 'yr', 'origin', 'name'];
-  @ViewChild('selectAll') private selectAllCheckbox: MatCheckbox;
-  @ViewChildren('checkboxes') private checkboxes: QueryList<MatCheckbox>;
-  //
   @Output() sendMessage = new EventEmitter();
   pipelineInfo: PipelineInfoModel[];
-  pipelines: PipelineModel[];
-  private group: any;
 
   constructor(private route: ActivatedRoute,
               private formBuilder: FormBuilder,
@@ -37,16 +30,7 @@ export class CreatePipelineComponent implements OnInit {
   ngOnInit() {
     // Get the pipeline info and populate necessary fields.
     this.getPipelineInfo();
-    this.getPipelines();
-    this.resamplingApproachFormGroup = this.formBuilder.group({
-      gridpointsCtrl: ['5'],
-      cvFoldsCtrl: ['5'],
-      cvRepsCtrl: ['3'],
-      cvGroupCountCtrl: ['5'],
-      cvStrategyCtrl: ['Quantile'],
-      bootStrategyCtrl: ['None'],
-      bootRepsCtrl: ['3']
-    });
+    this.advancedOptionsFormGroup = this.formBuilder.group({});
     this.pipelineFormGroup = this.formBuilder.group({
       estimatorCtrl: ['', Validators.required],
       pipelineNameCtrl: [''],
@@ -63,59 +47,62 @@ export class CreatePipelineComponent implements OnInit {
     });
   }
 
-  getPipelines() {
-    const projectID = this.route.snapshot.paramMap.get('id');
-    this.pipelineService.getPipelinesForProject(projectID).subscribe(pipelines => {
-      this.pipelines = pipelines;
-    });
-  }
-
-  onChangeDependantSelection(e) {
-    const dependant = e.source.value ?? '';
-    this.checkboxes.forEach(checkbox => {
-      if (dependant === checkbox.value) {
-        checkbox.disabled = true;
-        checkbox.checked = false;
-      } else {
-        checkbox.disabled = false;
-      }
-    });
-  }
-
-  onSelectAll(e) {
-    if (this.selectAllCheckbox.checked) {
-      this.checkboxes.forEach(checkbox => {
-        if (!checkbox.checked && !checkbox.disabled) {
-          checkbox.checked = true;
-        }
-      });
-    } else {
-      this.checkboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-          checkbox.checked = false;
-        }
-      });
-    }
-  }
-
+  /**
+   * Changes the pipeline name/description fields with default info when user
+   * selects a different pipeline option and changes the advanced options form inputs.
+   * @param e - Event object sent by the HTML input.
+   */
   estimatorChange(e): void {
-    this.pipelineFormGroup.controls.pipelineNameCtrl.setValue(e.source.triggerValue);
-    this.pipelineFormGroup.controls.pipelineDescCtrl.setValue(
-      this.pipelineInfo.find(pipeline => e.source.triggerValue === pipeline.name).description
-    );
+    // Get the selected pipeline.
+    const selectedPipeline = this.pipelineInfo.find(pipeline => {
+      return e.source.triggerValue === pipeline.name;
+    });
+    // Update name and description with defaults.
+    this.pipelineFormGroup.controls.pipelineNameCtrl.setValue(selectedPipeline.name);
+    this.pipelineFormGroup.controls.pipelineDescCtrl.setValue(selectedPipeline.description);
+    /*
+    // Remove controls from advanced options form.
+    Object.keys(this.advancedOptionsFormGroup.controls).forEach((key) => {
+      this.advancedOptionsFormGroup.removeControl(key);
+    });
+    // Add new controls
+    selectedPipeline.hyperParameters.forEach(param => {
+      this.advancedOptionsFormGroup.addControl(param.name,
+        this.formBuilder.control([param.value, Validators.required]));
+    });
+     */
   }
 
+  /**
+   * Function that adds a new pipeline to the users project.
+   */
   addPipeline() {
-    let newPipeline: PipelineModel = {
+    // Populate a pipeline object.
+    const newPipeline: PipelineModel = {
       project: this.route.snapshot.paramMap.get('id'),
       name: this.pipelineFormGroup.controls.pipelineNameCtrl.value,
-      type: '',
-      description: this.pipelineFormGroup.controls.pipelineDescCtrl.value,
+      type: this.pipelineInfo.find(pipeline => {
+        return this.pipelineFormGroup.controls.estimatorCtrl.value === pipeline.name;
+      }).ptype,
+      description: this.pipelineFormGroup.controls.pipelineDescCtrl.value
     };
-    newPipeline.type = this.pipelineInfo.find(pipeline => {
-      return this.pipelineFormGroup.controls.estimatorCtrl.value === pipeline.name;
-    }).ptype;
+
+    /*
+    // Check if Hyper params exist
+    if (Object.keys(this.advancedOptionsFormGroup.controls).length > 0) {
+      // Push hyper param to array of params
+      Object.keys(this.advancedOptionsFormGroup.controls).forEach(key => {
+        newPipeline.hyperParameters.push({
+          name: this.advancedOptionsFormGroup.controls.key.value,
+          value: ''
+        });
+      });
+    }
+    */
+
+    // Add pipeline
     this.pipelineService.addPipeline(newPipeline).subscribe();
+    // Send message to parent component to update UI.
     this.sendMessage.next();
   }
 }

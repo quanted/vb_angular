@@ -1,6 +1,5 @@
-import {Component, OnInit } from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import { PipelineService } from '../../../services/pipeline.service';
-import { AnalyticalModelResponse } from '../../../models/analytical-model-response';
 import { ActivatedRoute } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -25,9 +24,9 @@ export class AnalyticalModelsComponent implements OnInit {
 
   display: boolean;
   modelFormGroup: FormGroup;
-  projectID: string;
   pipelines: PipelineModel[];
   dataSource: MatTableDataSource<PipelineModel>;
+  @Output() pipelinesUpdated = new EventEmitter<PipelineModel[]>();
 
   // Column names displayed on table that shows the models
   columnsToDisplay: string[] = [
@@ -49,13 +48,14 @@ export class AnalyticalModelsComponent implements OnInit {
     this.modelFormGroup = this.formBuilder.group({
       descriptionCtrl: [''],
     });
-    this.getPipelines();
+    this.getPipelines(this.route.snapshot.paramMap.get('id'));
   }
 
-  getPipelines() {
-    this.projectID = this.route.snapshot.paramMap.get('id');
-    this.pipelineService.getPipelinesForProject(this.projectID).subscribe(pipelines => {
+  getPipelines(projectID: string) {
+    this.pipelineService.getPipelinesForProject(projectID).subscribe(pipelines => {
       this.dataSource = new MatTableDataSource(pipelines);
+      this.pipelinesUpdated.emit(pipelines);
+      console.log(pipelines);
     });
   }
 
