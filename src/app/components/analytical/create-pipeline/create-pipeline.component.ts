@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PipelineService} from '../../../services/pipeline.service';
 import {PipelineInfoModel} from '../../../models/pipeline-info.model';
@@ -6,7 +6,7 @@ import {PipelineModel} from '../../../models/pipeline.model';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
-  selector: 'app-create-model',
+  selector: 'app-create-pipeline',
   templateUrl: './create-pipeline.component.html',
   styleUrls: ['./create-pipeline.component.css']
 })
@@ -19,7 +19,8 @@ export class CreatePipelineComponent implements OnInit {
   advancedOptionsFormGroup: FormGroup;
   pipelineFormGroup: FormGroup;
 
-  @Output() sendMessage = new EventEmitter();
+  @Input() projectID;
+  @Output() pipelineCreated = new EventEmitter();
   pipelineInfo: PipelineInfoModel[];
 
   constructor(private route: ActivatedRoute,
@@ -79,7 +80,7 @@ export class CreatePipelineComponent implements OnInit {
   addPipeline() {
     // Populate a pipeline object.
     const newPipeline: PipelineModel = {
-      project: this.route.snapshot.paramMap.get('id'),
+      project: this.projectID,
       name: this.pipelineFormGroup.controls.pipelineNameCtrl.value,
       type: this.pipelineInfo.find(pipeline => {
         return this.pipelineFormGroup.controls.estimatorCtrl.value === pipeline.name;
@@ -101,8 +102,11 @@ export class CreatePipelineComponent implements OnInit {
     */
 
     // Add pipeline
-    this.pipelineService.addPipeline(newPipeline).subscribe();
+    this.pipelineService.addPipeline(newPipeline).subscribe((response) => {
+      console.log('createPipeline response: ', response);
+      this.pipelineCreated.emit();
+    });
     // Send message to parent component to update UI.
-    this.sendMessage.next();
+    // this.sendMessage.next();
   }
 }

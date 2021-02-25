@@ -27,7 +27,7 @@ export class LocationComponent implements OnInit {
 
   selectLocation(location) {
     this.location = location;
-    this.locationName.emit(location.name);
+    this.locationName.emit(location);
   }
 
   createLocation() {

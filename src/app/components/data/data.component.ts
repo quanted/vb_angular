@@ -53,7 +53,7 @@ export class DataComponent implements OnInit {
   }
 
   selectData(dataset) {
-    this.dataFile.emit(dataset.name);
+    this.dataFile.emit(dataset);
     this.dataset = dataset;
   }
 
@@ -114,6 +114,7 @@ export class DataComponent implements OnInit {
         }
       })
     }
+    console.log('newDataset: ', newDataset);
     this.dataService.createDataset(newDataset).subscribe((newDataset) => {
       this.dataService.getDatasets().subscribe((datasets) => {
         this.datasets = [...datasets];

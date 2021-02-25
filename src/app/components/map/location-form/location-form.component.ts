@@ -51,21 +51,17 @@ export class LocationFormComponent implements OnInit {
         description: data.description,
         type: data.type,
         metadata: JSON.stringify({
-          lat1: (data.start_latitude),
-          lng1: (data.start_longitude),
-          lat2: (data.end_latitude),
-          lng2: (data.end_longitude),
-          lat3: (data.o_latitude),
-          lng3: (data.o_longitude)
+          lat1: data.start_latitude,
+          lng1: data.start_longitude,
+          lat2: data.end_latitude,
+          lng2: data.end_longitude,
+          lat3: data.o_latitude,
+          lng3: data.o_longitude
         })
       }
-
-      console.log("newLocation: ", location);
-
       this.locationService
         .addLocation(location)
-        .subscribe((savedLocation) => {
-          console.log('save-location response: ', savedLocation);
+        .subscribe(() => {
           this.router.navigateByUrl(`project/${this.projectID}`);
         });
     } else {

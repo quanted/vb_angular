@@ -17,7 +17,7 @@
                     {{ locationName }}
                 </mat-panel-description>
                 </mat-expansion-panel-header>
-                <app-location (locationName)="setLocationName($event)" [location]="project.location" [projectID]="project.id"></app-location>
+                <app-location [location]="project.location" [projectID]="project.id" (locationName)="setLocation($event)" ></app-location>
             </mat-expansion-panel>
         </mat-accordion>
         <!-- Data -->
@@ -29,10 +29,10 @@
                     Training Data
                 </mat-panel-title>
                 <mat-panel-description>
-                    {{ dataFileName }}
+                    {{ datasetName }}
                 </mat-panel-description>
                 </mat-expansion-panel-header>
-                <app-data (dataFile)="setDataFileName($event)"></app-data>
+                <app-data (dataFile)="setDataset($event)"></app-data>
             </mat-expansion-panel>
         </mat-accordion>
         <!-- Analytical -->
@@ -44,11 +44,14 @@
                     Model Selection and Validation
                 </mat-panel-title>
                 <mat-panel-description>
-                    Status
+                    {{ pipelineNames }}
                 </mat-panel-description>
                 </mat-expansion-panel-header>
-                <app-analytical [project]="project"></app-analytical>
+                <app-analytical [projectID]="project.id" (setPipelines)="setPipelines($event)"></app-analytical>
             </mat-expansion-panel>
         </mat-accordion>
+        <div id="execute">
+            <button type="button" mat-button (click)="executeProject()">Execute project</button>
+        </div>
     </ng-container>
 </mat-card>

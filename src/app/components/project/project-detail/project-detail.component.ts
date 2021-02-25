@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { PipelineService } from 'src/app/services/pipeline.service';
 
 import { ProjectService } from 'src/app/services/project.service';
 
@@ -14,17 +15,24 @@ export class ProjectDetailComponent implements OnInit {
   @Input() project;
   @Output() projectDeleted: EventEmitter<any> = new EventEmitter<any>();
 
-  pipeline = {
-    status:"working..."
-  };
+  pipelines = [];
   hasDashboard = true;
 
   constructor(
     private router: Router,
     private projectService: ProjectService,
+    private pipelineService: PipelineService
   ) { }
 
   ngOnInit(): void {
+    this.pipelineService.getProjectPipelines(this.project.id).subscribe((pipelines) => {
+      this.pipelines = [...pipelines];
+      for (let pipeline of this.pipelines) {
+        this.pipelineService.getPipelineStatus(this.project.id, pipeline.id).subscribe((status) => {
+          pipeline['status'] = status.metadata;
+        })
+      }
+    })
   }
 
   editProject(project) {
@@ -45,5 +53,7 @@ export class ProjectDetailComponent implements OnInit {
     });
   }
 
-  
+  cancelPipeline(): void {
+    console.log("cancel pipeline not implemented");
+  }
 }

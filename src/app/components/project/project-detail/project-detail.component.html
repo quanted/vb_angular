@@ -22,14 +22,14 @@
               Pipelines
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div>Pipeline 1 {{ pipeline.status }}<button mat-button type="button">Cancel</button></div>
-        <div>Pipeline 2 {{ pipeline.status }}<button mat-button type="button">Cancel</button></div>
-        <div>Pipeline 3 {{ pipeline.status }}<button mat-button type="button">Cancel</button></div>
-        <div>Pipeline 4 {{ pipeline.status }}<button mat-button type="button">Cancel</button></div>
+        <div *ngFor="let pipeline of pipelines">{{ pipeline.name }}
+          <span class="status">Status:{{ pipeline.status | json }}</span>
+          <button mat-button type="button" (click)="cancelPipeline()">Cancel</button>
+        </div>
       </mat-expansion-panel>
     </mat-accordion>
     <div class="buttons">
-      <button mat-button type="button" (click)="editProject(project)">Edit Project</button>
+      <button mat-button type="button" (click)="editProject(project)">Project setup</button>
       <ng-container *ngIf="hasDashboard">
         <button mat-button type="button" (click)="gotoDashboard(project)">Project dashboard</button>
       </ng-container> 

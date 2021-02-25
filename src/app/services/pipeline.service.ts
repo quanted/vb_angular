@@ -13,7 +13,10 @@ import { PipelineInfoModel } from '../models/pipeline-info.model';
   providedIn: 'root',
 })
 export class PipelineService {
-  constructor(private http: HttpClient, private cookieService: CookieService) {}
+  constructor(
+    private http: HttpClient, 
+    private cookieService: CookieService
+    ) {}
 
   // Http Options to append to requests.
   options = {
@@ -22,6 +25,46 @@ export class PipelineService {
       Authorization: `Token ${this.cookieService.get('TOKEN')}`
     }),
   };
+
+  getProjectPipelines(id): Observable<any> {
+    this.setHeaders();
+    return this.http.get(`${environment.apiURL}pipeline/?project=${id}`, this.options).pipe(
+      catchError((err) => {
+        console.log(err);
+        return of({ error: `Failed to fetch locations!` });
+      })
+    );
+  }
+
+  executePipeline(projectID, locationID, datasetID, pipelineID): Observable<any> {
+    this.setHeaders();
+    return this.http.post(`${environment.apiURL}pipeline/execute/`,
+      {
+        project_id: projectID,
+        dataset_id: datasetID,
+        pipeline_id: pipelineID
+      },
+      this.options)
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+          return of({ error: `Failed to fetch locations!` });
+        })
+      );
+  }
+
+  getPipelineStatus(projectID, pipelineID): Observable<any> {
+    this.setHeaders();
+    return this.http
+    .get(`${environment.apiURL}pipeline/status/?project_id=${projectID}&pipeline_id=${pipelineID}`,
+    this.options)
+    .pipe(
+      catchError((err) => {
+        console.log(err);
+        return of({ error: `Failed to fetch locations!` });
+      })
+    );
+  }
 
   /**
    * Gets the available pipelines.
@@ -96,7 +139,7 @@ export class PipelineService {
       );
   }
 
-  deleteModel(id): Observable<any> {
+  deletePipeline(id): Observable<any> {
     this.setHeaders();
     return this.http
       .delete(environment.apiURL + `pipeline/${id}/`, this.options)
