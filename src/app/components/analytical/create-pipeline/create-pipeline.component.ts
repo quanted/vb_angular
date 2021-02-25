@@ -103,7 +103,6 @@ export class CreatePipelineComponent implements OnInit {
 
     // Add pipeline
     this.pipelineService.addPipeline(newPipeline).subscribe((response) => {
-      console.log('createPipeline response: ', response);
       this.pipelineCreated.emit();
     });
     // Send message to parent component to update UI.

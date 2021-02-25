@@ -12,11 +12,10 @@ import { ProjectService } from 'src/app/services/project.service';
 export class ProjectComponent implements OnInit {
   panelOpenState = false;
 
-  projectID: string;
   project;
-  locationID;
+  location;
   locationName = 'No location selected';
-  datasetID;
+  dataset;
   datasetName = 'No data selected';
   pipelines = [];
   pipelineNames = 'No pipelines selected';
@@ -29,36 +28,44 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.route.paramMap) {
-      this.projectID = this.route.snapshot.paramMap.get('id');
+      const projectID = this.route.snapshot.paramMap.get('id');
       this.projectService.getProjects().subscribe((projects) => {
         this.project = projects.find((project) => {
-          return project.id == this.projectID;
+          return project.id == projectID;
         });
+        console.log('project: ', this.project);
       });
     }
   }
 
   setLocation(location): void {
-    this.locationID = location.id;
     this.locationName = location.name;
+    this.project.location = location.id;
+    this.projectService.updateProject(this.project).subscribe((response) => {
+      console.log('project location_id updated');
+    })
   }
 
   setDataset(dataset): void {
-    this.datasetID = dataset.id;
     this.datasetName = dataset.name;
+    this.project.dataset = dataset.id;
+    this.projectService.updateProject(this.project).subscribe((response) => {
+      console.log('project dataset_id updated');
+    })
   }
 
   setPipelines(pipelines): void {
     this.pipelines = [...pipelines];
-    this.pipelineNames = '';
+    const typeList = [];
     for (let pipeline of pipelines) {
-      this.pipelineNames += (pipeline.name + ' ');
+      typeList.push(pipeline.type);
     }
+    this.pipelineNames = typeList.join(', ');
   }
 
   executeProject(): void {
     for (let pipeline of this.pipelines) {
-      this.pipelineService.executePipeline(this.projectID, this.locationID, this.datasetID, pipeline.id)
+      this.pipelineService.executePipeline(this.project, pipeline.id)
       .subscribe((response) => {
         console.log('pipeline ' + pipeline.id + ' response: ', response );
       });

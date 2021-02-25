@@ -36,12 +36,12 @@ export class PipelineService {
     );
   }
 
-  executePipeline(projectID, locationID, datasetID, pipelineID): Observable<any> {
+  executePipeline(project, pipelineID): Observable<any> {
     this.setHeaders();
     return this.http.post(`${environment.apiURL}pipeline/execute/`,
       {
-        project_id: projectID,
-        dataset_id: datasetID,
+        project_id: project.id,
+        dataset_id: project.dataset,
         pipeline_id: pipelineID
       },
       this.options)

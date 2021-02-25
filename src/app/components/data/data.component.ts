@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DatasetService } from "src/app/services/dataset.service";
 
@@ -11,8 +11,9 @@ import * as XLSX from "xlsx";
 })
 export class DataComponent implements OnInit {
   datasets = [];
-  dataset = false;
+  @Input() datasetID;
   creatingDataset = false;
+  dataset;
 
   rowsForm: FormGroup;
   nameForm: FormGroup;
@@ -25,7 +26,7 @@ export class DataComponent implements OnInit {
   selectedRows = [];
   totalRows = 0;
 
-  @Output() dataFile: EventEmitter<any> = new EventEmitter<any>();
+  @Output() setDataset: EventEmitter<any> = new EventEmitter<any>();
   dataCSV = '';
   dataArray = [];
   columnData = [];
@@ -39,6 +40,12 @@ export class DataComponent implements OnInit {
   ngOnInit() {
     this.dataService.getDatasets().subscribe(datasets => {
       this.datasets = [...datasets];
+      for (let dataset of datasets) {
+        if (dataset.id === this.datasetID) {
+          this.dataset = dataset;
+          this.setDataset.emit(dataset);
+        }
+      }
     });
     
     this.nameForm = this.fb.group({
@@ -53,7 +60,7 @@ export class DataComponent implements OnInit {
   }
 
   selectData(dataset) {
-    this.dataFile.emit(dataset);
+    this.setDataset.emit(dataset);
     this.dataset = dataset;
   }
 
@@ -254,7 +261,7 @@ export class DataComponent implements OnInit {
       }
     }
     reader.readAsBinaryString(target.files[0]);
-    this.dataFile.emit(target.files[0].name);
+    this.setDataset.emit(target.files[0].name);
     this.nameForm.get('name').setValue(target.files[0].name);
     this.creatingDataset = true;
   }

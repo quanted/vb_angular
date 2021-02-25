@@ -47,6 +47,16 @@ export class ProjectService {
     );
   }
 
+  updateProject(project): Observable<any> {
+    this.setHeaders();
+    return this.http.put(`${environment.apiURL}project/${project.id}/`, project, this.options).pipe(
+      catchError((err) => {
+        console.log(err);
+        return of({ error: `Failed to fetch locations!` });
+      })
+    );
+  }
+
   deleteProject(id): Observable<any> {
     this.setHeaders();
     return this.http.delete(environment.apiURL + "project/" + id, this.options).pipe(

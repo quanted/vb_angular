@@ -17,7 +17,7 @@
                     {{ locationName }}
                 </mat-panel-description>
                 </mat-expansion-panel-header>
-                <app-location [location]="project.location" [projectID]="project.id" (locationName)="setLocation($event)" ></app-location>
+                <app-location [locationID]="project.location" [projectID]="project.id" (setLocation)="setLocation($event)" ></app-location>
             </mat-expansion-panel>
         </mat-accordion>
         <!-- Data -->
@@ -32,7 +32,7 @@
                     {{ datasetName }}
                 </mat-panel-description>
                 </mat-expansion-panel-header>
-                <app-data (dataFile)="setDataset($event)"></app-data>
+                <app-data [datasetID]="project.dataset" (setDataset)="setDataset($event)"></app-data>
             </mat-expansion-panel>
         </mat-accordion>
         <!-- Analytical -->

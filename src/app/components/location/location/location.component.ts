@@ -15,19 +15,26 @@ export class LocationComponent implements OnInit {
     ) { }
 
   @Input() projectID;
-  @Input() location;
-  @Output() locationName: EventEmitter<any> = new EventEmitter<any>();
+  @Input() locationID;
+  location;
+  @Output() setLocation: EventEmitter<any> = new EventEmitter<any>();
   locations = [];
 
   ngOnInit(): void {
     this.locationService.getLocations().subscribe((locations) => {
       this.locations = [...locations];
+      for (let location of locations) {
+        if (location.id === this.locationID) {
+          this.location = location;
+          this.setLocation.emit(location);
+        }
+      }
     });
   }
 
-  selectLocation(location) {
-    this.location = location;
-    this.locationName.emit(location);
+  selectLocation(locationID) {
+    this.locationID = locationID;
+    this.setLocation.emit(locationID);
   }
 
   createLocation() {

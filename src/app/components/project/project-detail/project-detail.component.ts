@@ -25,6 +25,7 @@ export class ProjectDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log('project: ', this.project);
     this.pipelineService.getProjectPipelines(this.project.id).subscribe((pipelines) => {
       this.pipelines = [...pipelines];
       for (let pipeline of this.pipelines) {
