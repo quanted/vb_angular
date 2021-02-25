@@ -15,6 +15,9 @@ h3 {
     grid-area: info-a;
     padding-bottom: 0px;
 }
+.info-a > h2 {
+    margin-top: 0px;
+}
 .info-b {
     grid-area: info-b;
 }

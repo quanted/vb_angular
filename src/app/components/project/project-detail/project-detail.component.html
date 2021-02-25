@@ -1,17 +1,17 @@
 <mat-card *ngIf="project" class="project-info">
     <div class="info-a">
-      <h3>
+      <h2>
         {{ project.name || "no project name" }}
-      </h3>
-      <h3>
+      </h2>
+      <p>
         {{ project.description || "no project description" }}
-      </h3>
-      <h3>
+      </p>
+      <p>
         Location: {{ project.locaton || "no location"}}
-      </h3>
-      <h3>
+      </p>
+      <p>
         Dataset: {{ project.dataset || "no dataset" }}
-      </h3>
+      </p>
     </div>
     
     <mat-accordion class="info-b">
