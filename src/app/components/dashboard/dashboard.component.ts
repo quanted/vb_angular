@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
    * @param projectID - ID of current project obtained from route.
    */
   getPipelines(projectID: string) {
-    this.pipelineService.getPipelinesForProject(projectID).subscribe(pipelines => {
+    this.pipelineService.getProjectPipelines(projectID).subscribe(pipelines => {
       this.pipelines = pipelines;
     });
   }

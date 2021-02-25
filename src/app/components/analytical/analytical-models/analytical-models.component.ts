@@ -52,10 +52,9 @@ export class AnalyticalModelsComponent implements OnInit {
   }
 
   getPipelines(projectID: string) {
-    this.pipelineService.getPipelinesForProject(projectID).subscribe(pipelines => {
+    this.pipelineService.getProjectPipelines(projectID).subscribe(pipelines => {
       this.dataSource = new MatTableDataSource(pipelines);
       this.pipelinesUpdated.emit(pipelines);
-      console.log(pipelines);
     });
   }
 
