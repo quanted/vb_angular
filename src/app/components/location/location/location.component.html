@@ -2,8 +2,9 @@
     <div>
         <ng-container *ngIf="locations.length > 0">
             <h4>Use an existing location</h4>
-            <div *ngFor="let location of locations">{{ location.name }}, {{ location.description }}    
-                <button type="button" (click)="selectLocation(location)" mat-button>Use this location</button>
+            <div *ngFor="let location of locations">    
+                <button type="button" (click)="selectLocation(location)" mat-button>Use</button>
+                {{ location.name }}, {{ location.description }}
                 <button mat-button (click)="deleteLocation(location)">dev delete location</button>
             </div>
             <h4>- Or -</h4>

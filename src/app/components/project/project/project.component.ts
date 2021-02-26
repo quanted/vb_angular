@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PipelineService } from 'src/app/services/pipeline.service';
 
 import { ProjectService } from 'src/app/services/project.service';
@@ -21,6 +21,7 @@ export class ProjectComponent implements OnInit {
   pipelineNames = 'No pipelines selected';
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private pipelineService: PipelineService
@@ -74,6 +75,7 @@ export class ProjectComponent implements OnInit {
       this.pipelineService.executePipeline(this.project, pipeline.id)
       .subscribe((response) => {
         console.log('pipeline ' + pipeline.id + ' response: ', response );
+        this.router.navigateByUrl('');
       });
     }
   }

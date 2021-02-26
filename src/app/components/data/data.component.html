@@ -4,8 +4,8 @@
       <ng-container *ngIf="datasets.length > 0">
         <h4>Use an existing dataset</h4>
         <div *ngFor="let dataset of datasets">
+          <button type="button" (click)="selectData(dataset)" mat-button>Use</button>
           {{ dataset.name }}
-          <button type="button" (click)="selectData(dataset)" mat-button>Use this dataset</button>
           <button type="button" (click)="deleteData(dataset)" mat-button>dev delete dataset</button>
         </div>
         <h4>- Or -</h4>
