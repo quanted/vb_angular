@@ -14,7 +14,7 @@ describe('MiniMapComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ LocationComponent ],
-      imports: [RouterModule.forRoot([]), HttpClientTestingModule, ReactiveFormsModule]
+      imports: [RouterModule.forRoot([], { relativeLinkResolution: 'legacy' }), HttpClientTestingModule, ReactiveFormsModule]
     })
     .compileComponents();
   });
