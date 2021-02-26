@@ -22,14 +22,14 @@ export class DatasetService {
       Authorization: `Token ${this.cookieService.get('TOKEN')}`,
     }),
   };
-  
+
   getDataset(dataset_id): Observable<any> {
     this.setHeaders();
-    return this.http.get(`${environment.apiURL}dataset/${dataset_id}`, this.options).pipe(
+    return this.http.get(`${environment.apiURL}dataset/${dataset_id}/`, this.options).pipe(
       catchError((err) => {
         return of({ error: `Failed to fetch dataset id=${dataset_id}!\n`, err });
       })
-    );;
+    );
   }
 
   getDatasets(): Observable<any> {
