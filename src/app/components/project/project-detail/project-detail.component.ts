@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { timeout } from 'rxjs/operators';
 import { DatasetService } from 'src/app/services/dataset.service';
 import { LocationService } from 'src/app/services/location.service';
 import { PipelineService } from 'src/app/services/pipeline.service';
@@ -20,7 +21,9 @@ export class ProjectDetailComponent implements OnInit {
   locationName = '';
   datasetName = '';
   pipelines = [];
-  hasDashboard = true;
+
+  pipelineUpdateTimer;
+  hasDashboard = false;
 
   constructor(
     private router: Router,
@@ -43,14 +46,10 @@ export class ProjectDetailComponent implements OnInit {
         this.datasetName = dataset.name;
       })
     }
-    this.pipelineService.getProjectPipelines(this.project.id).subscribe((pipelines) => {
-      this.pipelines = [...pipelines];
-      for (let pipeline of this.pipelines) {
-        this.pipelineService.getPipelineStatus(this.project.id, pipeline.id).subscribe((status) => {
-          pipeline['status'] = status.metadata;
-        })
-      }
-    })
+    this.updatePipelines();
+    this.pipelineUpdateTimer = setInterval(() => {
+      this.updatePipelines();
+    }, 5000);
   }
 
   editProject(project) {
@@ -69,6 +68,23 @@ export class ProjectDetailComponent implements OnInit {
     this.projectService.deleteProject(project.id).subscribe(() => {
       this.projectDeleted.emit();
     });
+  }
+
+  updatePipelines() {
+    this.pipelineService.getProjectPipelines(this.project.id).subscribe((pipelines) => {
+      this.pipelines = [...pipelines];
+      let pipelinesCompleted = true;
+      for (let pipeline of this.pipelines) {
+        let pipelineStatus = pipeline.metadata.status;
+        if (pipelineStatus !== "Completed and model saved") {
+          pipelinesCompleted = false;
+        }
+      }
+      if (pipelinesCompleted) {
+        this.hasDashboard = true;
+        clearInterval(this.pipelineUpdateTimer);}
+      }
+    )
   }
 
   cancelPipeline(): void {
