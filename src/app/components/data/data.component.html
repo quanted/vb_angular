@@ -22,56 +22,61 @@
   </ng-container>
 
   <ng-container *ngIf="creatingDataset">
-    <form  class="fields" [formGroup]="nameForm">
-      <mat-form-field>
-        <mat-label>Dataset name: </mat-label>
-        <input matInput type="text" formControlName="name" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Dataset description: </mat-label>
-        <input matInput type="text" formControlName="description" />
-      </mat-form-field>
+    <form  class="fields" [formGroup]="datasetForm">
+      <div id="section1">
+        <mat-form-field>
+          <mat-label>Dataset name: </mat-label>
+          <input matInput type="text" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Dataset description: </mat-label>
+          <input matInput type="text" formControlName="description" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Total rows: </mat-label>
+          <input matInput type="text" formControlName="totalRows" readonly />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Start row:</mat-label>
+          <input matInput type="number" formControlName="startRow" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>End row:</mat-label>
+          <input matInput type="number" formControlName="endRow" />
+        </mat-form-field>
+        <button mat-button type="button" (click)="selectRows()">Select rows</button>
+      </div>
+      <div class="buttons">
+        <button mat-button type="button" (click)="selectAllRows()">Select all rows</button>
+        <button mat-button type="button" (click)="clearSelectedRows()">Clear selected rows</button>
+        <button mat-button type="button" (click)="createDataset()">Create Dataset</button>
+        <button mat-button type="button" (click)="cancel()">Cancel</button>
+      </div>
+      
+      <div id="section2">
+        <mat-form-field>
+          <mat-label>Response variable:</mat-label>
+          <input matInput type="text" formControlName="target" readonly />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Feature variables:</mat-label>
+          <input matInput type="text" formControlName="features" readonly />
+        </mat-form-field>
+      </div>
+      <div id="choice">Generate A/O values? <input type="checkbox" (click)="toggle()" /></div>
+      <div id="section3">
+        <ng-container *ngIf="generateAO">
+          <mat-form-field>
+            <mat-label>Wind speed:</mat-label>
+            <input matInput type="text" formControlName="speed" readonly />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Wind magnatude:</mat-label>
+            <input matInput type="text" formControlName="magnatude" readonly />
+          </mat-form-field>
+        </ng-container>
+      </div>
     </form>
-    <div>
-      Selected rows: <ng-container *ngFor="let range of selectedRows">{{ range.start }}, {{ range.end }}</ng-container>
-    </div>
-    <div>
-      Total rows: <span id="total-rows">{{ totalRows }}</span>
-    </div>
-  
-    <form class="fields" [formGroup]="rowsForm" (keyup.enter)="selectRows()">
-      <mat-form-field>
-        <mat-label>start row</mat-label>
-        <input
-          matInput
-          type="number"
-          formControlName="startRow"
-        />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>end row</mat-label>
-        <input matInput type="number" formControlName="endRow" />
-      </mat-form-field>
-      <button type="button" mat-button (click)="selectRows()">Select rows</button>
-    </form>
-    <button type="button" mat-button (click)="selectAllRows()">Select all rows</button>
-    <button type="button" mat-button (click)="clearSelectedRows()">Clear selected rows</button>
-  
-    <div>
-      Independent Variable: {{ iv }}
-    </div>
-    <div>
-      {{ dv.length }} Dependent Variables: {{ dv }}
-    </div>
-    
-    <div>Generate A/O values? <input type="checkbox" (click)="toggle()" /></div>
-  
-    <ng-container *ngIf="generateAO">
-      <div>Speed: {{ speed }}</div>
-      <div>Magnatude: {{ magnatude }}</div>
-    </ng-container>
-  
-    <div><button mat-button type="button" (click)="createDataset()">Create Dataset</button></div>
   
     <table mat-table [dataSource]="columnData">
       <ng-container *ngFor="let disCol of columnNames" matColumnDef="{{disCol}}">

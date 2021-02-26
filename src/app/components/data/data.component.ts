@@ -10,27 +10,24 @@ import * as XLSX from "xlsx";
   styleUrls: ['./data.component.css'],
 })
 export class DataComponent implements OnInit {
-  datasets = [];
   @Input() datasetID;
-  creatingDataset = false;
+  datasetForm: FormGroup;
+
+  datasets = [];
   dataset;
-
-  rowsForm: FormGroup;
-  nameForm: FormGroup;
-
-  generateAO = false;
-  iv;
-  dv = [];
-  speed;
-  magnatude;
-  selectedRows = [];
-  totalRows = 0;
-
-  @Output() setDataset: EventEmitter<any> = new EventEmitter<any>();
+  
   dataCSV = '';
   dataArray = [];
   columnData = [];
   columnNames = [];
+  
+  creatingDataset = false;
+
+  dv = [];
+
+  generateAO = false;
+
+  @Output() setDataset: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private dataService: DatasetService, 
@@ -49,14 +46,16 @@ export class DataComponent implements OnInit {
       })
     }
     
-    this.nameForm = this.fb.group({
+    this.datasetForm = this.fb.group({
       name: [null, Validators.required],
       description: [null, Validators.required],
-    });
-    
-    this.rowsForm = this.fb.group({
       startRow: [null, Validators.required],
+      totalRows: [null],
       endRow: [null, Validators.required],
+      target: [null, Validators.required],
+      features: [null, Validators.required],
+      speed: [null],
+      magnatude: [null],
     });
   }
 
@@ -68,68 +67,62 @@ export class DataComponent implements OnInit {
   }
 
   selectAllRows(): void {
-    this.selectedRows = [];
-    this.addRange(
-      {
-        start: 0,
-        end: this.columnData.length - 1
-      });
-    this.rowsForm.setValue({
-      startRow: 0,
-      endRow: this.columnData.length - 1
-    })
+    this.datasetForm.get('startRow').setValue(0);
+    this.datasetForm.get('endRow').setValue(this.columnData.length - 1);
+    this.datasetForm.get('totalRows').setValue(this.columnData.length);
   }
 
   selectRows(): void {
-    if (this.rowsForm.valid) {
-      const start = this.rowsForm.get('startRow').value;
-      const end = this.rowsForm.get('endRow').value;
-      if (start >= 0 && start < end && end < this.columnData.length - 1) {
-        let newRange = {
-          start,
-          end
-        }
-        this.addRange(newRange);
-      }
+    if (this.datasetForm.get('startRow').valid && this.datasetForm.get('endRow').valid) {
+      const totalRows = this.datasetForm.get('endRow').value - this.datasetForm.get('startRow').value + 1;
+      this.datasetForm.get('totalRows').setValue(totalRows);
     }
   }
 
   clearSelectedRows(): void {
-    this.selectedRows = [];
-    this.rowsForm.get('startRow').setValue(null);
-    this.rowsForm.get('endRow').setValue(null);
-    this.totalRows = 0;
-  }
-
-  addRange(range) {
-    this.selectedRows = [];
-    this.selectedRows.push(range);
-    this.totalRows = 0;
-    for (let range of this.selectedRows) {
-      this.totalRows += (range.end - range.start + 1);
-    }
+    this.datasetForm.get('startRow').setValue(null);
+    this.datasetForm.get('endRow').setValue(null);
+    this.datasetForm.get('totalRows').setValue(null);
   }
 
   createDataset(): void {
-    const newDataset = {
-      name: this.nameForm.get('name').value,
-      description: this.nameForm.get('description').value,
-      data: this.dataCSV,
-      metadata: JSON.stringify({
-        target: this.iv,
-        features: this.dv,
-        // wind: { 
-        //   speed: this.speed || null, 
-        //   magnatude: this.magnatude || null
-        // }
-      })
+    console.log(this.datasetForm.value);
+    if (this.datasetForm.valid) {
+      const newDataset = {
+        name: this.datasetForm.get('name').value,
+        description: this.datasetForm.get('description').value,
+        data: this.dataCSV
+      }
+  
+      if (this.generateAO) {
+        newDataset['metadata'] = JSON.stringify(
+          {
+            target: this.datasetForm.get('target').value,
+            features: this.datasetForm.get('features').value,
+            wind: { 
+              speed: this.datasetForm.get('speed').value, 
+              magnatude: this.datasetForm.get('magnatude').value
+            }
+          })
+      } else {
+        newDataset['metadata'] = JSON.stringify(
+          {
+            target: this.datasetForm.get('target').value,
+            features: this.datasetForm.get('features').value
+          })
+      }
+      console.log(newDataset);
+      console.log('form valid!')
+
+      this.dataService.createDataset(newDataset).subscribe((dataset) => {
+        this.dataService.getDatasets().subscribe((datasets) => {
+          this.datasets = [...datasets];
+          this.cancel();
+        })
+      });
+    } else {
+      console.log('form invalid!');
     }
-    this.dataService.createDataset(newDataset).subscribe((dataset) => {
-      this.dataService.getDatasets().subscribe((datasets) => {
-        this.datasets = [...datasets];
-      })
-      this.creatingDataset = false;
-    });
   }
 
   deleteData(dataset): void {
@@ -140,6 +133,16 @@ export class DataComponent implements OnInit {
     })
   }
 
+  cancel(): void {
+    this.dataCSV = '';
+    this.dataArray = [];
+    this.columnData = [];
+    this.columnNames = [];
+    this.dv = []
+    this.datasetForm.reset();
+    this.creatingDataset = false;
+  }
+
   updateInputs(varSet, value) {
     let inputIV = document.getElementById(value + "IV");
     let inputDV = document.getElementById(value + "DV");
@@ -147,25 +150,30 @@ export class DataComponent implements OnInit {
     let inputO = document.getElementById(value + "O");
     switch(varSet) {
       case "IV":
-        this.iv = value;
+        this.datasetForm.get('target').setValue(value);
         inputDV["checked"] = false;
         this.dv = this.dv.filter((val) => {
           return val != value;
         });
+        this.datasetForm.get('features').setValue(this.dv);
         if (inputA) {
           inputA["checked"] = false;
-          if (value === this.speed){
-            this.speed = "";
+          if (value === this.datasetForm.get('speed').value){
+            this.datasetForm.get('speed').setValue(null);
           }
         }
         if (inputO) {
           inputO["checked"] = false;
-          if (value === this.magnatude){
-            this.magnatude = "";
+          if (value === this.datasetForm.get('magnatude').value){
+            this.datasetForm.get('magnatude').setValue(null);
           }
         }
         break;
       case "DV":
+        inputIV["checked"] = false;
+        if (value === this.datasetForm.get('target').value){
+          this.datasetForm.get('target').setValue(null);
+        }
         if (inputDV["checked"] === false) {
           this.dv = this.dv.filter((val) => {
             return val != value;
@@ -175,60 +183,55 @@ export class DataComponent implements OnInit {
             this.dv.push(value);
           }
         }
-        inputIV["checked"] = false;
-        if (value === this.iv){
-          this.iv = "";
-        }
+        this.datasetForm.get('features').setValue(this.dv);
         if (inputA) {
           inputA["checked"] = false;
-          if (value === this.speed){
-            this.speed = "";
+          if (value === this.datasetForm.get('speed').value){
+            this.datasetForm.get('speed').setValue(null);
           }
         }
         if (inputO) {
           inputO["checked"] = false;
-          if (value === this.magnatude){
-            this.magnatude = "";
+          if (value === this.datasetForm.get('magnatude').value){
+            this.datasetForm.get('magnatude').setValue(null);
           }
         }
         break;
       case "A":
-        this.speed = value;
         inputIV["checked"] = false;
-        if (value === this.iv){
-          this.iv = "";
+        if (value === this.datasetForm.get('target').value){
+          this.datasetForm.get('target').setValue(null);
         }
         inputDV["checked"] = false;
         this.dv = this.dv.filter((val) => {
           return val != value;
         });
+        this.datasetForm.get('features').setValue(this.dv);
+        this.datasetForm.get('speed').setValue(value);
         if (inputO) {
-          if (inputO["checked"]) {
-            inputO["checked"] = false;
-            if (value === this.magnatude){
-              this.magnatude = "";
-            }
+          inputO["checked"] = false;
+          if (value === this.datasetForm.get('magnatude').value){
+            this.datasetForm.get('magnatude').setValue(null);
           }
         }
         break;
       case "O":
-        this.magnatude = value;
         inputIV["checked"] = false;
-        if (value === this.iv){
-          this.iv = "";
+        if (value === this.datasetForm.get('target').value){
+          this.datasetForm.get('target').setValue(null);
         }
         inputDV["checked"] = false;
         this.dv = this.dv.filter((val) => {
           return val != value;
         });
+        this.datasetForm.get('features').setValue(this.dv);
         if (inputA) {
-          if (inputA["checked"]) {
-            inputA["checked"] = false;
-            if (value === this.speed){
-              this.speed = "";
-            }
+          inputA["checked"] = false;
+          if (value === this.datasetForm.get('speed').value){
+            this.datasetForm.get('speed').setValue(null);
           }
         }
+        this.datasetForm.get('magnatude').setValue(value);
         break;
       default:
         console.log(`ERROR: invalid input! ${varSet} | ${value}`);
@@ -264,11 +267,15 @@ export class DataComponent implements OnInit {
     }
     reader.readAsBinaryString(target.files[0]);
     this.setDataset.emit(target.files[0].name);
-    this.nameForm.get('name').setValue(target.files[0].name);
+    this.datasetForm.get('name').setValue(target.files[0].name);
     this.creatingDataset = true;
   }
 
   toggle() {
     this.generateAO = !this.generateAO;
+    if(!this.generateAO) {
+      this.datasetForm.get('speed').setValue(null);
+      this.datasetForm.get('magnatude').setValue(null);
+    }
   }
 }
