@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { MiniMapService } from 'src/app/services/mini-map.service';
 import { LocationData } from 'src/app/models/location-data';
 import { MapService } from 'src/app/services/map.service';
 
@@ -11,7 +10,7 @@ import { MapService } from 'src/app/services/map.service';
 })
 export class MiniMapComponent implements OnInit {
 
-  constructor(private minimapService: MiniMapService, private mapService: MapService) { }
+  constructor(private mapService: MapService) { }
 
   @Input() location: LocationData;
 
