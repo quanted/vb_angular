@@ -1,0 +1,46 @@
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+li {
+  list-style: none;
+}
+
+.mat-form-field {
+  margin: 16px;
+}
+
+.estimator {
+  padding: 5px;
+  margin-bottom: 20px;
+  width: 100%;
+  box-shadow: 2px 10px 20px -6px rgba(0,0,0,0.15);
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 110px;
+  height: 50px;
+  color: white;
+  margin: 10px auto;
+}
+
+.new {
+  background-color: #2e8540;
+}
+
+.independent {
+  border: 1px solid lightgrey;
+  padding: 15px;
+}
+
+.nav {
+  background-color: #673ab7;
+  width: auto;
+}
+
+.mat-expansion-panel:not([class*='mat-elevation-z']) {
+  box-shadow: none;
+}

@@ -1,2 +1,30 @@
-Register User
-<button mat-button (click)="done()" color="primary">Done</button>
+<h4>Register User</h4>
+<h4>{{ statusMessage }}</h4>
+<form [formGroup]="registrationForm" (keyup.enter)="register()">
+  <div class="fields">
+    <mat-form-field>
+      <mat-label>Enter Username</mat-label>
+      <input matInput type="text" formControlName="username" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Enter Email</mat-label>
+      <input matInput type="text" formControlName="email" />
+    </mat-form-field>
+  </div>
+  <div class="fields">
+    <mat-form-field>
+      <mat-label>Enter Password</mat-label>
+      <input matInput type="password" formControlName="password" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Verify Password</mat-label>
+      <input matInput type="password" formControlName="password2" />
+    </mat-form-field>
+  </div>
+</form>
+<div class="buttons">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button (click)="register()">
+    Register
+  </button>
+</div>

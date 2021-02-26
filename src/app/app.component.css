@@ -1,17 +1,5 @@
-.box {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-}
-
-.row.header {
-  flex: 0 1 80px;
-}
-
-.row.content {
-  flex: 1 1 auto;
-}
-
-.row.footer {
-  flex: 0 1 40px;
+#login {
+    display: flex;
+    align-content: center;
+    justify-content: center;
 }

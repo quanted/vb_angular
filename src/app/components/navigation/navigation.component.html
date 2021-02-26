@@ -1,14 +1,7 @@
-<div class="box">
-  <ng-container *ngIf="userIsAuthenticated()">
-    <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
-    <button mat-raised-button color="primary" (click)="gotoMap()">Map</button>
-    <button mat-raised-button color="primary" (click)="gotoData()">Data</button>
-    <button mat-raised-button color="primary" (click)="gotoResults()">
-      Results
-    </button>
-    <button mat-raised-button color="primary" (click)="gotoAccount()">
-      Account
-    </button>
-    <button mat-raised-button color="primary" (click)="logout()">Logout</button>
-  </ng-container>
+<div class="buttons">
+  <button mat-button (click)="gotoHome()">Home</button>
+  <h3 id="greeting">
+    Welcome to Virtual Beach <span id="user-name">{{ username }}</span>
+  </h3>
+  <button mat-button (click)="logout()">Logout</button>
 </div>

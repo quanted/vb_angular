@@ -1,0 +1,17 @@
+<mat-card id="location-detail" *ngIf="location">
+  <div class="parent">
+    <div>
+      <h3>
+        Location: {{ location.name || "no location name" }}
+      </h3>
+      <p>
+        Description: {{ location.description || "no location description" }}
+      </p>
+      <p>Metadata: {{ location.metadata | json }}</p>
+    </div>
+    <div id="mini-map" class="parent2">
+      <div></div>
+      <app-mini-map [location]="location"></app-mini-map>
+    </div>
+  </div>
+</mat-card>

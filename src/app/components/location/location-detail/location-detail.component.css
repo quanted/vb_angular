@@ -1,0 +1,13 @@
+.parent {
+    display: grid;
+    grid-template-columns: minmax(150px, 25%) 1fr;
+}
+
+.parent2 {
+    display: grid;
+    grid-template-columns: auto minmax(150px, 50%);
+}
+
+#mini-map {
+    text-align: right;
+}

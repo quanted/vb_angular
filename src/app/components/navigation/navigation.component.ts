@@ -9,35 +9,19 @@ import { Router } from "@angular/router";
   styleUrls: ["./navigation.component.css"],
 })
 export class NavigationComponent implements OnInit {
+  username: string;
+
   constructor(private auth: AuthService, private router: Router) {}
 
-  ngOnInit() {}
-
-  userIsAuthenticated(): boolean {
-    return this.auth.userIsAuthenticated();
-  }
-
-  logout(): void {
-    this.auth.logout();
-  }
-
-  gotoAccount(): void {
-    this.router.navigateByUrl("/account");
+  ngOnInit() {
+    this.username = this.auth.getUsername();
   }
 
   gotoHome(): void {
     this.router.navigateByUrl("/");
   }
 
-  gotoMap(): void {
-    this.router.navigateByUrl("/map");
-  }
-
-  gotoData(): void {
-    this.router.navigateByUrl("/data");
-  }
-
-  gotoResults(): void {
-    this.router.navigateByUrl("/results");
+  logout(): void {
+    this.auth.logout();
   }
 }

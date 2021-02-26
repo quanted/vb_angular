@@ -1,0 +1,11 @@
+<mat-card *ngIf="dataset">
+    <div>
+        <h3>
+            Dataset: {{ dataset.name || "no dataset name" }}
+        </h3>
+        <p>
+            Description: {{ dataset.description || "no dataset description" }}
+        </p>
+        <p>Metadata: {{ dataset.metadata | json }}</p>
+    </div>
+</mat-card>

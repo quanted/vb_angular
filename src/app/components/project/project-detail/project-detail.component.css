@@ -1,0 +1,54 @@
+h3 {
+    margin-top: 0px;
+}
+
+.project-info {
+    display: grid;
+    grid-template-areas:
+        "info-a info-a map"
+        "info-b info-b map"
+        "buttons buttons buttons";
+    grid-column-gap: 2rem;
+}
+
+.info-a {
+    grid-area: info-a;
+    padding-bottom: 0px;
+}
+.info-a > h2 {
+    margin-top: 0px;
+}
+.info-b {
+    grid-area: info-b;
+}
+.buttons {
+    grid-area: buttons;
+    margin-top: 1rem;
+    padding: 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 1rem;
+}
+
+#project-name {
+    text-align: left;
+    padding: 1rem;
+    padding-top: 0px;
+}
+
+#name {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.details {
+    padding-left: 1.5rem;
+}
+
+.no-pipelines {
+    padding-left: 1rem;
+}
+
+.map {
+    grid-area: map;
+}

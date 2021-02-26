@@ -1,20 +1,20 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent } from "./components/home/home.component";
-import { MapComponent } from "./components/map/map.component";
-import { DataComponent } from "./components/data/data.component";
-import { ResultsComponent } from "./components/results/results.component";
 import { LoginComponent } from "./components/auth/login/login.component";
-import { AccountComponent } from "./components/auth/account/account.component";
+import { HomeComponent } from "./components/home/home.component";
+import { CreateProjectComponent } from './components/project/create-project/create-project.component';
+import { MapComponent } from "./components/map/map/map.component";
+import { ProjectComponent } from './components/project/project/project.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
   { path: "login", component: LoginComponent },
-  { path: "account", component: AccountComponent },
-  { path: "map", component: MapComponent },
-  { path: "data", component: DataComponent },
-  { path: "results", component: ResultsComponent },
+  { path: "create-project", component: CreateProjectComponent },
+  { path: "map/:id", component: MapComponent },
+  { path: "project/:id", component: ProjectComponent },
+  { path: "dashboard/:id", component: DashboardComponent },
 ];
 
 @NgModule({

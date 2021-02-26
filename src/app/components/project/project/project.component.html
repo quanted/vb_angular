@@ -1,0 +1,58 @@
+<mat-card id='project'>
+    <ng-container *ngIf="project">
+        <!-- Project Details-->
+        <div id="project-name">
+            <span id="name">{{ project.name }}</span>
+            <span id="description">{{ project.description }}</span>
+        </div>
+        <!-- Location -->
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                    (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Location
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{ locationName }}
+                </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-location [locationID]="project.location" [projectID]="project.id" (setLocation)="setLocation($event)" ></app-location>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <!-- Data -->
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                    (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Training Data
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{ datasetName }}
+                </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-data [datasetID]="project.dataset" (setDataset)="setDataset($event)"></app-data>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <!-- Analytical -->
+        <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                    (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Model Selection and Validation
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{ pipelineNames }}
+                </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-analytical [projectID]="project.id" (setPipelines)="setPipelines($event)"></app-analytical>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <!-- project execution -->
+        <div id="execute">
+            <button type="button" mat-button (click)="executeProject()">Execute project</button>
+        </div>
+    </ng-container>
+</mat-card>

@@ -1,0 +1,17 @@
+<ng-container *ngIf="pipelines">
+  <mat-card>
+    <h3>Project pipelines:</h3>
+    <div *ngFor="let pipeline of pipelines">
+      {{ pipeline.name }}
+      <button type="button" mat-button (click)="deletePipeline(pipeline)">dev delete pipeline</button>
+    </div>
+  </mat-card>
+</ng-container>
+
+<ng-container *ngIf="!creatingPipeline">
+  <button type="button" mat-button (click)="createPipeline()">Create pipeline</button>
+</ng-container>
+
+<ng-container *ngIf="creatingPipeline">
+  <app-create-pipeline [projectID]="projectID" (pipelineCreated)="pipelineCreated()"></app-create-pipeline>
+</ng-container>

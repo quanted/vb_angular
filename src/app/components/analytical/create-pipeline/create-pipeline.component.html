@@ -1,0 +1,39 @@
+<!--Analytical Pipelines-->
+    <form [formGroup]="pipelineFormGroup">
+      <h4>Choose options for this pipeline.</h4>
+      <mat-form-field>
+        <mat-label>Estimator</mat-label>
+        <mat-select formControlName="estimatorCtrl" (selectionChange)="estimatorChange($event)">
+          <mat-option *ngFor="let pipeline of pipelineInfo" [value]="pipeline.name">
+            {{pipeline.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="pipelineNameCtrl">
+      </mat-form-field>
+      <mat-form-field style="width: 90%;">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="pipelineDescCtrl"></textarea>
+      </mat-form-field>
+      <br>
+    </form>
+<!--------------------------------- -->
+      <mat-expansion-panel
+        *ngIf="hasHyperParams"
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false">
+        <mat-expansion-panel-header style="width: 200px;" class="mat-expansion-toggle-indicator-before">
+          <mat-panel-title>
+            Advanced
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="advancedOptionsFormGroup">
+        </form>
+        <br>
+      </mat-expansion-panel>
+ <button mat-raised-button class="new" (click)="addPipeline()">
+   Create pipeline
+ </button>

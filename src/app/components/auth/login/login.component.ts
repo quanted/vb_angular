@@ -1,33 +1,65 @@
-import { Component, OnInit } from "@angular/core";
-import { AuthService } from "src/app/services/auth.service";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  registerUser = false;
+  registeringUser = false;
   resetUserPW = false;
 
-  constructor(private auth: AuthService) {}
+  loginForm: FormGroup;
+  statusMessage = '';
 
-  ngOnInit() {}
+  constructor(private auth: AuthService, private fb: FormBuilder) {}
+
+  ngOnInit() {
+    this.loginForm = this.fb.group({
+      username: [null, Validators.required],
+      password: [null, Validators.required],
+    });
+  }
 
   login(): void {
-    this.auth.login();
+    if (this.loginForm.valid) {
+      this.auth
+        .login(
+          this.loginForm.get('username').value,
+          this.loginForm.get('password').value
+        )
+        .subscribe((response) => {
+          if (response.error) {
+            this.statusMessage = response.error;
+          }
+        });
+    } else {
+      this.statusMessage = 'Username and Password are required';
+    }
   }
 
   register(): void {
-    this.registerUser = true;
+    if (this.registeringUser) {
+      this.registeringUser = false;
+    } else {
+      this.resetUserPW = false;
+      this.registeringUser = true;
+    }
   }
 
   isRegistering($event): void {
-    this.registerUser = $event;
+    this.registeringUser = $event;
   }
 
   resetPW(): void {
-    this.resetUserPW = true;
+    if (this.resetUserPW) {
+      this.resetUserPW = false;
+    } else {
+      this.registeringUser = false;
+      this.resetUserPW = true;
+    }
   }
 
   isResetting($event): void {

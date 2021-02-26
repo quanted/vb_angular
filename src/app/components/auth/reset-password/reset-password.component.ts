@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: "app-reset-password",
@@ -9,11 +10,31 @@ import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 export class ResetPasswordComponent implements OnInit {
   @Output() resetUserPW = new EventEmitter<boolean>();
 
-  constructor() {}
+  resetForm: FormGroup;
+  statusMessage = "";
 
-  ngOnInit() {}
+  constructor(private auth: AuthService, private fb: FormBuilder) {}
 
-  done(): void {
+  ngOnInit() {
+    this.resetForm = this.fb.group({
+      email: [null, [Validators.required, Validators.email]]
+    })
+  }
+
+  reset(): void {
+    if (this.resetForm.valid) {
+      this.auth.resetPW(this.resetForm.get('email'))
+      .subscribe(response => {
+        if (response.error) {
+          this.statusMessage = response.error;
+        }
+      });
+    } else {
+      this.statusMessage = "A valid email is required";
+    }
+  }
+
+  cancel(): void {
     this.resetUserPW.emit(false);
   }
 }
