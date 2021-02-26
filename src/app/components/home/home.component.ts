@@ -40,7 +40,6 @@ export class HomeComponent implements OnInit {
   }
 
   projectDeleted(): void {
-    console.log('refreshing projeect list');
     this.projectService.getProjects().subscribe((projects) => {
       this.projects = [...projects];
     });

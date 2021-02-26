@@ -1,6 +1,6 @@
-<mat-card id='project' (keyup.enter)="createProject()">
+<mat-card id='project'>
     <h1 class="centered">Project Creation</h1>
-    <form class="fields" [formGroup]="projectForm">
+    <form class="fields" [formGroup]="projectForm" (keyup.enter)="createProject()">
         <mat-form-field>
           <mat-label>Project Name</mat-label>
           <input

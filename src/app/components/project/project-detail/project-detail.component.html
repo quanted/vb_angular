@@ -7,10 +7,10 @@
         {{ project.description || "no project description" }}
       </p>
       <p>
-        Location: {{ project.location || "no location"}}
+        Location: {{ locationName || "no location"}}
       </p>
       <p>
-        Dataset: {{ project.dataset || "no dataset" }}
+        Dataset: {{ datasetName || "no dataset" }}
       </p>
     </div>
     
@@ -26,6 +26,7 @@
           <span class="status">Status:{{ pipeline.status | json }}</span>
           <button mat-button type="button" (click)="cancelPipeline()">Cancel</button>
         </div>
+        <div *ngIf="pipelines.length === 0">No pipelines</div>
       </mat-expansion-panel>
     </mat-accordion>
     <div class="buttons">

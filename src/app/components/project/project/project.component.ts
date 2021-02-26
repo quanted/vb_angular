@@ -33,7 +33,6 @@ export class ProjectComponent implements OnInit {
         this.project = projects.find((project) => {
           return project.id == projectID;
         });
-        console.log('project: ', this.project);
       });
     }
   }
@@ -48,9 +47,11 @@ export class ProjectComponent implements OnInit {
 
   setDataset(dataset): void {
     this.datasetName = dataset.name;
-    this.project.dataset = dataset.id;
-    this.projectService.updateProject(this.project).subscribe((response) => {
-      console.log('project dataset_id updated');
+    const update = {...this.project};
+    update.dataset = dataset.id;
+    update['metadata'] = JSON.stringify({...dataset.metadata});
+    this.projectService.updateProject(update).subscribe((response) => {
+      console.log('project metadata updated');
     })
   }
 
@@ -64,6 +65,8 @@ export class ProjectComponent implements OnInit {
   }
 
   executeProject(): void {
+    console.log('executing project: ');
+    console.log('project: ', this.project);
     for (let pipeline of this.pipelines) {
       this.pipelineService.executePipeline(this.project, pipeline.id)
       .subscribe((response) => {

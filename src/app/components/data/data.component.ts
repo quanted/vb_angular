@@ -40,13 +40,14 @@ export class DataComponent implements OnInit {
   ngOnInit() {
     this.dataService.getDatasets().subscribe(datasets => {
       this.datasets = [...datasets];
-      for (let dataset of datasets) {
-        if (dataset.id === this.datasetID) {
-          this.dataset = dataset;
-          this.setDataset.emit(dataset);
-        }
-      }
     });
+
+    if (this.datasetID) {
+      this.dataService.getDataset(this.datasetID).subscribe((dataset) => {
+        this.dataset = dataset;
+        this.setDataset.emit(dataset);
+      })
+    }
     
     this.nameForm = this.fb.group({
       name: [null, Validators.required],
@@ -60,8 +61,10 @@ export class DataComponent implements OnInit {
   }
 
   selectData(dataset) {
-    this.setDataset.emit(dataset);
-    this.dataset = dataset;
+    this.dataService.getDataset(dataset.id).subscribe((dataset) => {
+      this.setDataset.emit(dataset);
+      this.dataset = dataset;
+    })
   }
 
   selectAllRows(): void {
@@ -115,18 +118,17 @@ export class DataComponent implements OnInit {
       metadata: JSON.stringify({
         target: this.iv,
         features: this.dv,
-        wind: { 
-          speed: this.speed || null, 
-          magnatude: this.magnatude || null
-        }
+        // wind: { 
+        //   speed: this.speed || null, 
+        //   magnatude: this.magnatude || null
+        // }
       })
     }
-    console.log('newDataset: ', newDataset);
-    this.dataService.createDataset(newDataset).subscribe((newDataset) => {
+    this.dataService.createDataset(newDataset).subscribe((dataset) => {
       this.dataService.getDatasets().subscribe((datasets) => {
         this.datasets = [...datasets];
       })
-      this.dataset = newDataset;
+      this.creatingDataset = false;
     });
   }
 

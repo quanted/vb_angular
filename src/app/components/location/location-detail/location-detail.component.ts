@@ -11,7 +11,7 @@ export class LocationDetailComponent implements OnInit {
 
   constructor() {}
 
-  @Input() location: LocationData;
+  @Input() location;
 
   ngOnInit(): void {
   }

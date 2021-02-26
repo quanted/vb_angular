@@ -21,20 +21,6 @@ export class LocationService {
     }),
   };
 
-  getLocation(location_id): Observable<any> {
-    this.setHeaders();
-    return this.http.get(`${environment.apiURL}location/`, this.options).pipe(
-      tap((locations) => {
-        console.log('location_id: ', location_id);
-        console.log('locations: ', locations);
-      }),
-      catchError((err) => {
-        console.log(err);
-        return of({ error: `Failed to fetch locations!` });
-      })
-    );;
-  }
-
   getLocations(): Observable<any> {
     this.setHeaders();
     return this.http.get(environment.apiURL + 'location/', this.options).pipe(

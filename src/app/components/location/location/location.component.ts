@@ -32,9 +32,9 @@ export class LocationComponent implements OnInit {
     });
   }
 
-  selectLocation(locationID) {
-    this.locationID = locationID;
-    this.setLocation.emit(locationID);
+  selectLocation(location) {
+    this.location = location;
+    this.setLocation.emit(location);
   }
 
   createLocation() {

@@ -4,6 +4,7 @@
         <div id="project-name">
             <span id="name">{{ project.name }}</span>
             <span id="description">{{ project.description }}</span>
+            <p>Metadata: {{ project.metadata | json }}</p>
         </div>
         <!-- Location -->
         <mat-accordion>
