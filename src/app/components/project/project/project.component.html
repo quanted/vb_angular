@@ -4,7 +4,6 @@
         <div id="project-name">
             <span id="name">{{ project.name }}</span>
             <span id="description">{{ project.description }}</span>
-            <p>Metadata: {{ project.metadata | json }}</p>
         </div>
         <!-- Location -->
         <mat-accordion>
@@ -51,6 +50,7 @@
                 <app-analytical [projectID]="project.id" (setPipelines)="setPipelines($event)"></app-analytical>
             </mat-expansion-panel>
         </mat-accordion>
+        <!-- project execution -->
         <div id="execute">
             <button type="button" mat-button (click)="executeProject()">Execute project</button>
         </div>

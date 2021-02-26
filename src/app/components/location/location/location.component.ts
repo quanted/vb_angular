@@ -23,10 +23,11 @@ export class LocationComponent implements OnInit {
   ngOnInit(): void {
     this.locationService.getLocations().subscribe((locations) => {
       this.locations = [...locations];
-      for (let location of locations) {
-        if (location.id === this.locationID) {
-          this.location = location;
-          this.setLocation.emit(location);
+      if (this.locationID) {
+        for (let location of locations) {
+          if (location.id === this.locationID) {
+            this.selectLocation(location);
+          }
         }
       }
     });

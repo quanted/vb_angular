@@ -13,8 +13,6 @@ import { CookieService } from "ngx-cookie-service";
   providedIn: 'root'
 })
 export class ProjectService {
-  projects;
-
   constructor(
     private http: HttpClient, 
     private cookieService: CookieService
@@ -42,17 +40,17 @@ export class ProjectService {
     return this.http.get(environment.apiURL + "project/", this.options).pipe(
       catchError((err) => {
         console.log(err);
-        return of({ error: `Failed to fetch locations!` });
+        return of({ error: `Failed to fetch projects!` });
       })
     );
   }
 
-  updateProject(project): Observable<any> {
+  updateProject(update): Observable<any> {
     this.setHeaders();
-    return this.http.put(`${environment.apiURL}project/${project.id}/`, project, this.options).pipe(
+    return this.http.put(`${environment.apiURL}project/${update.id}/`, update, this.options).pipe(
       catchError((err) => {
         console.log(err);
-        return of({ error: `Failed to fetch locations!` });
+        return of({ error: `Failed to update project!` });
       })
     );
   }
@@ -62,7 +60,7 @@ export class ProjectService {
     return this.http.delete(environment.apiURL + "project/" + id, this.options).pipe(
       catchError((err) => {
         console.log(err);
-        return of({ error: `Failed to fetch locations!` });
+        return of({ error: `Failed to delete project!` });
       })
     );
   }

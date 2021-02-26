@@ -40,18 +40,23 @@ export class ProjectComponent implements OnInit {
   setLocation(location): void {
     this.locationName = location.name;
     this.project.location = location.id;
-    this.projectService.updateProject(this.project).subscribe((response) => {
-      console.log('project location_id updated');
+    
+    const update = {...this.project};
+    update.metadata = JSON.stringify(this.project.metadata);
+    this.projectService.updateProject(update).subscribe((project) => {
+      // project location_id updated
     })
   }
 
   setDataset(dataset): void {
     this.datasetName = dataset.name;
+    this.project.dataset = dataset.id;
+    this.project['metadata'] = {...dataset.metadata};
+
     const update = {...this.project};
-    update.dataset = dataset.id;
     update['metadata'] = JSON.stringify({...dataset.metadata});
-    this.projectService.updateProject(update).subscribe((response) => {
-      console.log('project metadata updated');
+    this.projectService.updateProject(update).subscribe((project) => {
+      // project metadata updated
     })
   }
 
@@ -65,8 +70,6 @@ export class ProjectComponent implements OnInit {
   }
 
   executeProject(): void {
-    console.log('executing project: ');
-    console.log('project: ', this.project);
     for (let pipeline of this.pipelines) {
       this.pipelineService.executePipeline(this.project, pipeline.id)
       .subscribe((response) => {
