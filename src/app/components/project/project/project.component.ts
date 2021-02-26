@@ -38,6 +38,9 @@ export class ProjectComponent implements OnInit {
     }
   }
 
+  // js is weird
+  // console.log(+[++[[]][+[]]+[[][[]]+[]][+[]][++[++[++[[]][+[]]][+[]]][+[]]]+[++[[]][+[]]]+[+[]]+[+[]]+[+[]]][+[]]); ?
+
   setLocation(location): void {
     this.locationName = location.name;
     this.project.location = location.id;
