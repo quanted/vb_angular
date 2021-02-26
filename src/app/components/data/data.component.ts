@@ -49,9 +49,10 @@ export class DataComponent implements OnInit {
     this.datasetForm = this.fb.group({
       name: [null, Validators.required],
       description: [null, Validators.required],
-      startRow: [null, Validators.required],
       totalRows: [null],
-      endRow: [null, Validators.required],
+      startRow: [null],
+      endRow: [null],
+      selectedRows: [null],
       target: [null, Validators.required],
       features: [null, Validators.required],
       speed: [null],
@@ -70,12 +71,13 @@ export class DataComponent implements OnInit {
     this.datasetForm.get('startRow').setValue(0);
     this.datasetForm.get('endRow').setValue(this.columnData.length - 1);
     this.datasetForm.get('totalRows').setValue(this.columnData.length);
+    this.setSelectedRows();
   }
 
   selectRows(): void {
     if (this.datasetForm.get('startRow').valid && this.datasetForm.get('endRow').valid) {
       const totalRows = this.datasetForm.get('endRow').value - this.datasetForm.get('startRow').value + 1;
-      this.datasetForm.get('totalRows').setValue(totalRows);
+      this.setSelectedRows();
     }
   }
 
@@ -83,37 +85,51 @@ export class DataComponent implements OnInit {
     this.datasetForm.get('startRow').setValue(null);
     this.datasetForm.get('endRow').setValue(null);
     this.datasetForm.get('totalRows').setValue(null);
+    this.setSelectedRows();
+  }
+
+  setSelectedRows() {
+    const start = this.datasetForm.get('startRow').value;
+    const end = this.datasetForm.get('endRow').value
+    console.log('setSelectedRows! ', start);
+    if (start != null && start >= 0 && end != null && end < this.columnData.length) {
+      this.datasetForm.get('selectedRows').setValue("[" + start + ", " + end + "]");
+    } else {
+      this.datasetForm.get('selectedRows').setValue(null);
+    }
   }
 
   createDataset(): void {
     console.log(this.datasetForm.value);
     if (this.datasetForm.valid) {
+      const formValues = this.datasetForm.value;
       const newDataset = {
-        name: this.datasetForm.get('name').value,
-        description: this.datasetForm.get('description').value,
+        name: formValues.name,
+        description: formValues.description,
         data: this.dataCSV
       }
   
       if (this.generateAO) {
         newDataset['metadata'] = JSON.stringify(
           {
-            target: this.datasetForm.get('target').value,
-            features: this.datasetForm.get('features').value,
+            target: formValues.target,
+            features: formValues.features,
+            startRow: formValues.startRow,
+            endRow: formValues.endRow,
             wind: { 
-              speed: this.datasetForm.get('speed').value, 
-              magnatude: this.datasetForm.get('magnatude').value
+              speed: formValues.speed, 
+              magnatude: formValues.magnatude
             }
           })
       } else {
         newDataset['metadata'] = JSON.stringify(
           {
-            target: this.datasetForm.get('target').value,
-            features: this.datasetForm.get('features').value
+            target: formValues.target,
+            features: formValues.features,
+            startRow: formValues.startRow,
+            endRow: formValues.endRow
           })
       }
-      console.log(newDataset);
-      console.log('form valid!')
-
       this.dataService.createDataset(newDataset).subscribe((dataset) => {
         this.dataService.getDatasets().subscribe((datasets) => {
           this.datasets = [...datasets];

@@ -32,6 +32,8 @@
           <mat-label>Dataset description: </mat-label>
           <input matInput type="text" formControlName="description" />
         </mat-form-field>
+      </div>
+      <div id="rows">
         <mat-form-field>
           <mat-label>Total rows: </mat-label>
           <input matInput type="text" formControlName="totalRows" readonly />
@@ -45,6 +47,10 @@
           <input matInput type="number" formControlName="endRow" />
         </mat-form-field>
         <button mat-button type="button" (click)="selectRows()">Select rows</button>
+        <mat-form-field>
+          <mat-label>Selected rows:</mat-label>
+          <input matInput type="text" formControlName="selectedRows" readonly/>
+        </mat-form-field>
       </div>
       <div class="buttons">
         <button mat-button type="button" (click)="selectAllRows()">Select all rows</button>

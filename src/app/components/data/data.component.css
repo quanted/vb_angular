@@ -18,6 +18,7 @@ input[type="file"] {
     display: grid;
     grid-template-areas: 
     'section1'
+    'rows'
     'buttons'
     'section2'
     'choice'
@@ -28,7 +29,15 @@ input[type="file"] {
     grid-area: section1; 
     padding: 0px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 3fr;
+    grid-column-gap: 1rem;
+}
+
+#rows {
+    grid-area: rows; 
+    padding: 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-column-gap: 1rem;
 }
 
