@@ -1,14 +1,3 @@
-<!-- <button mat-button [ngClass]="{'new' : !createModel, 'cancel' : createModel}"
-        (click)="createModel = !createModel">{{!createModel ? 'New Pipeline' : 'Cancel'}}
-</button>
-<div *ngIf="createModel; then createModelBlock else selectModelBlock"></div>
-<ng-template #createModelBlock><app-create-model (sendMessage)="receiveMessage()"></app-create-model></ng-template>
-<ng-template #selectModelBlock>
-  <app-analytical-models
-    (pipelinesUpdated)="getPipelines($event)"></app-analytical-models>
-</ng-template>
-<app-execute-pipelines [pipelines]="pipelines" [datasetID]="datasetID" *ngIf="!createModel"></app-execute-pipelines> -->
-
 <ng-container *ngIf="pipelines">
   <mat-card>
     <h3>Project pipelines:</h3>

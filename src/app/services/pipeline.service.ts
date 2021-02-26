@@ -14,7 +14,7 @@ import { PipelineInfoModel } from '../models/pipeline-info.model';
 })
 export class PipelineService {
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private cookieService: CookieService
     ) {}
 
@@ -82,24 +82,6 @@ export class PipelineService {
   }
 
   /**
-   * Gets a list of pipeline for the given project ID.
-   * - GET api/pipeline/?project=ID
-   * @param projectID
-   * @returns A list of pipelines.
-   */
-  getPipelinesForProject(projectID: string): Observable<PipelineModel[]> {
-    this.setHeaders();
-    const newOptions = this.options;
-    newOptions.headers.append('project', projectID);
-    const param = new HttpParams().set('project', projectID);
-    return this.http.get<PipelineModel[]>
-    (environment.apiURL + `pipeline/`, {headers: this.options.headers, params: param})
-      .pipe(
-        catchError(this.handleError<PipelineModel[]>('getPipelinesForProject', []))
-      );
-  }
-
-  /**
    * Generic error handler for http requests.
    * @param operation - string literal usually of the offending function.
    * @param result
@@ -148,27 +130,6 @@ export class PipelineService {
         catchError((err) => {
           console.log(err);
           return of({ error: `Failed to delete analyticalmodel!` });
-        })
-      );
-  }
-
-  /**
-   * Function that executes a pipeline.
-   * @param pipeline - The pipeline to be executed.
-   * @param datasetID - ID for dataset to be used.
-   */
-  execute(pipeline: PipelineModel, datasetID: number): Observable<any> {
-    this.setHeaders();
-    return this.http
-      .post(environment.apiURL + 'pipeline/execute/', {
-        project_id: pipeline.project,
-        pipeline_id: pipeline.id,
-        dataset_id: datasetID
-      }, this.options)
-      .pipe(
-        catchError((err) => {
-          console.log(err);
-          return of({ error: `Failed to execute pipeline!` });
         })
       );
   }

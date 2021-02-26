@@ -23,9 +23,10 @@ export class CreatePipelineComponent implements OnInit {
   @Output() pipelineCreated = new EventEmitter();
   pipelineInfo: PipelineInfoModel[];
 
-  constructor(private route: ActivatedRoute,
-              private formBuilder: FormBuilder,
-              private pipelineService: PipelineService
+  constructor(
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private pipelineService: PipelineService
   ) {}
 
   ngOnInit() {
@@ -43,8 +44,8 @@ export class CreatePipelineComponent implements OnInit {
    * Calls the pipeline service to populate the "create pipeline" UI.
    */
   getPipelineInfo() {
-    this.pipelineService.getPipelines().subscribe(pipeline => {
-      this.pipelineInfo = pipeline;
+    this.pipelineService.getPipelines().subscribe(pipelines => {
+      this.pipelineInfo = pipelines;
     });
   }
 
@@ -61,6 +62,7 @@ export class CreatePipelineComponent implements OnInit {
     // Update name and description with defaults.
     this.pipelineFormGroup.controls.pipelineNameCtrl.setValue(selectedPipeline.name);
     this.pipelineFormGroup.controls.pipelineDescCtrl.setValue(selectedPipeline.description);
+
     /*
     // Remove controls from advanced options form.
     Object.keys(this.advancedOptionsFormGroup.controls).forEach((key) => {
@@ -105,7 +107,5 @@ export class CreatePipelineComponent implements OnInit {
     this.pipelineService.addPipeline(newPipeline).subscribe((response) => {
       this.pipelineCreated.emit();
     });
-    // Send message to parent component to update UI.
-    // this.sendMessage.next();
   }
 }

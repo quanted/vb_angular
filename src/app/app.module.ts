@@ -21,27 +21,27 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppRoutingModule } from "./app-routing.module";
+import { AppRoutingModule } from './app-routing.module';
 
-import { AppComponent } from "./app.component";
-import { HeaderComponent } from "./components/header/header.component";
-import { FooterComponent } from "./components/footer/footer.component";
-import { NavigationComponent } from "./components/navigation/navigation.component";
-import { AccountComponent } from "./components/auth/account/account.component";
-import { RegistrationComponent } from "./components/auth/registration/registration.component";
-import { ResetPasswordComponent } from "./components/auth/reset-password/reset-password.component";
-import { LoginComponent } from "./components/auth/login/login.component";
-import { HomeComponent } from "./components/home/home.component";
+import { AppComponent } from './app.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { AccountComponent } from './components/auth/account/account.component';
+import { RegistrationComponent } from './components/auth/registration/registration.component';
+import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { HomeComponent } from './components/home/home.component';
 import { ProjectComponent } from './components/project/project/project.component';
 import { ProjectDetailComponent } from './components/project/project-detail/project-detail.component';
-import { MapComponent } from "./components/map/map/map.component";
+import { MapComponent } from './components/map/map/map.component';
 import { MiniMapComponent } from './components/mini-map/mini-map.component';
-import { LocationFormComponent } from "./components/map/location-form/location-form.component";
+import { LocationFormComponent } from './components/map/location-form/location-form.component';
 import { LocationDetailComponent } from './components/location/location-detail/location-detail.component';
-import { DataComponent } from "./components/data/data.component";
-import { PredictionComponent } from "./components/prediction/prediction.component";
+import { DataComponent } from './components/data/data.component';
+import { PredictionComponent } from './components/prediction/prediction.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AnalyticalComponent } from './components/analytical/analytical.component';
 import { AnalyticalModelsComponent } from './components/analytical/analytical-models/analytical-models.component';
@@ -50,7 +50,6 @@ import { CreatePipelineComponent } from './components/analytical/create-pipeline
 import { ElipseComponent } from './components/icons/elipse/elipse.component';
 import { CreateProjectComponent } from './components/project/create-project/create-project.component';
 import { LocationComponent } from './components/location/location/location.component';
-import { ExecutePipelinesComponent } from './components/analytical/execute-pipelines/execute-pipelines.component';
 import { ModelSelectionComponent } from './components/dashboard/model-selection/model-selection.component';
 import { DataDetailComponent } from './components/data/data-detail/data-detail.component';
 
@@ -81,7 +80,6 @@ import { DataDetailComponent } from './components/data/data-detail/data-detail.c
     ElipseComponent,
     CreateProjectComponent,
     LocationComponent,
-    ExecutePipelinesComponent,
     ModelSelectionComponent,
     DataDetailComponent
   ],
