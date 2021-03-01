@@ -23,7 +23,7 @@ export class AuthService {
   ) {}
 
   userIsAuthenticated(): boolean {
-    return ((this.cookieService.get("TOKEN") != 'null') && (typeof this.cookieService.get("USERNAME") == "string"));
+    return ((this.cookieService.check("TOKEN") && (this.cookieService.check("USERNAME")));
   }
 
   login(username, password): Observable<any> {
@@ -48,8 +48,7 @@ export class AuthService {
   }
 
   logout(): void {
-    this.cookieService.set('TOKEN', null);
-    this.cookieService.set('USERNAME', null);
+    this.cookieService.deleteAll();
     this.goHome();
   }
 
