@@ -69,39 +69,49 @@
           <input matInput type="text" formControlName="features" readonly />
         </mat-form-field>
       </div>
-      <div id="choice">Generate A/O values? <input type="checkbox" (click)="toggle()" /></div>
+      <div id="choice">Define velocity components to generate A/O values? <input type="checkbox" (click)="toggleAO()" /></div>
       <div id="section3">
         <ng-container *ngIf="generateAO">
           <mat-form-field>
-            <mat-label>Wind speed:</mat-label>
-            <input matInput type="text" formControlName="speed" readonly />
+            <mat-label>Bearing:</mat-label>
+            <input matInput type="text" formControlName="bearing" readonly />
           </mat-form-field>
           <mat-form-field>
-            <mat-label>Wind magnatude:</mat-label>
+            <mat-label>Magnatude:</mat-label>
             <input matInput type="text" formControlName="magnatude" readonly />
           </mat-form-field>
         </ng-container>
       </div>
     </form>
-  
-    <table mat-table [dataSource]="columnData">
-      <ng-container *ngFor="let disCol of columnNames" matColumnDef="{{disCol}}">
-        <th mat-header-cell *matHeaderCellDef>
-          <div>{{ disCol }}</div>
-          <div><input type="radio" name="IV" (click)="updateInputs('IV', disCol)" id="{{disCol}}IV" /></div>
-          <div><input type="checkbox" id="DV" (click)="updateInputs('DV', disCol)" id="{{disCol}}DV" /></div>
-          <div *ngIf="generateAO">
-            <input type="radio" name="A" (click)="updateInputs('A', disCol)" id="{{disCol}}A" />
-            <input type="radio" name="O" (click)="updateInputs('O', disCol)"  id="{{disCol}}O" />
-          </div>
-        </th>
-        <td mat-cell *matCellDef="let row">{{ row[disCol] }}</td>
-      </ng-container>
-  
-      <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
-  
-      <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
-    </table>
+
+
+
+
+    <div class="table-flex-container">
+      <table mat-table [dataSource]="dataSource">
+        <ng-container *ngFor="let disCol of columnNames" matColumnDef="{{disCol}}">
+          <th mat-header-cell *matHeaderCellDef>
+            <div>{{ disCol }}</div>
+            <div><input type="radio" name="IV" (click)="updateInputs('IV', disCol)" id="{{disCol}}IV" /></div>
+            <div><input type="checkbox" id="DV" (click)="updateInputs('DV', disCol)" id="{{disCol}}DV" /></div>
+            <div *ngIf="generateAO">
+              <div><input type="radio" name="A" (click)="updateInputs('A', disCol)" id="{{disCol}}A" /></div>
+              <div><input type="radio" name="O" (click)="updateInputs('O', disCol)"  id="{{disCol}}O" /></div>
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let row">{{ row[disCol] }}</td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+    
+        <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
+      </table>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+
+
   </ng-container>
 </ng-container>
 <ng-container *ngIf="dataset">
