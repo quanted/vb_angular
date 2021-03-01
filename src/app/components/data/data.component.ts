@@ -76,7 +76,6 @@ export class DataComponent implements OnInit {
 
   selectRows(): void {
     if (this.datasetForm.get('startRow').valid && this.datasetForm.get('endRow').valid) {
-      const totalRows = this.datasetForm.get('endRow').value - this.datasetForm.get('startRow').value + 1;
       this.setSelectedRows();
     }
   }
@@ -94,6 +93,7 @@ export class DataComponent implements OnInit {
     console.log('setSelectedRows! ', start);
     if (start != null && start >= 0 && end != null && end < this.columnData.length) {
       this.datasetForm.get('selectedRows').setValue("[" + start + ", " + end + "]");
+      this.datasetForm.get('totalRows').setValue(this.datasetForm.get('endRow').value - this.datasetForm.get('startRow').value + 1);
     } else {
       this.datasetForm.get('selectedRows').setValue(null);
     }
