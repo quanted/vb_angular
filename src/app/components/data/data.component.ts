@@ -1,5 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+
 import { DatasetService } from "src/app/services/dataset.service";
 
 import * as XLSX from "xlsx";
@@ -28,6 +32,9 @@ export class DataComponent implements OnInit {
   generateAO = false;
 
   @Output() setDataset: EventEmitter<any> = new EventEmitter<any>();
+  
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  dataSource = new MatTableDataSource();
 
   constructor(
     private dataService: DatasetService, 
@@ -58,6 +65,10 @@ export class DataComponent implements OnInit {
       bearing: [null],
       magnatude: [null],
     });
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
   selectData(dataset) {
@@ -282,6 +293,8 @@ export class DataComponent implements OnInit {
         }
         this.columnData.push(record);
       }
+      this.dataSource.data = this.columnData;
+      this.dataSource.paginator = this.paginator;
     }
     reader.readAsBinaryString(target.files[0]);
     this.setDataset.emit(target.files[0].name);
