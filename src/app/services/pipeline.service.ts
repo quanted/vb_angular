@@ -18,10 +18,23 @@ export class PipelineService {
     return this.http.get(`${environment.apiURL}pipeline/?project=${id}`)
     .pipe(
       catchError((err) => {
-        console.log(err);
-        return of({ error: `Failed to fetch locations!` });
+        return of({ error: `Failed to fetch poject pipelines!` });
       })
     );
+  }
+
+  /**
+   * Gets the available pipelines.
+   * - GET info/pipelines/
+   * @returns A list of the available pipelines.
+   */
+  getPipelines(): Observable<any> {
+    return this.http.get(`${environment.infoURL}info/pipelines`)
+    .pipe(
+        catchError((err) => {
+          return of({ error: `Failed to fetch pipelines metadata!` });
+      })
+    )
   }
 
   executePipeline(project, pipelineID): Observable<any> {
@@ -33,8 +46,7 @@ export class PipelineService {
       })
       .pipe(
         catchError((err) => {
-          console.log(err);
-          return of({ error: `Failed to fetch locations!` });
+          return of({ error: `Failed to execute pipeline!` });
       })
     );
   }
@@ -43,43 +55,15 @@ export class PipelineService {
     return this.http.get(`${environment.apiURL}pipeline/status/?project_id=${projectID}&pipeline_id=${pipelineID}`)
     .pipe(
       catchError((err) => {
-        console.log(err);
-        return of({ error: `Failed to fetch locations!` });
+        return of({ error: `Failed to fetch pipeline status!` });
       })
     );
-  }
-
-  /**
-   * Gets the available pipelines.
-   * - GET info/pipelines/
-   * @returns A list of the available pipelines.
-   */
-  getPipelines(): Observable<PipelineInfoModel[]> {
-    return this.http.get<PipelineInfoModel[]>
-    (environment.apiURL.replace('api/', '') + `info/pipelines/`)
-    .pipe(
-      catchError(this.handleError<PipelineInfoModel[]>('getPipelines', []))
-    );
-  }
-
-  /**
-   * Generic error handler for http requests.
-   * @param operation - string literal usually of the offending function.
-   * @param result
-   * @private
-   */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.log(error);
-      return of(result as T);
-    };
   }
 
   addPipeline(pipeline: PipelineModel): Observable<any> {
     return this.http.post(environment.apiURL + 'pipeline/', pipeline)
       .pipe(
         catchError((err) => {
-          console.log(err);
           return of({ error: `Failed to add pipeline!` });
         })
       );
@@ -92,7 +76,6 @@ export class PipelineService {
       )
       .pipe(
         catchError((err) => {
-          console.log(err);
           return of({ error: `Failed to update pipeline!` });
         })
       );
@@ -102,8 +85,7 @@ export class PipelineService {
     return this.http.delete(environment.apiURL + `pipeline/${id}/`)
       .pipe(
         catchError((err) => {
-          console.log(err);
-          return of({ error: `Failed to delete analyticalmodel!` });
+          return of({ error: `Failed to delete pipeline!` });
         })
       );
   }
