@@ -31,6 +31,8 @@ export class DataComponent implements OnInit {
 
   generateAO = false;
 
+  statusMessage = '';
+
   @Output() setDataset: EventEmitter<any> = new EventEmitter<any>();
   
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -57,8 +59,8 @@ export class DataComponent implements OnInit {
       name: [null, Validators.required],
       description: [null, Validators.required],
       totalRows: [null],
-      startRow: [null],
-      endRow: [null],
+      startRow: [null, Validators.required],
+      endRow: [null, Validators.required],
       selectedRows: [null],
       target: [null, Validators.required],
       features: [null, Validators.required],
@@ -101,7 +103,6 @@ export class DataComponent implements OnInit {
   setSelectedRows() {
     const start = this.datasetForm.get('startRow').value;
     const end = this.datasetForm.get('endRow').value
-    console.log('setSelectedRows! ', start);
     if (start != null && start >= 0 && end != null && end < this.columnData.length) {
       this.datasetForm.get('selectedRows').setValue("[" + start + ", " + end + "]");
       this.datasetForm.get('totalRows').setValue(this.datasetForm.get('endRow').value - this.datasetForm.get('startRow').value + 1);
@@ -120,17 +121,21 @@ export class DataComponent implements OnInit {
       }
   
       if (this.generateAO) {
-        newDataset['metadata'] = JSON.stringify(
-          {
-            target: formValues.target,
-            features: formValues.features,
-            startRow: formValues.startRow,
-            endRow: formValues.endRow,
-            velocity: { 
-              bearing: formValues.bearing, 
-              magnatude: formValues.magnatude
-            }
-          })
+        if (this.datasetForm.get('bearing') && this.datasetForm.get('magnatude')) {
+          newDataset['metadata'] = JSON.stringify(
+            {
+              target: formValues.target,
+              features: formValues.features,
+              startRow: formValues.startRow,
+              endRow: formValues.endRow,
+              velocity: { 
+                bearing: formValues.bearing, 
+                magnatude: formValues.magnatude
+              }
+            })
+          } else {
+            this.statusMessage = "Bearing and magnatude required"
+          }
       } else {
         newDataset['metadata'] = JSON.stringify(
           {
@@ -140,16 +145,14 @@ export class DataComponent implements OnInit {
             endRow: formValues.endRow
           })
       }
-      console.log('new dataset: ', newDataset);
       this.dataService.createDataset(newDataset).subscribe((dataset) => {
-        console.log('returned dataset: ', dataset);
         this.dataService.getDatasets().subscribe((datasets) => {
           this.datasets = [...datasets];
           this.cancel();
         })
       });
     } else {
-      console.log('form invalid!');
+      this.statusMessage = 'Form invalid!';
     }
   }
 

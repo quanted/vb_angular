@@ -6,7 +6,7 @@ import { catchError, tap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { CookieService } from 'ngx-cookie-service';
 import { RegistrationResponse } from '../models/registration-response';

@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class TokenInterceptor implements HttpInterceptor {
+export class AuthInterceptor implements HttpInterceptor {
 
   constructor(public auth: AuthService) {}
   

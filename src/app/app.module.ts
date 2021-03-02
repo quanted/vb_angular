@@ -55,7 +55,8 @@ import { ModelSelectionComponent } from './components/dashboard/model-selection/
 import { DataDetailComponent } from './components/data/data-detail/data-detail.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from './auth/token.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -114,7 +115,12 @@ import { TokenInterceptor } from './auth/token.interceptor';
     CookieService,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     }
   ],
