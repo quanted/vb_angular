@@ -5,8 +5,9 @@
 export const environment = {
   production: false,
 
-  apiURL: 'http://127.0.0.1:8000/api/',
-};
+  apiURL: 'http://127.0.0.1:50866/api/',
+  infoURL: 'http://127.0.0.1:50866/',
+}; 
 
 /*
  * For easier debugging in development mode, you can import the following file

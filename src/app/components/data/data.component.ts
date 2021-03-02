@@ -299,6 +299,11 @@ export class DataComponent implements OnInit {
       this.dataSource.data = this.columnData;
       this.dataSource.paginator = this.paginator;
     }
+    reader.onerror = (err) => {
+      this.statusMessage = 'Problem loading file';
+      console.log('FileReader.error: ', err);
+      reader.abort();
+    }
     reader.readAsBinaryString(target.files[0]);
     this.setDataset.emit(target.files[0].name);
     this.datasetForm.get('name').setValue(target.files[0].name);

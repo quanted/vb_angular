@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
             }
           },
           error => {
-            this.statusMessage = "unknown error";
+            this.statusMessage = "unknown error", error;
           },
           () => {
             // can call stuff here
