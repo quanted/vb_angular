@@ -2,7 +2,7 @@ export interface PipelineInfoModel {
   name: string;
   ptype: string;
   description: string;
-  hyperParameters: {
+  'hyper-parameters': {
     name: string;
     vType: string;
     value: string;

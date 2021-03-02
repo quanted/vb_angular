@@ -19,8 +19,6 @@
         <textarea matInput formControlName="pipelineDescCtrl"></textarea>
       </mat-form-field>
       <br>
-    </form>
-<!--------------------------------- -->
       <mat-expansion-panel
         *ngIf="hasHyperParams"
         (opened)="panelOpenState = true"
@@ -30,10 +28,32 @@
             Advanced
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <form [formGroup]="advancedOptionsFormGroup">
-        </form>
         <br>
+        <!-- Dynamically handle hyper params based on selection change -->
+        <ng-container formArrayName="hyperParamCtrl">
+        <div *ngFor="let _ of hyperParams.controls; let i = index">
+          <mat-form-field [formGroupName]="i">
+            <mat-label>{{selectedPipeline['hyper-parameters'][i].name}}</mat-label>
+            <mat-select [formControlName]="selectedPipeline['hyper-parameters'][i].name">
+              <mat-option *ngFor="let option of getHyperParamOptions(selectedPipeline['hyper-parameters'][i].options)"
+                          [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-select>
+            <!--
+            <mat-label>{{selectedPipeline["hyper-parameters"][i].name}}</mat-label>
+            <input matInput [formControlName]="selectedPipeline['hyper-parameters'][i].name">
+            -->
+          </mat-form-field>
+        </div>
+        </ng-container>
       </mat-expansion-panel>
+    </form>
+
  <button mat-raised-button class="new" (click)="addPipeline()">
    Create pipeline
  </button>
+
+<button mat-raised-button class="cancel" (click)="cancelPipeline()">
+  Cancel
+</button>

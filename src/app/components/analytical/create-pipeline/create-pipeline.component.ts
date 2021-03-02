@@ -1,9 +1,10 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PipelineService} from '../../../services/pipeline.service';
 import {PipelineInfoModel} from '../../../models/pipeline-info.model';
 import {PipelineModel} from '../../../models/pipeline.model';
 import {ActivatedRoute} from '@angular/router';
+import {split} from 'ts-node';
 
 @Component({
   selector: 'app-create-pipeline',
@@ -15,13 +16,15 @@ export class CreatePipelineComponent implements OnInit {
   // State management variable for Advanced options expansion panel.
   panelOpenState = false;
   hasHyperParams = false;
-  // FormGroups
-  advancedOptionsFormGroup: FormGroup;
+  // Form Groups
   pipelineFormGroup: FormGroup;
 
   @Input() projectID;
   @Output() pipelineCreated = new EventEmitter();
+  @Output() pipelineCancelled = new EventEmitter();
   pipelineInfo: PipelineInfoModel[];
+  selectedPipeline: PipelineInfoModel;
+  selectedPipelineOptions: [];
 
   constructor(
     private route: ActivatedRoute,
@@ -32,12 +35,19 @@ export class CreatePipelineComponent implements OnInit {
   ngOnInit() {
     // Get the pipeline info and populate necessary fields.
     this.getPipelineInfo();
-    this.advancedOptionsFormGroup = this.formBuilder.group({});
     this.pipelineFormGroup = this.formBuilder.group({
       estimatorCtrl: ['', Validators.required],
       pipelineNameCtrl: [''],
-      pipelineDescCtrl: ['']
+      pipelineDescCtrl: [''],
+      hyperParamCtrl: new FormArray([])
     });
+  }
+
+  /**
+   * Getter
+   */
+  get hyperParams(): FormArray {
+    return this.pipelineFormGroup.get('hyperParamCtrl') as FormArray;
   }
 
   /**
@@ -56,30 +66,62 @@ export class CreatePipelineComponent implements OnInit {
    */
   estimatorChange(e): void {
     // Get the selected pipeline.
-    const selectedPipeline = this.pipelineInfo.find(pipeline => {
+    this.selectedPipeline = this.pipelineInfo.find(pipeline => {
       return e.source.triggerValue === pipeline.name;
     });
     // Update name and description with defaults.
-    this.pipelineFormGroup.controls.pipelineNameCtrl.setValue(selectedPipeline.name);
-    this.pipelineFormGroup.controls.pipelineDescCtrl.setValue(selectedPipeline.description);
+    this.pipelineFormGroup.controls.pipelineNameCtrl.setValue(this.selectedPipeline.name);
+    this.pipelineFormGroup.controls.pipelineDescCtrl.setValue(this.selectedPipeline.description);
 
-    /*
-    // Remove controls from advanced options form.
-    Object.keys(this.advancedOptionsFormGroup.controls).forEach((key) => {
-      this.advancedOptionsFormGroup.removeControl(key);
-    });
-    // Add new controls
-    selectedPipeline.hyperParameters.forEach(param => {
-      this.advancedOptionsFormGroup.addControl(param.name,
-        this.formBuilder.control([param.value, Validators.required]));
-    });
-     */
+    // Clear form array
+    const control = this.pipelineFormGroup.controls.hyperParamCtrl as FormArray;
+    control.clear();
+    // Check for hyper params
+    if (this.selectedPipeline['hyper-parameters'].length < 1) {
+      // No hyper params, removed advanced section.
+      this.hasHyperParams = false;
+    } else {
+      // Has hyper params, add advanced section and create form array.
+      this.hasHyperParams = true;
+      this.selectedPipeline['hyper-parameters'].forEach(param => {
+        const newGroup = this.formBuilder.group({
+          [param.name]: [param.value]
+        });
+        control.push(newGroup);
+      });
+    }
+  }
+
+  /**
+   *
+   */
+  getHyperParamOptions(options: string): string[] {
+    let result: string[] = [];
+
+    // Check for range of integer values.
+    if (options.includes(':') && !options.includes('.')) {
+      // Allocate array of value range.
+      const min = Number(options.charAt(0));
+      const max = Number(options.charAt(options.length - 1)) + 1;
+      for (let i = min; i < max; i++) {
+        result.push(i.toString());
+      }
+    } else if (options.includes(':') && options.includes('.')) {
+      // Allocate range of float values
+    } else {
+      // Allocate string parameters options
+      options = options.replace(/[\[\]']+/g, '');
+      options = options.replace('\'', ' ');
+      result = options.split(/\s*,\s*/);
+    }
+    return result;
   }
 
   /**
    * Function that adds a new pipeline to the users project.
    */
   addPipeline() {
+    const hyperParams = this.pipelineFormGroup.controls.hyperParamCtrl as FormArray;
     // Populate a pipeline object.
     const newPipeline: PipelineModel = {
       project: this.projectID,
@@ -87,25 +129,24 @@ export class CreatePipelineComponent implements OnInit {
       type: this.pipelineInfo.find(pipeline => {
         return this.pipelineFormGroup.controls.estimatorCtrl.value === pipeline.name;
       }).ptype,
-      description: this.pipelineFormGroup.controls.pipelineDescCtrl.value
+      description: this.pipelineFormGroup.controls.pipelineDescCtrl.value,
+      metadata: {
+        hyper_parameters: {}
+      }
     };
-
-    /*
-    // Check if Hyper params exist
-    if (Object.keys(this.advancedOptionsFormGroup.controls).length > 0) {
-      // Push hyper param to array of params
-      Object.keys(this.advancedOptionsFormGroup.controls).forEach(key => {
-        newPipeline.hyperParameters.push({
-          name: this.advancedOptionsFormGroup.controls.key.value,
-          value: ''
-        });
-      });
+    // Get each formgroup and add values to hyper param metadata.
+    for (const control of hyperParams.controls) {
+      const key = Object.entries(control.value)?.toString().split(',');
+      newPipeline.metadata.hyper_parameters[`${key[0]}`] = key[1] ;
     }
-    */
 
     // Add pipeline
     this.pipelineService.addPipeline(newPipeline).subscribe((response) => {
       this.pipelineCreated.emit();
     });
+  }
+
+  cancelPipeline() {
+    this.pipelineCancelled.emit();
   }
 }
