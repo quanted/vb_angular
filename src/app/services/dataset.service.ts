@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
-
-import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,27 +12,18 @@ import { CookieService } from 'ngx-cookie-service';
 export class DatasetService {
   dataSet = [];
 
-  constructor(private http: HttpClient, private cookieService: CookieService) {}
-
-  options = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Token ${this.cookieService.get('TOKEN')}`,
-    }),
-  };
-
+  constructor(private http: HttpClient) {}
+  
   getDataset(dataset_id): Observable<any> {
-    this.setHeaders();
-    return this.http.get(`${environment.apiURL}dataset/${dataset_id}/`, this.options).pipe(
+    return this.http.get(`${environment.apiURL}dataset/${dataset_id}`).pipe(
       catchError((err) => {
         return of({ error: `Failed to fetch dataset id=${dataset_id}!\n`, err });
       })
-    );
+    );;
   }
 
   getDatasets(): Observable<any> {
-    this.setHeaders();
-    return this.http.get(environment.apiURL + 'dataset/', this.options).pipe(
+    return this.http.get(environment.apiURL + 'dataset/').pipe(
       catchError((err) => {
         console.log(err);
         return of({ error: `Failed to fetch datasets!` });
@@ -43,9 +32,7 @@ export class DatasetService {
   }
 
   createDataset(newDataset): Observable<any> {
-    this.setHeaders();
-    return this.http
-      .post(environment.apiURL + 'dataset/', newDataset, this.options)
+    return this.http.post(environment.apiURL + 'dataset/', newDataset)
       .pipe(
         catchError((err) => {
           console.log(err);
@@ -55,9 +42,7 @@ export class DatasetService {
   }
 
   updateDataset(updatedDataset, id): Observable<any> {
-    this.setHeaders();
-    return this.http
-      .put(environment.apiURL + `dataset/${id}/`, updatedDataset, this.options)
+    return this.http.put(environment.apiURL + `dataset/${id}/`, updatedDataset)
       .pipe(
         catchError((err) => {
           console.log(err);
@@ -67,21 +52,12 @@ export class DatasetService {
   }
 
   deleteDataset(dataset): Observable<any> {
-    this.setHeaders();
-    return this.http
-      .delete(environment.apiURL + `dataset/${dataset.id}/`, this.options)
+    return this.http.delete(environment.apiURL + `dataset/${dataset.id}/`)
       .pipe(
         catchError((err) => {
           console.log(err);
           return of({ error: `Failed to delete dataset!` });
         })
       );
-  }
-
-  setHeaders(): void {
-    this.options.headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Token ${this.cookieService.get('TOKEN')}`,
-    });
   }
 }

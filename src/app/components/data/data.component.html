@@ -52,13 +52,14 @@
           <input matInput type="text" formControlName="selectedRows" readonly/>
         </mat-form-field>
       </div>
+
       <div class="buttons">
         <button mat-button type="button" (click)="selectAllRows()">Select all rows</button>
         <button mat-button type="button" (click)="clearSelectedRows()">Clear selected rows</button>
         <button mat-button type="button" (click)="createDataset()">Create Dataset</button>
         <button mat-button type="button" (click)="cancel()">Cancel</button>
       </div>
-      
+
       <div id="section2">
         <mat-form-field>
           <mat-label>Response variable:</mat-label>

@@ -54,6 +54,10 @@ import { LocationComponent } from './components/location/location/location.compo
 import { ModelSelectionComponent } from './components/dashboard/model-selection/model-selection.component';
 import { DataDetailComponent } from './components/data/data-detail/data-detail.component';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -107,7 +111,19 @@ import { DataDetailComponent } from './components/data/data-detail/data-detail.c
     MatCheckboxModule,
     MatSortModule
   ],
-  providers: [CookieService],
+  providers: [
+    CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

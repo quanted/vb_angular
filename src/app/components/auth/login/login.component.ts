@@ -30,11 +30,20 @@ export class LoginComponent implements OnInit {
           this.loginForm.get('username').value,
           this.loginForm.get('password').value
         )
-        .subscribe((response) => {
-          if (response.error) {
-            this.statusMessage = response.error;
-          }
-        });
+        .subscribe(
+          response => {
+            if (response?.error?.error?.non_field_errors[0]) {
+              this.statusMessage = response.error.error.non_field_errors[0];
+            } else {
+              // sucessful login
+            }
+          },
+          error => {
+            this.statusMessage = "unknown error";
+          },
+          () => {
+            // can call stuff here
+          });
     } else {
       this.statusMessage = 'Username and Password are required';
     }
