@@ -31,6 +31,10 @@ button {
   background-color: #2e8540;
 }
 
+.cancel {
+  background-color: red;
+}
+
 .independent {
   border: 1px solid lightgrey;
   padding: 15px;

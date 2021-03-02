@@ -13,5 +13,8 @@
 </ng-container>
 
 <ng-container *ngIf="creatingPipeline">
-  <app-create-pipeline [projectID]="projectID" (pipelineCreated)="pipelineCreated()"></app-create-pipeline>
+  <app-create-pipeline
+    [projectID]="projectID"
+    (pipelineCreated)="pipelineCreated()"
+    (pipelineCancelled)="pipelineCancelled()"></app-create-pipeline>
 </ng-container>

@@ -37,6 +37,10 @@ export class AnalyticalComponent implements OnInit {
     this.updateAvailablePipelineList();
   }
 
+  pipelineCancelled(): void {
+    this.creatingPipeline = false;
+  }
+
   updateAvailablePipelineList(): void {
     this.pipelineService.getProjectPipelines(this.projectID).subscribe((pipelines) => {
       this.pipelines = [...pipelines];
