@@ -6,7 +6,6 @@ import { catchError } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { PipelineModel } from '../models/pipeline.model';
-import { PipelineInfoModel } from '../models/pipeline-info.model';
 
 @Injectable({
   providedIn: 'root',

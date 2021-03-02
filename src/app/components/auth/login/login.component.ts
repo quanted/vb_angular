@@ -36,11 +36,10 @@ export class LoginComponent implements OnInit {
               this.statusMessage = response.error.error.non_field_errors[0];
             } else {
               // sucessful login
-              this.statusMessage = "successful login"
             }
           },
           error => {
-            this.statusMessage = "unknown error";
+            this.statusMessage = "unknown error", error;
           },
           () => {
             // can call stuff here

@@ -75,9 +75,9 @@ export class ProjectComponent implements OnInit {
 
   executeProject(): void {
     for (let pipeline of this.pipelines) {
+      console.log(`project ${this.project.id} executing pipeline ${pipeline.id} on dataset ${this.project.dataset}`);
       this.pipelineService.executePipeline(this.project, pipeline.id)
       .subscribe((response) => {
-        console.log('pipeline ' + pipeline.id + ' response: ', response );
         this.router.navigateByUrl('');
       });
     }
