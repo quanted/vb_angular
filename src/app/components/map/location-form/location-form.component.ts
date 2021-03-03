@@ -107,4 +107,8 @@ export class LocationFormComponent implements OnInit {
   flyToEnd() {
     this.mapService.flyTo(this.markers[1]._latlng);
   }
+
+  cancel(): void {
+    this.router.navigateByUrl(`project/${this.projectID}`);
+  }
 }
