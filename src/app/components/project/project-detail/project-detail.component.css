@@ -1,54 +1,50 @@
-h3 {
-    margin-top: 0px;
-}
-
-.project-info {
+#project-info {
     display: grid;
-    grid-template-areas:
-        "info-a info-a map"
-        "info-b info-b map"
-        "buttons buttons buttons";
-    grid-column-gap: 2rem;
+    grid-template-rows: auto 1fr auto;
 }
 
-.info-a {
-    grid-area: info-a;
-    padding-bottom: 0px;
+#project-description {
+    display: grid;
+    padding: 1rem;
+    grid-template-columns: 1fr auto;
 }
-.info-a > h2 {
-    margin-top: 0px;
+
+#description {
+    display: grid;
+    grid-template-rows: auto 1fr ;
 }
-.info-b {
-    grid-area: info-b;
+
+#project-name {
+    font-size: 1.5rem;
 }
-.buttons {
+
+p {
+    margin-bottom: 0;
+}
+
+#details {
+}
+
+#mini-map {
+    background-color: rgb(165, 165, 165);
+}
+
+#pipeline-panel {
+    display: grid;
+    padding: 1rem;
+    padding-top: 0;
+}
+
+#project-pipelines {
+    width: max-content;
+    max-width: 100%;
+}
+
+#buttons {
     grid-area: buttons;
     margin-top: 1rem;
     padding: 0px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr auto 1fr 1fr;
     grid-column-gap: 1rem;
-}
-
-#project-name {
-    text-align: left;
-    padding: 1rem;
-    padding-top: 0px;
-}
-
-#name {
-    font-size: 1.5rem;
-    margin-right: 1rem;
-}
-
-.details {
-    padding-left: 1.5rem;
-}
-
-.pipelines-status {
-    padding-left: 1rem;
-}
-
-.map {
-    grid-area: map;
 }
