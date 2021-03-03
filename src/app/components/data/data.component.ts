@@ -65,7 +65,7 @@ export class DataComponent implements OnInit {
       target: [null, Validators.required],
       features: [null, Validators.required],
       bearing: [null],
-      magnatude: [null],
+      magnitude: [null],
     });
   }
 
@@ -121,7 +121,7 @@ export class DataComponent implements OnInit {
       }
   
       if (this.generateAO) {
-        if (this.datasetForm.get('bearing') && this.datasetForm.get('magnatude')) {
+        if (this.datasetForm.get('bearing') && this.datasetForm.get('magnitude')) {
           newDataset['metadata'] = JSON.stringify(
             {
               target: formValues.target,
@@ -130,11 +130,11 @@ export class DataComponent implements OnInit {
               endRow: formValues.endRow,
               velocity: { 
                 bearing: formValues.bearing, 
-                magnatude: formValues.magnatude
+                magnitude: formValues.magnitude
               }
             })
           } else {
-            this.statusMessage = "Bearing and magnatude required"
+            this.statusMessage = "Bearing and magnitude required"
           }
       } else {
         newDataset['metadata'] = JSON.stringify(
@@ -196,8 +196,8 @@ export class DataComponent implements OnInit {
         }
         if (inputO) {
           inputO["checked"] = false;
-          if (value === this.datasetForm.get('magnatude').value){
-            this.datasetForm.get('magnatude').setValue(null);
+          if (value === this.datasetForm.get('magnitude').value){
+            this.datasetForm.get('magnitude').setValue(null);
           }
         }
         break;
@@ -224,8 +224,8 @@ export class DataComponent implements OnInit {
         }
         if (inputO) {
           inputO["checked"] = false;
-          if (value === this.datasetForm.get('magnatude').value){
-            this.datasetForm.get('magnatude').setValue(null);
+          if (value === this.datasetForm.get('magnitude').value){
+            this.datasetForm.get('magnitude').setValue(null);
           }
         }
         break;
@@ -242,8 +242,8 @@ export class DataComponent implements OnInit {
         this.datasetForm.get('bearing').setValue(value);
         if (inputO) {
           inputO["checked"] = false;
-          if (value === this.datasetForm.get('magnatude').value){
-            this.datasetForm.get('magnatude').setValue(null);
+          if (value === this.datasetForm.get('magnitude').value){
+            this.datasetForm.get('magnitude').setValue(null);
           }
         }
         break;
@@ -263,7 +263,7 @@ export class DataComponent implements OnInit {
             this.datasetForm.get('bearing').setValue(null);
           }
         }
-        this.datasetForm.get('magnatude').setValue(value);
+        this.datasetForm.get('magnitude').setValue(value);
         break;
       default:
         console.log(`ERROR: invalid input! ${varSet} | ${value}`);
@@ -314,7 +314,7 @@ export class DataComponent implements OnInit {
     this.generateAO = !this.generateAO;
     if(!this.generateAO) {
       this.datasetForm.get('bearing').setValue(null);
-      this.datasetForm.get('magnatude').setValue(null);
+      this.datasetForm.get('magnitude').setValue(null);
     }
   }
 }
