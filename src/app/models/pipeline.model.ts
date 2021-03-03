@@ -4,8 +4,5 @@ export interface PipelineModel {
   name: string;
   type: string;
   description: string;
-  metadata?: {
-    hyper_parameters: {
-    }
-  };
+  metadata?: string;
 }

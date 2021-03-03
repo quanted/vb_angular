@@ -48,3 +48,8 @@ button {
 .mat-expansion-panel:not([class*='mat-elevation-z']) {
   box-shadow: none;
 }
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
