@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-
   constructor() {}
   
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -17,6 +16,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               // console.log('event--->>>', event);
           }
           return event;
-      }));
+      })
+    );
   }
 }

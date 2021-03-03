@@ -1,41 +1,42 @@
 <mat-card *ngIf="project" class="project-info">
-    <div class="info-a">
-      <div id="project-name">
-          <span id="name">{{ project.name }}</span>
-          <span id="description">{{ project.description }}</span>
-      </div>
-      <div class="details">
-        <p>
-          Location: {{ locationName || "no location"}}
-        </p>
-        <p>
-          Dataset: {{ datasetName || "no dataset" }}
-        </p>
+  <div class="info-a">
+    <div id="project-name">
+        <span id="name">{{ project.name }}</span>
+        <span id="description">{{ project.description }}</span>
+    </div>
+    <div class="details">
+      <p>
+        Location: {{ locationName || "no location"}}
+      </p>
+      <p>
+        Dataset: {{ datasetName || "no dataset" }}
+      </p>
 
+    </div>
+  </div>
+  
+  <mat-accordion class="info-b">
+    <mat-expansion-panel (opened)="panelOpenState=true"
+                              (closed)="panelOpenState=false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+            Pipelines:<span class="pipelines-status">{{ pipelinesStatusMessage }}</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div *ngFor="let pipeline of pipelines">{{ pipeline.name }}
+        <span class="status">Status: {{ pipeline.metadata.status || "Pipeline has not been executed" }}</span>
+        <button mat-button type="button" (click)="cancelPipeline()">Cancel</button>
+        <div>{{pipeline|json}}</div>
       </div>
-    </div>
-    
-    <mat-accordion class="info-b">
-      <mat-expansion-panel (opened)="panelOpenState = true"
-                                (closed)="panelOpenState = false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-              Pipelines<span *ngIf="pipelines.length === 0" class="no-pipelines">No pipelines</span>
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div *ngFor="let pipeline of pipelines">{{ pipeline.name }}
-          <span class="status">Status:{{ pipeline.metadata.status | json }}</span>
-          <button mat-button type="button" (click)="cancelPipeline()">Cancel</button>
-        </div>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <div class="buttons">
-      <button mat-button type="button" (click)="editProject(project)">Project setup</button>
-      <ng-container *ngIf="hasDashboard">
-        <button mat-button type="button" (click)="gotoDashboard(project)">Project dashboard</button>
-      </ng-container> 
-      <button mat-button type="button" (click)="cloneProject(project)">Clone Project</button>
-      <button mat-button type="button" (click)="deleteProject(project)">Delete Project</button>
-    </div>
-    <app-mini-map [location]="project" class="map"></app-mini-map>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <div class="buttons">
+    <button mat-button type="button" (click)="editProject(project)">Project setup</button>
+    <ng-container *ngIf="hasDashboard">
+      <button mat-button type="button" (click)="gotoDashboard(project)">Project dashboard</button>
+    </ng-container> 
+    <button mat-button type="button" (click)="cloneProject(project)">Clone Project</button>
+    <button mat-button type="button" (click)="deleteProject(project)">Delete Project</button>
+  </div>
+  <app-mini-map [location]="project" class="map"></app-mini-map>
 </mat-card>

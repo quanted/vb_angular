@@ -1,25 +1,39 @@
-<mat-card id='project'>
-    <h1 class="centered">Project Creation</h1>
-    <form class="fields" [formGroup]="projectForm" (keyup.enter)="createProject()">
-        <mat-form-field>
-          <mat-label>Project Name</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="name"
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Project Description</mat-label>
-          <input 
-            matInput 
-            type="test"
-             formControlName="description" />
-        </mat-form-field>
+<div class="panel">
+  <app-navigation></app-navigation>
+  <mat-card id='project'>
+      <h1 class="centered">Project Creation</h1>
+
+      <form class="fields" [formGroup]="projectForm" (keyup.enter)="createProject()">
+      
+        <div class="formField">
+          <mat-form-field>
+            <mat-label>Project Name</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="name"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="formField">
+          <mat-form-field>
+            <mat-label>Project Description</mat-label>
+            <input 
+              matInput 
+              type="test"
+              formControlName="description" 
+            />
+          </mat-form-field>
+        </div>
+
       </form>
-    <mat-card-actions>
-        <button mat-raised-button (click)="cancel()">Cancel</button>
-        <button mat-raised-button (click)="createProject()">Create Project</button>
-        {{ statusMessage }}
-    </mat-card-actions>
-</mat-card>
+
+      <mat-card-actions>
+          <button mat-raised-button (click)="cancel()">Cancel</button>
+          <button mat-raised-button (click)="createProject()">Create Project</button>
+          {{ statusMessage }}
+      </mat-card-actions>
+
+  </mat-card>
+</div>

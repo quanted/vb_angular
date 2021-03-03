@@ -1,5 +1,22 @@
-#login {
-    display: flex;
-    align-content: center;
-    justify-content: center;
+body {
+    display: grid;
+    grid-template: auto 1fr auto / auto 1fr auto;
+    height: 100vh;
+}
+
+app-header {
+    grid-column: 1 / 4;
+}
+
+main {
+    grid-column: 1 / 4;
+}
+
+app-footer {
+    text-align: center;
+    grid-column: 1 / 4;
+}
+
+app-project-detail {
+  margin: 1rem;
 }

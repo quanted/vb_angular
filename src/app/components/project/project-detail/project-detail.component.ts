@@ -23,6 +23,7 @@ export class ProjectDetailComponent implements OnInit {
   pipelines = [];
 
   pipelineUpdateTimer;
+  pipelinesStatusMessage = 'No pipelines';
   hasDashboard = false;
 
   constructor(

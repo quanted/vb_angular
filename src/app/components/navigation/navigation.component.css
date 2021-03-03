@@ -1,6 +1,14 @@
 .buttons {
-    margin: 0px;
-    padding: 0px;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    place-items: center;
+    height: 3rem;
+
+}
+
+button {
+    width: 100%;
+    height: 100%;
 }
 
 #greeting {
@@ -8,5 +16,5 @@
 }
 
 #user-name {
-    color: #e4d2d2;
+    color: #d6d6d6;
 }
