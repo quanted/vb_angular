@@ -4,9 +4,9 @@
       <ng-container *ngIf="datasets.length > 0">
         <h4>Use an existing dataset</h4>
         <div *ngFor="let dataset of datasets">
-          <button type="button" (click)="selectData(dataset)" mat-button>Use</button>
+          <button mat-flat-button color="primary" type="button" (click)="selectData(dataset)">Use</button>
           {{ dataset.name }}
-          <button type="button" (click)="deleteData(dataset)" mat-button>dev delete dataset</button>
+          <button mat-button color="primary" (click)="deleteData(dataset)">dev delete dataset</button>
         </div>
         <h4>- Or -</h4>
       </ng-container>
@@ -46,7 +46,7 @@
           <mat-label>End row:</mat-label>
           <input matInput type="number" formControlName="endRow" />
         </mat-form-field>
-        <button mat-button type="button" (click)="selectRows()">Select rows</button>
+        <button mat-flat-button color="primary"  type="button" (click)="selectRows()">Select rows</button>
         <mat-form-field>
           <mat-label>Selected rows:</mat-label>
           <input matInput type="text" formControlName="selectedRows" readonly/>
@@ -54,10 +54,10 @@
       </div>
 
       <div class="buttons">
-        <button mat-button type="button" (click)="selectAllRows()">Select all rows</button>
-        <button mat-button type="button" (click)="clearSelectedRows()">Clear selected rows</button>
-        <button mat-button type="button" (click)="createDataset()">Create Dataset</button>
-        <button mat-button type="button" (click)="cancel()">Cancel</button>
+        <button mat-flat-button color="primary" type="button" (click)="selectAllRows()">Select all rows</button>
+        <button mat-flat-button color="primary" type="button" (click)="clearSelectedRows()">Clear selected rows</button>
+        <button mat-flat-button color="primary" type="button" (click)="createDataset()">Create Dataset</button>
+        <button mat-flat-button color="primary" type="button" (click)="cancel()">Cancel</button>
       </div>
 
       <div id="section2">

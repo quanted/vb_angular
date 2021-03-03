@@ -4,7 +4,7 @@
     <div id="description">
       
       <div id="project-name">
-          <span>{{ project.name }}</span>
+          <span>{{ project.name }}:  </span>
           <span>{{ project.description }}</span>
       </div>
 
@@ -15,7 +15,7 @@
         <p>
           Dataset: {{ datasetName || "no dataset" }}
         </p>
-        <p>Project pipelines:</p>
+        <p id="pipeline-heading">Project pipelines:</p>
       </div>
 
     </div>
@@ -37,7 +37,7 @@
         </mat-expansion-panel-header>
         <div *ngFor="let pipeline of pipelines">{{ pipeline.name }}
           <span class="status">Status: {{ pipeline.metadata.status || "Pipeline has not been executed" }}</span>
-          <button mat-button type="button" (click)="cancelPipeline()">Cancel</button>
+          <button mat-flat-button color="primary" type="button" (click)="cancelPipeline()">Cancel</button>
           <div>{{pipeline|json}}</div>
         </div>
       </mat-expansion-panel>
@@ -45,11 +45,11 @@
   </div>
 
   <div id="buttons">
-    <button mat-button type="button" (click)="editProject(project)">Project setup</button>
+    <button mat-flat-button color="primary"  type="button" (click)="editProject(project)">Project setup</button>
     <ng-container *ngIf="hasDashboard">
-      <button mat-button type="button" (click)="gotoDashboard(project)">Project dashboard</button>
+      <button mat-flat-button color="primary"  type="button" (click)="gotoDashboard(project)">Project dashboard</button>
     </ng-container> 
-    <button mat-button type="button" (click)="cloneProject(project)">Clone Project</button>
-    <button mat-button type="button" (click)="deleteProject(project)">Delete Project</button>
+    <button mat-flat-button color="primary"  type="button" (click)="cloneProject(project)">Clone Project</button>
+    <button mat-flat-button color="primary"  type="button" (click)="deleteProject(project)">Delete Project</button>
   </div>
 </mat-card>

@@ -5,8 +5,10 @@
       {{ statusMessage }}
     </ng-container>
     <app-project-detail *ngFor="let project of projects" [project]="project" (projectDeleted)="projectDeleted()"></app-project-detail>
-    <button mat-raised-button type="button" (click)="createProject()" id="create">
-      Create new project
-    </button>
+    <div id="create">
+      <button mat-flat-button color="primary" type="button" (click)="createProject()">
+        Create new project
+      </button>
+    </div>
   </div>
 </div>

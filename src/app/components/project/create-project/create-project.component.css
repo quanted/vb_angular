@@ -20,3 +20,8 @@ form {
 mat-form-field {
     width: 100%;
 }
+
+button {
+    border-radius: 4px;
+    border: 1px solid rgb(80, 80, 80);
+}

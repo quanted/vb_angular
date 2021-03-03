@@ -3,7 +3,7 @@
     <h3>Project pipelines:</h3>
     <div *ngFor="let pipeline of pipelines">
       {{ pipeline.name }}
-      <button type="button" mat-button (click)="deletePipeline(pipeline)">dev delete pipeline</button>
+      <button mat-button color="primary" (click)="deletePipeline(pipeline)">dev delete pipeline</button>
     </div>
   </mat-card>
 </ng-container>

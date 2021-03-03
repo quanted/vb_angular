@@ -10,9 +10,15 @@
 }
 
 #create {
-  margin-top: 1rem;
+  display: grid;
+  place-items: center;;
 }
 
 app-project-detail {
   margin: 1rem;
+}
+
+button {
+    border-radius: 4px;
+    border: 1px solid rgb(80, 80, 80);
 }
