@@ -70,7 +70,7 @@
           <input matInput type="text" formControlName="features" readonly />
         </mat-form-field>
       </div>
-      <div id="choice">Define velocity components to generate A/O values? <input type="checkbox" (click)="toggleAO()" /></div>
+      <div id="choice">Define components to generate A/O values? <input type="checkbox" (click)="toggleAO()" /></div>
       <div id="section3">
         <ng-container *ngIf="generateAO">
           <mat-form-field>
@@ -78,8 +78,8 @@
             <input matInput type="text" formControlName="bearing" readonly />
           </mat-form-field>
           <mat-form-field>
-            <mat-label>Magnatude:</mat-label>
-            <input matInput type="text" formControlName="magnatude" readonly />
+            <mat-label>Magnitude:</mat-label>
+            <input matInput type="text" formControlName="magnitude" readonly />
           </mat-form-field>
         </ng-container>
       </div>
