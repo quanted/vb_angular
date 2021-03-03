@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { PipelineService } from 'src/app/services/pipeline.service';
 
 import { ProjectService } from 'src/app/services/project.service';
@@ -21,11 +22,20 @@ export class ProjectComponent implements OnInit {
   pipelineNames = 'No pipelines selected';
 
   constructor(
+    private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private pipelineService: PipelineService
   ) { }
+  
+  userIsAuthenticated(): boolean {
+    if(!this.auth.userIsAuthenticated()) {
+      this.router.navigateByUrl("/");
+      return false;
+    }
+    return true;
+  }
 
   ngOnInit(): void {
     if(this.route.paramMap) {

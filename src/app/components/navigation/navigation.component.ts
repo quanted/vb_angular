@@ -18,7 +18,7 @@ export class NavigationComponent implements OnInit {
   }
 
   gotoHome(): void {
-    this.router.navigateByUrl("/");
+    this.router.navigateByUrl("home");
   }
 
   logout(): void {

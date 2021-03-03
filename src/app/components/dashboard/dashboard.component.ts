@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {PipelineService} from '../../services/pipeline.service';
 import {PipelineModel} from '../../models/pipeline.model';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectModel} from '../../models/project.model';
 import {ProjectService} from '../../services/project.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,9 +18,11 @@ export class DashboardComponent implements OnInit {
   pipelines: PipelineModel[];
 
   constructor(
+    private auth: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
     private projectService: ProjectService,
     private pipelineService: PipelineService,
-    private route: ActivatedRoute
   ) {
     this.projectID = this.route.snapshot.paramMap.get('id');
   }
@@ -27,6 +30,14 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getProject(this.projectID);
     this.getPipelines(this.projectID);
+  }
+  
+  userIsAuthenticated(): boolean {
+    if(!this.auth.userIsAuthenticated()) {
+      this.router.navigateByUrl("/");
+      return false;
+    }
+    return true;
   }
 
   /**

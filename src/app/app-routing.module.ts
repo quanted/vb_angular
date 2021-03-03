@@ -9,7 +9,8 @@ import { ProjectComponent } from './components/project/project/project.component
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
-  { path: "", component: HomeComponent },
+  { path: "", component: LoginComponent },
+  { path: "home", component: HomeComponent },
   { path: "login", component: LoginComponent },
   { path: "create-project", component: CreateProjectComponent },
   { path: "map/:id", component: MapComponent },

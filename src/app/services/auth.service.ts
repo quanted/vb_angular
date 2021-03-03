@@ -22,8 +22,11 @@ export class AuthService {
     private cookieService: CookieService
   ) {}
 
+  ngOnInit() {
+  }
+
   userIsAuthenticated(): boolean {
-    return (this.cookieService.check("TOKEN") && (this.cookieService.check("USERNAME")));
+    return (this.cookieService.check('TOKEN') && this.cookieService.check('USERNAME'));
   }
 
   getToken() {
@@ -86,6 +89,6 @@ export class AuthService {
   }
 
   goHome(): void {
-    this.router.navigateByUrl('/');
+    this.router.navigateByUrl('home');
   }
 }

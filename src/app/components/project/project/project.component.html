@@ -1,4 +1,4 @@
-<div class="panel">
+<div class="panel" *ngIf="userIsAuthenticated()">
     <app-navigation></app-navigation>
     <mat-card id='project'>
         <ng-container *ngIf="project">

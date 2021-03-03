@@ -20,12 +20,15 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private auth: AuthService) {}
 
-  userIsAuthenticated(): boolean {
-    return this.auth.userIsAuthenticated();
-  }
+    userIsAuthenticated(): boolean {
+      if(!this.auth.userIsAuthenticated()) {
+        this.router.navigateByUrl("/");
+        return false;
+      }
+      return true;
+    }
 
   ngOnInit() {
-    console.log("HOME>>>>:init");
     this.statusMessage = '';
     
     this.projects = [];
