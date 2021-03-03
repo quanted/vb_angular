@@ -30,6 +30,7 @@
         </mat-expansion-panel-header>
         <br>
         <!-- Dynamically handle hyper params based on selection change -->
+        <div class="wrapper">
         <ng-container formArrayName="hyperParamCtrl">
         <div *ngFor="let _ of hyperParams.controls; let i = index">
           <mat-form-field [formGroupName]="i">
@@ -40,13 +41,10 @@
                 {{option}}
               </mat-option>
             </mat-select>
-            <!--
-            <mat-label>{{selectedPipeline["hyper-parameters"][i].name}}</mat-label>
-            <input matInput [formControlName]="selectedPipeline['hyper-parameters'][i].name">
-            -->
           </mat-form-field>
         </div>
         </ng-container>
+        </div>
       </mat-expansion-panel>
     </form>
 
