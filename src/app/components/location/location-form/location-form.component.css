@@ -1,3 +1,21 @@
-mat-card {
+mat-form-field.mat-form-field {
+    font-size: .75rem;
+    margin-bottom: .25rem;
+}
+
+mat-form-field, 
+button {
+    width: 90%;
+    height: 40px;
+}
+
+button {
     border-radius: 0;
+}
+
+.container {
+    margin: 0;
+    padding: .5rem;
+    display: grid;
+    justify-items: center;
 }

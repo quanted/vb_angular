@@ -40,7 +40,7 @@ export class LocationComponent implements OnInit {
 
   createLocation() {
     // passing projectID so the map knows which project to go back to
-    this.router.navigateByUrl(`map/${this.projectID}`);
+    this.router.navigateByUrl(`create-location/${this.projectID}`);
   }
 
   deleteLocation(location) {

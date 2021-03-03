@@ -28,4 +28,8 @@ export class CreateLocationComponent implements OnInit {
     }
     return true;
   }
+
+  gohome(): void {
+    this.router.navigateByUrl('home');
+  }
 }

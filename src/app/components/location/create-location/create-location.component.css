@@ -1,0 +1,15 @@
+.panel {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+#create-location {
+  display: grid;
+  grid-template: 1fr / auto 1fr;
+  background-color: gainsboro;
+}
+
+app-map {
+  grid-column: 2 / 4;
+}
+
