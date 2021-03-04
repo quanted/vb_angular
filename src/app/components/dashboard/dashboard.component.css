@@ -1,13 +1,23 @@
-:host {
-  display: block;
-  padding: 10px;
-  height: 80vh;
-}
-
-.container {
+.panel {
   display: grid;
+  grid-template-rows: auto 1fr;
   height: 100%;
   width: 100%;
+}
+
+app-navigation {
+  padding-bottom: 1rem;
+}
+
+/* ^^^^^^^^^^^^
+  the above css sets the heights of the navigation and container sections
+  the padding-bottom is consistient with the spacing on other components, but feel free to change
+
+  dashboard css below vvvvvvvvvvv
+*/
+
+.container {
+  background-color: rgb(235, 235, 235);
 }
 
 h1 {

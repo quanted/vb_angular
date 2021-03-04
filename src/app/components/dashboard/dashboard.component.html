@@ -1,7 +1,9 @@
-<div class="panel" *ngIf="userIsAuthenticated()">
+<div class="panel">
   <app-navigation></app-navigation>
-  <h1>Project Dashboard - {{project.name}}</h1>
+
+  <!-- all the dashboard components need to be in this container -->
   <div class="container">
-    <app-model-selection [pipelines]="pipelines"></app-model-selection>
+    <h1>Project Dashboard</h1>
+    <!-- <app-model-selection [pipelines]="pipelines"></app-model-selection> -->
   </div>
 </div>

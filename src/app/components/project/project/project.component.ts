@@ -80,7 +80,7 @@ export class ProjectComponent implements OnInit {
       console.log(`project ${this.project.id} executing pipeline ${pipeline.id} on dataset ${this.project.dataset}`);
       this.pipelineService.executePipeline(this.project, pipeline.id)
       .subscribe((response) => {
-        this.router.navigateByUrl('');
+        this.router.navigateByUrl('home');
       });
     }
   }
