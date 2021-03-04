@@ -1,9 +1,10 @@
-<div class="content">
+<div class="container">
   <div class="login">
     <div class="title">
       <h1>Welcome to Virtual Beach</h1>
       <img src="./assets/images/d2d.png" />
     </div>
+
     <form class="fields" [formGroup]="loginForm" (keyup.enter)="login()">
       <mat-form-field>
         <mat-label>Enter Username</mat-label>
@@ -20,24 +21,23 @@
       </mat-form-field>
     </form>
 
-    <p>{{ statusMessage }}</p>
+    <div id="status-message">{{ statusMessage }}</div>
 
     <div>
-      <div class="buttons">
+      <div id="login-button">
         <button mat-flat-button color="primary"  (click)="login()">
           Login
         </button>
-      </div>
-      <div>
         <button mat-flat-button color="primary"  (click)="register()">
           Register
         </button>
+      </div>
+      <div id="reset-button">
         <button mat-flat-button color="primary"  (click)="resetPW()">
           Forgot password?
         </button>
       </div>
     </div>
-
     <div>
       <ng-container *ngIf="registeringUser">
         <app-registration

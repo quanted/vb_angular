@@ -22,7 +22,6 @@ export class AuthInterceptor implements HttpInterceptor {
     .pipe(
       filter(event => event instanceof HttpResponse),
       tap((event: HttpResponse<any>) => {
-        console.log('response: ', event);
         // clear token and redirect to / if status code === 401
         if (event.status === 401) {
           console.log("STATUS.401>>> ", event);

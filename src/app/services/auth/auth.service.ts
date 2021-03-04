@@ -29,7 +29,6 @@ export class AuthService {
   }
 
   userIsAuthenticated(): boolean {
-    console.log('Auth: ', this.cookieService.check('TOKEN') && this.cookieService.check('USERNAME'));
     return (this.cookieService.check('TOKEN') && this.cookieService.check('USERNAME'));
   }
 
