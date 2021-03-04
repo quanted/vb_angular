@@ -1,14 +1,16 @@
 .panel {
-    display: grid;
-    grid-template-rows: auto 1fr;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  width: 100%;
+}
+app-navigation {
+  padding-bottom: 1rem;
 }
 
+/* main content */
 #create-location {
   display: grid;
-  grid-template: 1fr / auto 1fr;
-  background-color: gainsboro;
-}
-
-app-map {
-  grid-column: 2 / 4;
+  grid-template-columns: auto 1fr;
+  background-color: gainsboro; /* this is seen if a map tile fails to render */
 }

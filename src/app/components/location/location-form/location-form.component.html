@@ -29,9 +29,6 @@
       #start_longitude
     />
   </mat-form-field>
-  <button mat-button type="button" (click)="flyToStart()">
-    center on start flag
-  </button>
   <!-- Beach End -->
   <mat-form-field>
     <mat-label>End Latitude: </mat-label>
@@ -51,9 +48,6 @@
       #end_longitude
     />
   </mat-form-field>
-  <button mat-button type="button" (click)="flyToEnd()">
-    center on end flag
-  </button>
   <!-- Ocean Orientation -->
   <mat-form-field>
     <mat-label>Ocean Latitude: </mat-label>
@@ -73,13 +67,15 @@
       #o_longitude
     />
   </mat-form-field>
-  <button mat-flat-button color="primary"  class="control" (click)="saveLocation()">
+  <button mat-flat-button color="primary" (click)="saveLocation()">
     Save Location
   </button>
-  <button mat-flat-button color="primary"  class="control" (click)="clearForm()">
-    Clear Form
-  </button>
-  <button mat-flat-button color="primary"  class="control" (click)="cancel()">
-    Cancel
-  </button>
+  <div id="buttons"> 
+    <button mat-flat-button color="primary" (click)="cancel()">
+      Cancel
+    </button>
+    <button mat-flat-button color="primary" (click)="clearForm()">
+      Clear Form
+    </button>
+  </div>
 </div>
