@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 
@@ -10,11 +10,18 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class LocationService {
+  private ngUnsubscribe = new Subject();
   constructor(private http: HttpClient) {}
+
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
   getLocations(): Observable<any> {
     return this.http.get(environment.apiURL + 'location/')
     .pipe(
+      takeUntil(this.ngUnsubscribe),
       catchError((err) => {
         console.log(err);
         return of({ error: `Failed to fetch locations!` });
@@ -25,6 +32,7 @@ export class LocationService {
   addLocation(newLocation): Observable<any> {
     return this.http.post(environment.apiURL + 'location/', newLocation)
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           console.log(err);
           return of({ error: `Failed to add location!` });
@@ -38,6 +46,7 @@ export class LocationService {
         updatedLocation
       )
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           console.log(err);
           return of({ error: `Failed to update location!` });
@@ -48,6 +57,7 @@ export class LocationService {
   deleteLocation(id): Observable<any> {
     return this.http.delete(environment.apiURL + `location/${id}/`)
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           console.log(err);
           return of({ error: `Failed to delete location!` });

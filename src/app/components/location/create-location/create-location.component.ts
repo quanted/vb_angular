@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-create-location',
@@ -19,14 +19,6 @@ export class CreateLocationComponent implements OnInit {
     if(this.route.paramMap) {
       this.projectID = this.route.snapshot.paramMap.get('id');
     }
-  }
-
-  userIsAuthenticated(): boolean {
-    if(!this.auth.userIsAuthenticated()) {
-      this.router.navigateByUrl("/");
-      return false;
-    }
-    return true;
   }
 
   gohome(): void {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { PipelineModel } from '../models/pipeline.model';
@@ -11,11 +11,19 @@ import { PipelineModel } from '../models/pipeline.model';
   providedIn: 'root',
 })
 export class PipelineService {
+  private ngUnsubscribe = new Subject();
+
   constructor(private http: HttpClient) {}
+
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
   getProjectPipelines(id): Observable<any> {
     return this.http.get(`${environment.apiURL}pipeline/?project=${id}`)
     .pipe(
+      takeUntil(this.ngUnsubscribe),
       catchError((err) => {
         return of({ error: `Failed to fetch poject pipelines!` });
       })
@@ -30,8 +38,9 @@ export class PipelineService {
   getPipelines(): Observable<any> {
     return this.http.get(`${environment.infoURL}info/pipelines`)
     .pipe(
-        catchError((err) => {
-          return of({ error: `Failed to fetch pipelines metadata!` });
+      takeUntil(this.ngUnsubscribe),
+      catchError((err) => {
+        return of({ error: `Failed to fetch pipelines metadata!` });
       })
     )
   }
@@ -44,6 +53,7 @@ export class PipelineService {
         pipeline_id: pipelineID
       })
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           return of({ error: `Failed to execute pipeline!` });
       })
@@ -53,6 +63,7 @@ export class PipelineService {
   getPipelineStatus(projectID, pipelineID): Observable<any> {
     return this.http.get(`${environment.apiURL}pipeline/status/?project_id=${projectID}&pipeline_id=${pipelineID}`)
     .pipe(
+      takeUntil(this.ngUnsubscribe),
       catchError((err) => {
         return of({ error: `Failed to fetch pipeline status!` });
       })
@@ -62,6 +73,7 @@ export class PipelineService {
   addPipeline(pipeline: PipelineModel): Observable<any> {
     return this.http.post(environment.apiURL + 'pipeline/', pipeline)
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           return of({ error: `Failed to add pipeline!` });
         })
@@ -74,6 +86,7 @@ export class PipelineService {
         updatedModel
       )
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           return of({ error: `Failed to update pipeline!` });
         })
@@ -83,6 +96,7 @@ export class PipelineService {
   deletePipeline(id): Observable<any> {
     return this.http.delete(environment.apiURL + `pipeline/${id}/`)
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           return of({ error: `Failed to delete pipeline!` });
         })

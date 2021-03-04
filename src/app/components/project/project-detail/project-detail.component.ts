@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { timeout } from 'rxjs/operators';
 import { DatasetService } from 'src/app/services/dataset.service';
 import { LocationService } from 'src/app/services/location.service';
 import { PipelineService } from 'src/app/services/pipeline.service';
@@ -53,6 +52,10 @@ export class ProjectDetailComponent implements OnInit {
     }, 5000);
   }
 
+  ngOnDestroy() {
+    clearInterval(this.pipelineUpdateTimer);
+  }
+
   editProject(project) {
     this.router.navigateByUrl(`project/${project.id}`);
   }
@@ -73,17 +76,19 @@ export class ProjectDetailComponent implements OnInit {
 
   updatePipelines() {
     this.pipelineService.getProjectPipelines(this.project.id).subscribe((pipelines) => {
-      this.pipelines = [...pipelines];
-      let pipelinesCompleted = true;
-      for (let pipeline of this.pipelines) {
-        let pipelineStatus = pipeline.metadata.status;
-        if (pipelineStatus !== "Completed and model saved") {
-          pipelinesCompleted = false;
+      if (pipelines.length > 0){ 
+        this.pipelines = [...pipelines];
+        let pipelinesCompleted = true;
+        for (let pipeline of this.pipelines) {
+          let pipelineStatus = pipeline.metadata.status;
+          if (pipelineStatus !== "Completed and model saved") {
+            pipelinesCompleted = false;
+          }
         }
-      }
-      if (pipelinesCompleted) {
-        this.hasDashboard = true;
-        clearInterval(this.pipelineUpdateTimer);}
+        if (pipelinesCompleted) {
+          this.hasDashboard = true;
+          clearInterval(this.pipelineUpdateTimer);}
+        }
       }
     )
   }

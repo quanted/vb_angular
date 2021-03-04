@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, EMPTY } from 'rxjs';
 
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { filter, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -18,9 +18,11 @@ export class AuthInterceptor implements HttpInterceptor {
     if (!request.body?.password) {
       request = request.clone({ setHeaders: { Authorization: `Token ${this.auth.getToken()}` } });
     }
-    return next.handle(request).pipe(
+    return next.handle(request)
+    .pipe(
       filter(event => event instanceof HttpResponse),
       tap((event: HttpResponse<any>) => {
+        console.log('response: ', event);
         // clear token and redirect to / if status code === 401
         if (event.status === 401) {
           console.log("STATUS.401>>> ", event);

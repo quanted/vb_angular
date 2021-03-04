@@ -1,31 +1,35 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { catchError, tap, takeUntil } from 'rxjs/operators';
 
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 import { HttpClient } from '@angular/common/http';
 
 import { CookieService } from 'ngx-cookie-service';
-import { RegistrationResponse } from '../models/registration-response';
-import { LoginResponse } from '../models/login-response';
+import { RegistrationResponse } from '../../models/registration-response';
+import { LoginResponse } from '../../models/login-response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private ngUnsubscribe = new Subject();
   constructor(
     private router: Router,
     private http: HttpClient,
     private cookieService: CookieService
   ) {}
 
-  ngOnInit() {
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   userIsAuthenticated(): boolean {
+    console.log('Auth: ', this.cookieService.check('TOKEN') && this.cookieService.check('USERNAME'));
     return (this.cookieService.check('TOKEN') && this.cookieService.check('USERNAME'));
   }
 
@@ -37,10 +41,11 @@ export class AuthService {
     return this.http
       .post(environment.apiURL + 'user/login/', { username, password })
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         tap((response: LoginResponse) => {
           this.cookieService.set('TOKEN', response.token);
           this.cookieService.set('USERNAME', response.username);
-          this.goHome();
+          this.router.navigateByUrl('home');
         }),
         catchError((error) => {
           return of({ error });
@@ -50,7 +55,7 @@ export class AuthService {
 
   logout(): void {
     this.cookieService.deleteAll();
-    this.goHome();
+    this.router.navigateByUrl('');
   }
 
   register(username, email, password): Observable<any> {
@@ -62,10 +67,11 @@ export class AuthService {
     return this.http
       .post(environment.apiURL + 'user/register/', newUser)
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         tap((response: RegistrationResponse) => {
           this.cookieService.set('TOKEN', response.token);
           this.cookieService.set('USERNAME', response.username);
-          this.goHome();
+          this.router.navigateByUrl('home');
         }),
         catchError((err) => {
           console.log(err);
@@ -78,6 +84,7 @@ export class AuthService {
     return this.http
       .post(environment.apiURL + 'user/reset', { email })
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         catchError((err) => {
           return of({ error: 'Failed to request password reset!' });
         })
@@ -86,9 +93,5 @@ export class AuthService {
 
   getUsername() {
     return this.cookieService.get('USERNAME');
-  }
-
-  goHome(): void {
-    this.router.navigateByUrl('home');
   }
 }

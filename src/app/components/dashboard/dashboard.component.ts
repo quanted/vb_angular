@@ -4,7 +4,7 @@ import {PipelineModel} from '../../models/pipeline.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectModel} from '../../models/project.model';
 import {ProjectService} from '../../services/project.service';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',

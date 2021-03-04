@@ -1,6 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { AuthService } from "src/app/services/auth.service";
 
 import { MapService } from "src/app/services/map.service";
 
@@ -12,11 +10,7 @@ import { MapService } from "src/app/services/map.service";
 export class MapComponent implements OnInit {
   projectID;
 
-  constructor(
-    private auth: AuthService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private mapService: MapService
+  constructor(private mapService: MapService
   ) {}
 
   ngOnInit() {

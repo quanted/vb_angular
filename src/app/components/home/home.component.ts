@@ -1,8 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 
-import { AuthService } from "src/app/services/auth.service";
-
 import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
@@ -11,22 +9,14 @@ import { ProjectService } from 'src/app/services/project.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
+  
   statusMessage: string;
 
   projects;
 
   constructor(
     private projectService: ProjectService,
-    private router: Router,
-    private auth: AuthService) {}
-
-    userIsAuthenticated(): boolean {
-      if(!this.auth.userIsAuthenticated()) {
-        this.router.navigateByUrl("/");
-        return false;
-      }
-      return true;
-    }
+    private router: Router) {}
 
   ngOnInit() {
     this.statusMessage = '';
