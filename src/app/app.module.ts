@@ -58,6 +58,7 @@ import { ElipseComponent } from './components/icons/elipse/elipse.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { GlobalCvComponent } from './components/analytical/global-cv/global-cv.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     CreateProjectComponent,
     LocationComponent,
     ModelSelectionComponent,
-    DataDetailComponent
+    DataDetailComponent,
+    GlobalCvComponent
   ],
   imports: [
     BrowserModule,

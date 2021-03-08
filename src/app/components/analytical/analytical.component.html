@@ -1,4 +1,8 @@
-<ng-container *ngIf="pipelines">
+<mat-card>
+  <app-global-cv [cvPipeInfo]="cvPipe"></app-global-cv>
+</mat-card>
+
+<ng-container *ngIf="pipelines.length > 0">
   <mat-card>
     <h3>Project pipelines:</h3>
     <div *ngFor="let pipeline of pipelines">
@@ -9,12 +13,13 @@
 </ng-container>
 
 <ng-container *ngIf="!creatingPipeline">
-  <button type="button" mat-button (click)="createPipeline()">Create pipeline</button>
+  <button mat-flat-button color="primary" type="button" mat-button (click)="createPipeline()">Create pipeline</button>
 </ng-container>
 
 <ng-container *ngIf="creatingPipeline">
   <app-create-pipeline
     [projectID]="projectID"
+    [pipelineInfo]="pipelineInfo"
     (pipelineCreated)="pipelineCreated()"
     (pipelineCancelled)="pipelineCancelled()"></app-create-pipeline>
 </ng-container>

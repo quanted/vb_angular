@@ -48,10 +48,11 @@
       </mat-expansion-panel>
     </form>
 
- <button mat-raised-button class="new" (click)="addPipeline()">
-   Create pipeline
- </button>
-
-<button mat-raised-button class="cancel" (click)="cancelPipeline()">
-  Cancel
-</button>
+<div class="btn-container">
+  <button mat-flat-button color="warn" type="button" (click)="cancelPipeline()">
+    Cancel
+  </button>
+  <button mat-flat-button color="primary" type="button" (click)="addPipeline()">
+    Create pipeline
+  </button>
+</div>

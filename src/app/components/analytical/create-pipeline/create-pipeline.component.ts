@@ -20,9 +20,9 @@ export class CreatePipelineComponent implements OnInit {
   pipelineFormGroup: FormGroup;
 
   @Input() projectID;
+  @Input() pipelineInfo: PipelineInfoModel[];
   @Output() pipelineCreated = new EventEmitter();
   @Output() pipelineCancelled = new EventEmitter();
-  pipelineInfo: PipelineInfoModel[];
   selectedPipeline: PipelineInfoModel;
   selectedPipelineOptions: [];
 
@@ -33,8 +33,6 @@ export class CreatePipelineComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Get the pipeline info and populate necessary fields.
-    this.getPipelineInfo();
     this.pipelineFormGroup = this.formBuilder.group({
       estimatorCtrl: ['', Validators.required],
       pipelineNameCtrl: [''],
@@ -48,15 +46,6 @@ export class CreatePipelineComponent implements OnInit {
    */
   get hyperParams(): FormArray {
     return this.pipelineFormGroup.get('hyperParamCtrl') as FormArray;
-  }
-
-  /**
-   * Calls the pipeline service to populate the "create pipeline" UI.
-   */
-  getPipelineInfo() {
-    this.pipelineService.getPipelines().subscribe(pipelines => {
-      this.pipelineInfo = pipelines;
-    });
   }
 
   /**

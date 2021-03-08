@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import { PipelineService } from 'src/app/services/pipeline.service';
 import {PipelineModel} from '../../models/pipeline.model';
 import {ProjectModel} from '../../models/project.model';
+import {PipelineInfoModel} from '../../models/pipeline-info.model';
+import {pipe} from 'rxjs';
 
 
 @Component({
@@ -14,12 +16,29 @@ export class AnalyticalComponent implements OnInit {
   creatingPipeline = false;
 
   pipelines = [];
+  pipelineInfo: PipelineInfoModel[];
+  cvPipe: PipelineInfoModel;
   @Output() setPipelines: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private pipelineService: PipelineService) {}
 
   ngOnInit(): void {
+    this.getPipelineInfo();
     this.updateAvailablePipelineList();
+  }
+
+  /**
+   * Calls the pipeline service to populate the "create pipeline" UI.
+   */
+  getPipelineInfo() {
+    this.pipelineService.getPipelines().subscribe(pipelines => {
+      this.cvPipe = pipelines.find(pipeline => {
+        return pipeline.ptype === 'cvpipe';
+      });
+      const index = pipelines.indexOf(this.cvPipe);
+      pipelines.splice(index, 1);
+      this.pipelineInfo = pipelines;
+    });
   }
 
   createPipeline(): void {
