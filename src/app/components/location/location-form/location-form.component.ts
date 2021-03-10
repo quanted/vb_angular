@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MapService } from 'src/app/services/map.service';
 import { LocationService } from 'src/app/services/location.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-location-form',
@@ -14,12 +13,12 @@ export class LocationFormComponent implements OnInit {
   markers = [];
 
   @Input() projectID;
+  @Output() closeCreate: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
     private fb: FormBuilder,
     private mapService: MapService,
-    private locationService: LocationService,
-    private router: Router
+    private locationService: LocationService
   ) {}
 
   ngOnInit() {
@@ -63,16 +62,11 @@ export class LocationFormComponent implements OnInit {
       this.locationService
         .addLocation(location)
         .subscribe(() => {
-          this.router.navigateByUrl(`project/${this.projectID}`);
+          this.returnToProject();
         });
     } else {
       console.log('form invalid!');
     }
-  }
-
-  clearForm() {
-    this.locationForm.reset();
-    this.mapService.clearMarkers();
   }
 
   updateLocationForm() {
@@ -105,7 +99,12 @@ export class LocationFormComponent implements OnInit {
     this.mapService.fitBounds(this.markers[0]._latlng, this.markers[1]._latlng);
   }
 
-  cancel(): void {
-    this.router.navigateByUrl(`project/${this.projectID}`);
+  clearForm() {
+    this.locationForm.reset();
+    this.mapService.clearMarkers();
+  }
+
+  returnToProject(): void {
+    this.closeCreate.emit();
   }
 }

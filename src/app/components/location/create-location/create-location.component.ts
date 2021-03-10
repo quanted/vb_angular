@@ -21,6 +21,10 @@ export class CreateLocationComponent implements OnInit {
     }
   }
 
+  closeCreate(): void {
+    this.router.navigateByUrl(`project/${this.projectID}`);
+  }
+
   gohome(): void {
     this.router.navigateByUrl('home');
   }
