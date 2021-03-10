@@ -29,10 +29,9 @@
               <span class="pipelines-status">{{ pipelinesStatusMessage }}</span>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div *ngFor="let pipeline of pipelines">{{ pipeline.name }}
-          <span class="status">Status: {{ pipeline.metadata.status || "Pipeline has not been executed" }}</span>
-          <button mat-flat-button color="primary" type="button" (click)="cancelPipeline()">Cancel</button>
-          <div>{{pipeline|json}}</div>
+        <div *ngFor="let pipeline of pipelines" class="status-container">{{ pipeline.name }}
+          <div class="status">Status: {{ pipeline.metadata.status || "Pipeline has not been executed" }}</div>
+          <button (click)="cancelPipeline()" *ngIf="!pipeline.completed" class="trash"><mat-icon>delete_forever</mat-icon></button>
         </div>
       </mat-expansion-panel>
     </mat-accordion>

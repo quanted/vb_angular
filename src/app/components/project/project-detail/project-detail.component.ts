@@ -20,9 +20,9 @@ export class ProjectDetailComponent implements OnInit {
   locationName = '';
   datasetName = '';
   pipelines = [];
+  pipelinesStatusMessage = '';
 
   pipelineUpdateTimer;
-  pipelinesStatusMessage = 'No pipelines';
   hasDashboard = false;
 
   constructor(
@@ -46,6 +46,8 @@ export class ProjectDetailComponent implements OnInit {
         this.datasetName = dataset.name;
       })
     }
+
+    //need to move this so it only runs if there are pipelines executing
     this.updatePipelines();
     this.pipelineUpdateTimer = setInterval(() => {
       this.updatePipelines();
@@ -76,16 +78,27 @@ export class ProjectDetailComponent implements OnInit {
 
   updatePipelines() {
     this.pipelineService.getProjectPipelines(this.project.id).subscribe((pipelines) => {
+      this.pipelinesStatusMessage = "No pipelines";
       if (pipelines.length > 0){ 
+        this.pipelinesStatusMessage = "Pipleline(s) have not been executed"
         this.pipelines = [...pipelines];
         let pipelinesCompleted = true;
         for (let pipeline of this.pipelines) {
-          let pipelineStatus = pipeline.metadata.status;
-          if (pipelineStatus !== "Completed and model saved") {
+          const pipelineStatus = pipeline.metadata.status;
+          if  (pipelineStatus) {
+            this.pipelinesStatusMessage = "Pipelines executing..."
+
+            if (pipelineStatus !== "Completed and model saved") {
+              pipelinesCompleted = false;
+            } else {
+              pipeline["completed"] = true;
+            }
+          } else {
             pipelinesCompleted = false;
           }
         }
         if (pipelinesCompleted) {
+          this.pipelinesStatusMessage = "Pipeline execution complete"
           this.hasDashboard = true;
           clearInterval(this.pipelineUpdateTimer);}
         }
