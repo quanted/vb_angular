@@ -65,13 +65,13 @@ mat-expansion-panel {
     display: flex;
     place-items: center;
     flex-direction: row;
+    margin: .25rem 0 .25rem 0;
 }
 
 .status {
     padding: 0;
     display: flex;
     place-items: center;
-    margin: 0 .5rem 0 .5rem;
 }
 
 .trash {

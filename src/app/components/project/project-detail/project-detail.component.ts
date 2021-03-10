@@ -77,12 +77,13 @@ export class ProjectDetailComponent implements OnInit {
   }
 
   updatePipelines() {
+    this.pipelinesStatusMessage = "Updating status...";
     this.pipelineService.getProjectPipelines(this.project.id).subscribe((pipelines) => {
-      this.pipelinesStatusMessage = "No pipelines";
-      if (pipelines.length > 0){ 
-        this.pipelinesStatusMessage = "Pipleline(s) have not been executed"
+      if (pipelines.length > 0){
         this.pipelines = [...pipelines];
+
         let pipelinesCompleted = true;
+
         for (let pipeline of this.pipelines) {
           const pipelineStatus = pipeline.metadata.status;
           if  (pipelineStatus) {
@@ -93,17 +94,21 @@ export class ProjectDetailComponent implements OnInit {
             } else {
               pipeline["completed"] = true;
             }
+            
           } else {
+            this.pipelinesStatusMessage = "Pipeline(s) unexecuted";
             pipelinesCompleted = false;
           }
         }
+
         if (pipelinesCompleted) {
           this.pipelinesStatusMessage = "Pipeline execution complete"
           this.hasDashboard = true;
-          clearInterval(this.pipelineUpdateTimer);}
+          clearInterval(this.pipelineUpdateTimer);
         }
-      }
-    )
+      } else {
+        this.pipelinesStatusMessage = "No pipelines"}
+    })
   }
 
   cancelPipeline(): void {
