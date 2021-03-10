@@ -176,6 +176,11 @@ export class MapService {
     }
   }
 
+  fitBounds(coord1, coord2) {
+    const bounds = L.latLngBounds(L.latLng(coord1.lat, coord1.lng), L.latLng(coord2.lat, coord2.lng));
+    this.map.fitBounds(bounds);
+  }
+
   flyTo(coords) {
     this.map.flyTo(coords);
   }

@@ -102,7 +102,7 @@ export class LocationFormComponent implements OnInit {
   }
 
   fitToBeach() {
-    this.mapService.flyTo(this.markers[0]._latlng);
+    this.mapService.fitBounds(this.markers[0]._latlng, this.markers[1]._latlng);
   }
 
   cancel(): void {
