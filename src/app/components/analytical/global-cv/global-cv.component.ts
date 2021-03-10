@@ -31,15 +31,20 @@ export class GlobalCvComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const change = changes.cvPipeInfo;
-    if (!change?.firstChange) {
-      this.setFormControls();
-      this.cvFormGroup.disable();
+    for (const propName in changes) {
+      if (changes.hasOwnProperty(propName)) {
+        switch (propName) {
+          case 'cvPipeInfo': {
+            this.setFormControls();
+            this.cvFormGroup?.disable();
+          }
+        }
+      }
     }
   }
 
   setFormControls() {
-    const control = this.cvFormGroup.controls.formControls as FormArray;
+    const control = this.cvFormGroup?.controls.formControls as FormArray;
     this.cvPipeInfo?.['hyper-parameters'].forEach(param => {
       const newGroup = this.formBuilder.group({
           [param.name]: [param.value]
