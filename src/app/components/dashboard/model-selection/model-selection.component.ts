@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {PipelineModel} from '../../../models/pipeline.model';
 import {PipelineService} from '../../../services/pipeline.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-model-selection',
@@ -9,18 +10,32 @@ import {PipelineService} from '../../../services/pipeline.service';
 })
 export class ModelSelectionComponent implements OnInit {
 
-  @Input() pipelines: PipelineModel[];
-  // TODO: get list of models to be selected for prediction?
+  projectID;
+  pipelines: PipelineModel[];
+  models = [];
 
   constructor(
+    private route: ActivatedRoute,
     private pipelineService: PipelineService
   ) { }
 
   ngOnInit(): void {
+    this.projectID = this.route.snapshot.paramMap.get('id');
+    this.getAvailablePipelineList();
   }
 
   getPipelineModels() {
-
+    this.pipelines.forEach(pipeline => {
+      this.pipelineService.getPipelineStatus(this.projectID, pipeline.id).subscribe( models => {
+        this.models.push(models.models);
+      });
+    });
   }
 
+  getAvailablePipelineList(): void {
+    this.pipelineService.getProjectPipelines(this.projectID).subscribe((pipelines) => {
+      this.pipelines = [...pipelines];
+      this.getPipelineModels();
+    });
+  }
 }
