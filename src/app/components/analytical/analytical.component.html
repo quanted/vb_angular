@@ -1,10 +1,13 @@
 <mat-card>
-  <app-global-cv [cvPipeInfo]="cvPipe"></app-global-cv>
+  <app-global-cv
+    [cvPipeInfo]="cvPipe"
+    [pipelines]="pipelines"></app-global-cv>
 </mat-card>
 
-<ng-container *ngIf="pipelines.length > 0">
+<ng-container>
   <mat-card>
     <h3>Project pipelines:</h3>
+    <p *ngIf="pipelines.length < 1">No pipelines have been created for this project.</p>
     <div *ngFor="let pipeline of pipelines">
       {{ pipeline.name }}
       <button mat-button color="primary" (click)="deletePipeline(pipeline)">dev delete pipeline</button>

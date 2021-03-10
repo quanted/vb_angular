@@ -6,3 +6,9 @@
 .mat-form-field {
   margin: 16px;
 }
+
+.lock {
+  transform: scale(1.1);
+  color: gray;
+  cursor: pointer;
+}
