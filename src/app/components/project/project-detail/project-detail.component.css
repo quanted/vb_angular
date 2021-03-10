@@ -1,6 +1,13 @@
-#project-info {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
+.project-info,
+mat-expansion-panel {
+    background-color: gainsboro;
+}
+
+.project-info {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    border-radius: 5px;
 }
 
 #project-description {
@@ -22,11 +29,8 @@ p {
     margin-bottom: 0;
 }
 
-#details {
-}
-
 #mini-map {
-    background-color: rgb(165, 165, 165);
+    background-color: lightsteelblue;
 }
 
 #pipeline-panel {
@@ -41,15 +45,14 @@ p {
 }
 
 #buttons {
-    grid-area: buttons;
-    margin-top: 1rem;
-    padding: 0px;
+    padding: 0 1rem 1rem 1rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    grid-column-gap: 5rem;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    column-gap: 1rem;
 }
 
 button {
     border-radius: 4px;
     border: 1px solid rgb(80, 80, 80);
+    width: 10rem;
 }

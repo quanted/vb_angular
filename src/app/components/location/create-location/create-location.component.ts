@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-create-location',
@@ -13,11 +12,12 @@ export class CreateLocationComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private auth: AuthService) {}
+    ) {}
 
   ngOnInit(): void {
     if(this.route.paramMap) {
       this.projectID = this.route.snapshot.paramMap.get('id');
+      console.log("create:projectID: ", this.projectID);
     }
   }
 

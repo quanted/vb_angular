@@ -46,6 +46,7 @@ export class MapService {
   mapViewProperties: any = {
     center: [37.31, -92.1],
     zoom: 5,
+    minZoom: 5,
   };
 
   constructor(private settings: SettingsService) {

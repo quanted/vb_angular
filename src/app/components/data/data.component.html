@@ -3,11 +3,11 @@
     <div>
       <ng-container *ngIf="datasets.length > 0">
         <h4>Use an existing dataset</h4>
-        <div *ngFor="let dataset of datasets">
-          <button mat-flat-button color="primary" type="button" (click)="selectData(dataset)">Use</button>
-          {{ dataset.name }}
-          <button mat-button color="primary" (click)="deleteData(dataset)">dev delete dataset</button>
-        </div>
+        <div *ngFor="let dataset of datasets" class="dataset-buttons">
+          <button mat-flat-button color="primary" type="button" (click)="selectDataset(dataset)">Use</button>
+          <div class="dataset-name">{{ dataset.name }}, {{ dataset.description }}</div>
+          <button (click)="deleteDataset(dataset)" class="trash"><mat-icon>delete_forever</mat-icon></button>
+      </div>
         <h4>- Or -</h4>
       </ng-container>
     </div>

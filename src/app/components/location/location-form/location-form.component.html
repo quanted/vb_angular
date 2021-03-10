@@ -1,81 +1,88 @@
 <div class="container"
   [formGroup]="locationForm"
   (keyup.enter)="saveLocation()">
-  <mat-form-field>
-    <mat-label>Location Name: </mat-label>
-    <input matInput type="text" formControlName="name" #location_name />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Description: </mat-label>
-    <input matInput type="text" formControlName="description" #description />
-  </mat-form-field>
-  <!-- Cords: -->
-  <!-- Beach Start -->
-  <mat-form-field>
-    <mat-label>Start Latitude: </mat-label>
-    <input
-      matInput
-      type="number"
-      formControlName="start_latitude"
-      #start_latitude
-    />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Start Longitude: </mat-label>
-    <input
-      matInput
-      type="number"
-      formControlName="start_longitude"
-      #start_longitude
-    />
-  </mat-form-field>
-  <!-- Beach End -->
-  <mat-form-field>
-    <mat-label>End Latitude: </mat-label>
-    <input
-      matInput
-      type="number"
-      formControlName="end_latitude"
-      #end_latitude
-    />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>End Longitude: </mat-label>
-    <input
-      matInput
-      type="number"
-      formControlName="end_longitude"
-      #end_longitude
-    />
-  </mat-form-field>
-  <!-- Ocean Orientation -->
-  <mat-form-field>
-    <mat-label>Ocean Latitude: </mat-label>
-    <input
-      matInput
-      type="number"
-      formControlName="o_latitude"
-      #o_latitude
-    />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Ocean Longitude: </mat-label>
-    <input
-      matInput
-      type="number"
-      formControlName="o_longitude"
-      #o_longitude
-    />
-  </mat-form-field>
-  <button mat-flat-button color="primary" (click)="saveLocation()">
-    Save Location
-  </button>
-  <div id="buttons"> 
-    <button mat-flat-button color="primary" (click)="cancel()">
-      Cancel
-    </button>
-    <button mat-flat-button color="primary" (click)="clearForm()">
-      Clear Form
-    </button>
-  </div>
+    <mat-form-field>
+      <mat-label>Location Name: </mat-label>
+      <input matInput type="text" formControlName="name" #location_name />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description: </mat-label>
+      <input matInput type="text" formControlName="description" #description />
+    </mat-form-field>
+    <!-- Cords: -->
+    <!-- Beach Start -->
+    <mat-form-field>
+      <mat-label>Start Latitude: </mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="start_latitude"
+        #start_latitude
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Start Longitude: </mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="start_longitude"
+        #start_longitude
+      />
+    </mat-form-field>
+
+    <!-- Beach End -->
+    <mat-form-field>
+      <mat-label>End Latitude: </mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="end_latitude"
+        #end_latitude
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>End Longitude: </mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="end_longitude"
+        #end_longitude
+      />
+    </mat-form-field>
+    <!-- Ocean Orientation -->
+
+    <mat-form-field>
+      <mat-label>Water Latitude: </mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="o_latitude"
+        #o_latitude
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Water Longitude: </mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="o_longitude"
+        #o_longitude
+      />
+    </mat-form-field>
+    <div id="buttons"> 
+      <button mat-flat-button color="primary" (click)="fitToBeach()" class="coord-button">
+        Fit map to beach
+      </button>
+      <button mat-flat-button color="primary" (click)="saveLocation()">
+        Save Location
+      </button>
+      <div id="two-buttons">
+        <button mat-flat-button color="primary" (click)="cancel()">
+          Cancel
+        </button>
+        <button mat-flat-button color="primary" (click)="clearForm()">
+          Clear
+        </button>
+      </div>
+    </div>
 </div>

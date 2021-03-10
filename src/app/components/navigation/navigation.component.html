@@ -1,7 +1,11 @@
-<div class="buttons">
-  <button mat-flat-button color="primary"  (click)="gotoHome()">Home</button>
+<div id="navigation">
+  <div class="buttons-left">
+    <button mat-flat-button color="primary" (click)="gotoHome()" title="home"><mat-icon>home</mat-icon></button>
+  </div> 
   <div id="greeting">
-      Welcome to Virtual Beach <span id="user-name">{{ username }}</span>
+    Welcome to Virtual Beach <span id="user-name">{{ username }}</span>
   </div>
-  <button mat-flat-button color="primary"  (click)="logout()">Logout</button>
+  <div class="buttons-right">
+    <button mat-flat-button color="primary"  (click)="logout()" title="logout"><mat-icon>exit_to_app</mat-icon></button>
+  </div>
 </div>

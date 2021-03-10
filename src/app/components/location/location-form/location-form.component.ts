@@ -23,6 +23,7 @@ export class LocationFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log("form:projectID: ", this.projectID);
     this.locationForm = this.fb.group({
       name: [null, Validators.required],
       type: ['beach', Validators.required],
@@ -100,12 +101,8 @@ export class LocationFormComponent implements OnInit {
     }
   }
 
-  flyToStart() {
+  fitToBeach() {
     this.mapService.flyTo(this.markers[0]._latlng);
-  }
-
-  flyToEnd() {
-    this.mapService.flyTo(this.markers[1]._latlng);
   }
 
   cancel(): void {

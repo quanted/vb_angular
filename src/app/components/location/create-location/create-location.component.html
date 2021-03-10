@@ -1,7 +1,11 @@
 <div class="panel">
     <app-navigation></app-navigation>
     <div id="create-location">
-        <app-location-form></app-location-form>
-        <app-map></app-map>
+        <div>
+            <app-location-form (projectID)="projectID"></app-location-form>
+        </div>
+        <div>
+            <app-map></app-map>
+        </div>
     </div>
 </div>

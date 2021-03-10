@@ -4,18 +4,14 @@
 }
 
 #projects {
-  background: #0e6993;
   padding: 1rem;
-  padding-top: 0px;
+  padding-top: 0;
+  margin-bottom: 1rem;
 }
 
 #create {
   display: grid;
   place-items: center;;
-}
-
-app-project-detail {
-  margin: 1rem;
 }
 
 button {

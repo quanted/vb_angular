@@ -1,13 +1,10 @@
-<mat-card *ngIf="project" class="project-info">
-  
+<div *ngIf="project" class="project-info">
   <div id="project-description">
     <div id="description">
-      
       <div id="project-name">
           <span>{{ project.name }}:  </span>
           <span>{{ project.description }}</span>
       </div>
-
       <div id="details">
         <p>
           Location: {{ locationName || "no location"}}
@@ -17,13 +14,10 @@
         </p>
         <p id="pipeline-heading">Project pipelines:</p>
       </div>
-
     </div>
-
     <div id="mini-map">
       <app-mini-map [location]="project"></app-mini-map>
     </div>
-
   </div>
 
   <div id="pipeline-panel">
@@ -52,4 +46,4 @@
     <button mat-flat-button color="primary"  type="button" (click)="cloneProject(project)">Clone Project</button>
     <button mat-flat-button color="primary"  type="button" (click)="deleteProject(project)">Delete Project</button>
   </div>
-</mat-card>
+</div>

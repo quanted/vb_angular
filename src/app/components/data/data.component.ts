@@ -73,7 +73,7 @@ export class DataComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  selectData(dataset) {
+  selectDataset(dataset) {
     this.dataService.getDataset(dataset.id).subscribe((dataset) => {
       this.setDataset.emit(dataset);
       this.dataset = dataset;
@@ -156,7 +156,7 @@ export class DataComponent implements OnInit {
     }
   }
 
-  deleteData(dataset): void {
+  deleteDataset(dataset): void {
     this.dataService.deleteDataset(dataset).subscribe(() => {
       this.dataService.getDatasets().subscribe((datasets) => {
         this.datasets = [...datasets];

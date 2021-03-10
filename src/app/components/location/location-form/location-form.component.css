@@ -1,26 +1,54 @@
 .container {
     display: grid;
     height: 100%;
-}
-
-mat-form-field.mat-form-field,
-button {
-    font-size: .75rem;
-    margin: .5rem .5rem 0 .5rem;
-}
-mat-form-field.mat-form-field:first-of-type {
-    margin-top: 1rem;
+    padding: 0 .5rem 0 .5rem;
 }
 
 #buttons {
     display: grid;
-    grid-template-columns: auto auto;
-    column-gap: .5rem;
-    margin: .5rem;
+    row-gap: .5rem;
+    margin-bottom: .5rem;
 }
 
-#buttons > button {
+#two-buttons {
     display: grid;
     grid-template-columns: auto auto;
-    margin: 0;
+    column-gap: .5rem;
+}
+
+button {
+    height: 3rem;
+}
+
+mat-form-field.mat-form-field:first-of-type {
+    margin-top: 1rem;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    box-shadow: 0 0 0 30px gainsboro inset !important;
+    -webkit-box-shadow: 0 0 0 30px gainsboro inset !important;
+}
+
+@keyframes autofill {
+    0%,100% {
+        color: gainsboro;
+        background: transparent;
+    }
+}
+@-webkit-keyframes autofill {
+    0%,100% {
+        color: gainsboro;
+        background: transparent;
+    }
+}
+input:-webkit-autofill {
+    animation-delay: 1s;
+    animation-name: autofill;
+    animation-fill-mode: both;
+    -webkit-animation-delay: 1s; /* Safari support - any positive time runs instantly */
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
 }
