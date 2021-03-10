@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {PipelineInfoModel} from '../../../models/pipeline-info.model';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PipelineService} from '../../../services/pipeline.service';
+import {PipelineModel} from '../../../models/pipeline.model';
 
 @Component({
   selector: 'app-global-cv',
@@ -11,11 +12,16 @@ import {PipelineService} from '../../../services/pipeline.service';
 export class GlobalCvComponent implements OnInit, OnChanges {
 
   @Input() cvPipeInfo: PipelineInfoModel;
+  @Input() pipelines: PipelineModel[];
   cvFormGroup: FormGroup;
+  disabled = true;
+  cvPipe: PipelineModel = {
+    description: '', metadata: '', name: '', project: '', type: ''
+  };
 
   constructor(
     private formBuilder: FormBuilder,
-    private pipelineService: PipelineService
+    private pipelineService: PipelineService,
   ) { }
 
   ngOnInit(): void {
@@ -26,14 +32,15 @@ export class GlobalCvComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const change = changes.cvPipeInfo;
-    if (!change.firstChange) {
+    if (!change?.firstChange) {
       this.setFormControls();
+      this.cvFormGroup.disable();
     }
   }
 
   setFormControls() {
     const control = this.cvFormGroup.controls.formControls as FormArray;
-    this.cvPipeInfo['hyper-parameters'].forEach(param => {
+    this.cvPipeInfo?.['hyper-parameters'].forEach(param => {
       const newGroup = this.formBuilder.group({
           [param.name]: [param.value]
         });
@@ -78,5 +85,14 @@ export class GlobalCvComponent implements OnInit, OnChanges {
       result = options.split(/\s*,\s*/);
     }
     return result;
+  }
+
+  toggleCV() {
+    if (this.disabled) {
+      this.cvFormGroup.enable();
+    } else {
+      this.cvFormGroup.disable();
+    }
+    this.disabled = !this.disabled;
   }
 }

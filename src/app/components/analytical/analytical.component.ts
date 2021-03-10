@@ -14,7 +14,6 @@ import {pipe} from 'rxjs';
 export class AnalyticalComponent implements OnInit {
   @Input() projectID;
   creatingPipeline = false;
-
   pipelines = [];
   pipelineInfo: PipelineInfoModel[];
   cvPipe: PipelineInfoModel;
