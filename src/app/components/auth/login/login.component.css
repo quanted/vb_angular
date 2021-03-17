@@ -45,3 +45,11 @@ button {
     border-radius: 4px;
     border: 1px solid rgb(80, 80, 80);
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    box-shadow: 0 0 0 30px #2f7b9e inset !important;
+    -webkit-box-shadow: 0 0 0 30px #2f7b9e inset !important;
+}
