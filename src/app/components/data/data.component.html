@@ -22,99 +22,116 @@
   </ng-container>
 
   <ng-container *ngIf="creatingDataset">
-    <form  class="fields" [formGroup]="datasetForm">
-      <div id="section1">
-        <mat-form-field>
-          <mat-label>Dataset name: </mat-label>
-          <input matInput type="text" formControlName="name" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Dataset description: </mat-label>
-          <input matInput type="text" formControlName="description" />
-        </mat-form-field>
-      </div>
+    <form [formGroup]="datasetForm">
       <div id="rows">
-        <mat-form-field>
-          <mat-label>Start row:</mat-label>
-          <input matInput type="number" formControlName="startRow" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>End row:</mat-label>
-          <input matInput type="number" formControlName="endRow" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Selected rows:</mat-label>
-          <input matInput type="text" formControlName="selectedRows" readonly/>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Total rows: </mat-label>
-          <input matInput type="text" formControlName="totalRows" readonly />
-        </mat-form-field>
+        <div class="form-select">
+          <div class="form-name">
+            <mat-form-field>
+              <mat-label>Dataset name: </mat-label>
+              <input matInput type="text" formControlName="name" />
+            </mat-form-field>
+          </div>
+          <div class="form-name">
+            <mat-form-field>
+              <mat-label>Dataset description: </mat-label>
+              <input matInput type="text" formControlName="description" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-select">
+          <div class="form-input">
+            <mat-form-field>
+              <mat-label>Start row:</mat-label>
+              <input matInput type="number" formControlName="startRow" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>End row:</mat-label>
+              <input matInput type="number" formControlName="endRow" />
+            </mat-form-field>
+          </div>
+          <div class="button">
+            <button mat-flat-button color="primary"  type="button" (click)="selectRows()">Add range to selected rows</button>
+          </div>
+        </div>
+
+        <div class="form-select">
+          <div class="form-input">
+            <mat-form-field>
+              <mat-label>Selected rows:</mat-label>
+              <input matInput type="text" formControlName="selectedRows" readonly/>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Total rows: </mat-label>
+              <input matInput type="text" formControlName="totalRows" readonly />
+            </mat-form-field>
+          </div>
+          <div class="form-control">
+            <div class="buttons">
+              <button mat-flat-button color="primary" type="button" (click)="selectAllRows()">Select all rows</button>
+              <button mat-flat-button color="primary" type="button" (click)="clearSelectedRows()">Clear selected rows</button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="buttons">
-        <button mat-flat-button color="primary"  type="button" (click)="selectRows()">Select rows</button>
-        <button mat-flat-button color="primary" type="button" (click)="selectAllRows()">Select all rows</button>
-        <button mat-flat-button color="primary" type="button" (click)="clearSelectedRows()">Clear selected rows</button>
-      </div>
+      <div class="form-select">
+        <div class="table-flex-container">
+          <table mat-table [dataSource]="dataSource">
+            <ng-container *ngFor="let disCol of columnNames" matColumnDef="{{disCol}}">
+              <th mat-header-cell *matHeaderCellDef>
+                <div>{{ disCol }}</div>
+                <div><input type="radio" name="IV" (click)="updateInputs('IV', disCol)" id="{{disCol}}IV" /></div>
+                <div><input type="checkbox" id="DV" (click)="updateInputs('DV', disCol)" id="{{disCol}}DV" /></div>
+                <div *ngIf="generateAO">
+                  <div><input type="radio" name="A" (click)="updateInputs('A', disCol)" id="{{disCol}}A" /></div>
+                  <div><input type="radio" name="O" (click)="updateInputs('O', disCol)"  id="{{disCol}}O" /></div>
+                </div>
+              </th>
+              <td mat-cell *matCellDef="let row">{{ row[disCol] }}</td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+        
+            <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
+          </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
-      <div id="section2">
-        <mat-form-field>
-          <mat-label>Response variable:</mat-label>
-          <input matInput type="text" formControlName="target" readonly />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Feature variables:</mat-label>
-          <input matInput type="text" formControlName="features" readonly />
-        </mat-form-field>
-      </div>
-      <div id="choice">Define components to generate A/O values? <input type="checkbox" (click)="toggleAO()" /></div>
-      <div id="section3">
-        <ng-container *ngIf="generateAO">
+        <div id="variables">
           <mat-form-field>
-            <mat-label>Bearing:</mat-label>
-            <input matInput type="text" formControlName="bearing" readonly />
+            <mat-label>Response variable:</mat-label>
+            <input matInput type="text" formControlName="target" readonly />
           </mat-form-field>
           <mat-form-field>
-            <mat-label>Magnitude:</mat-label>
-            <input matInput type="text" formControlName="magnitude" readonly />
+            <mat-label>Feature variables:</mat-label>
+            <input matInput type="text" formControlName="features" readonly />
           </mat-form-field>
-        </ng-container>
+        </div>
+
+        <div>Define components to generate A/O values? <input type="checkbox" (click)="toggleAO()" /></div>
+        <div id="section3">
+          <ng-container *ngIf="generateAO">
+            <mat-form-field>
+              <mat-label>Bearing:</mat-label>
+              <input matInput type="text" formControlName="bearing" readonly />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Magnitude:</mat-label>
+              <input matInput type="text" formControlName="magnitude" readonly />
+            </mat-form-field>
+          </ng-container>
+        </div>
       </div>
     </form>
 
-
-
-
-    <div class="table-flex-container">
-      <table mat-table [dataSource]="dataSource">
-        <ng-container *ngFor="let disCol of columnNames" matColumnDef="{{disCol}}">
-          <th mat-header-cell *matHeaderCellDef>
-            <div>{{ disCol }}</div>
-            <div><input type="radio" name="IV" (click)="updateInputs('IV', disCol)" id="{{disCol}}IV" /></div>
-            <div><input type="checkbox" id="DV" (click)="updateInputs('DV', disCol)" id="{{disCol}}DV" /></div>
-            <div *ngIf="generateAO">
-              <div><input type="radio" name="A" (click)="updateInputs('A', disCol)" id="{{disCol}}A" /></div>
-              <div><input type="radio" name="O" (click)="updateInputs('O', disCol)"  id="{{disCol}}O" /></div>
-            </div>
-          </th>
-          <td mat-cell *matCellDef="let row">{{ row[disCol] }}</td>
-        </ng-container>
-    
-        <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
-    
-        <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
-      </table>
+    <div class="form-control">
+      <div class="buttons">
+        <button mat-flat-button color="primary" type="button" (click)="createDataset()">Save Dataset</button>
+        <button mat-flat-button color="warn" type="button" (click)="cancel()">Cancel</button>
+      </div>
     </div>
-
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-
-    <div class="buttons">
-      <button mat-flat-button color="primary" type="button" (click)="createDataset()">Create Dataset</button>
-      <button mat-flat-button color="primary" type="button" (click)="cancel()">Cancel</button>
-    </div>
-
   </ng-container>
+
 </ng-container>
 <ng-container *ngIf="dataset">
   <div class="remove-button"><button mat-flat-button (click)="removeDataset()" class="trash">Remove from project<mat-icon>delete_forever</mat-icon></button></div>

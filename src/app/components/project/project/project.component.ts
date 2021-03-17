@@ -90,7 +90,7 @@ export class ProjectComponent implements OnInit {
   }
 
   checkReady(): void {
-    this.canExecute = !!(this.project.location && this.project.dataset && this.pipelines.length > 0);   
+    this.canExecute = this.project.location && this.project.dataset && this.pipelines.length > 0;   
   }
 
   executeProject(): void {
