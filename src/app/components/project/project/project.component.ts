@@ -12,12 +12,12 @@ import { ProjectService } from 'src/app/services/project.service';
 export class ProjectComponent implements OnInit {
   panelOpenState = false;
 
+  canExecute = false;
+
   project;
-  location;
-  locationName = 'No location selected';
-  dataset;
-  datasetName = 'No data selected';
   pipelines = [];
+  locationName = 'No location selected';
+  datasetName = 'No data selected';
   pipelineNames = 'No pipelines selected';
 
   constructor(
@@ -46,14 +46,15 @@ export class ProjectComponent implements OnInit {
       this.locationName = location.name;
       this.project.location = location.id;
     } else {
-      this.locationName = '';
+      this.locationName = 'No location selected';
       this.project.location = null;
     }
     
     const update = {...this.project};
     update.metadata = JSON.stringify(this.project.metadata);
     this.projectService.updateProject(update).subscribe((project) => {
-      console.log('setLocation: ', project);
+      // needs error handling
+      this.checkReady();
     })
   }
 
@@ -63,7 +64,7 @@ export class ProjectComponent implements OnInit {
       this.project.dataset = dataset.id;
       this.project['metadata'] = {...dataset.metadata};
     } else {
-      this.datasetName = '';
+      this.datasetName = 'No data selected';
       this.project.dataset = null;
       this.project['metadata'] = null;
     }
@@ -73,7 +74,8 @@ export class ProjectComponent implements OnInit {
       update['metadata'] = JSON.stringify({...dataset.metadata});
     }
     this.projectService.updateProject(update).subscribe((project) => {
-      console.log('setDataset: ', project);
+      // needs error handling
+      this.checkReady();
     })
   }
 
@@ -84,6 +86,11 @@ export class ProjectComponent implements OnInit {
       typeList.push(pipeline.type);
     }
     this.pipelineNames = typeList.join(', ');
+    this.checkReady();
+  }
+
+  checkReady(): void {
+    this.canExecute = !!(this.project.location && this.project.dataset && this.pipelines.length > 0);   
   }
 
   executeProject(): void {
