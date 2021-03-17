@@ -176,6 +176,7 @@ export class DataComponent implements OnInit {
     this.columnNames = [];
     this.dv = []
     this.datasetForm.reset();
+    this.generateAO = false;
     this.creatingDataset = false;
   }
 
