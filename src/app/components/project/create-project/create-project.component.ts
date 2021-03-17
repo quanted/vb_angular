@@ -40,6 +40,6 @@ export class CreateProjectComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigateByUrl("");
+    this.router.navigateByUrl("home");
   }
 }
