@@ -59,6 +59,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { GlobalCvComponent } from './components/analytical/global-cv/global-cv.component';
+import { WelcomeComponent } from './components/home/welcome/welcome.component';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import { GlobalCvComponent } from './components/analytical/global-cv/global-cv.c
     LocationComponent,
     ModelSelectionComponent,
     DataDetailComponent,
-    GlobalCvComponent
+    GlobalCvComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,

@@ -1,14 +1,16 @@
 <div class="panel">
   <app-navigation></app-navigation>
   <div id="projects">
-    <ng-container *ngIf="!projects">
-      {{ statusMessage }}
+    <ng-container *ngIf="projects.length < 1">
+      <app-welcome></app-welcome>
     </ng-container>
-    <app-project-detail *ngFor="let project of projects" [project]="project" (projectDeleted)="projectDeleted()"></app-project-detail>
-    <div id="create">
-      <button mat-flat-button color="primary" type="button" (click)="createProject()">
-        Create new project
-      </button>
-    </div>
+    <ng-container *ngIf="projects">
+      <app-project-detail *ngFor="let project of projects" [project]="project" (projectDeleted)="projectDeleted()"></app-project-detail>
+      <div id="create">
+        <button mat-flat-button color="primary" type="button" (click)="createProject()">
+          Create new project
+        </button>
+      </div>
+    </ng-container>
   </div>
 </div>

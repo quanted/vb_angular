@@ -1,0 +1,9 @@
+.contents {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    background-color: gainsboro;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0 1rem 1rem 1rem;
+}
