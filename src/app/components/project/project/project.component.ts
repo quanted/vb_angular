@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth/auth.service';
 import { PipelineService } from 'src/app/services/pipeline.service';
 
 import { ProjectService } from 'src/app/services/project.service';
@@ -22,7 +21,6 @@ export class ProjectComponent implements OnInit {
   pipelineNames = 'No pipelines selected';
 
   constructor(
-    private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute,
     private projectService: ProjectService,
@@ -44,25 +42,38 @@ export class ProjectComponent implements OnInit {
   // console.log(+[++[[]][+[]]+[[][[]]+[]][+[]][++[++[++[[]][+[]]][+[]]][+[]]]+[++[[]][+[]]]+[+[]]+[+[]]+[+[]]][+[]]); ?
 
   setLocation(location): void {
-    this.locationName = location.name;
-    this.project.location = location.id;
+    if (location) {
+      this.locationName = location.name;
+      this.project.location = location.id;
+    } else {
+      this.locationName = '';
+      this.project.location = null;
+    }
     
     const update = {...this.project};
     update.metadata = JSON.stringify(this.project.metadata);
     this.projectService.updateProject(update).subscribe((project) => {
-      // project location_id updated
+      console.log('setLocation: ', project);
     })
   }
 
   setDataset(dataset): void {
-    this.datasetName = dataset.name;
-    this.project.dataset = dataset.id;
-    this.project['metadata'] = {...dataset.metadata};
+    if (dataset) {
+      this.datasetName = dataset.name;
+      this.project.dataset = dataset.id;
+      this.project['metadata'] = {...dataset.metadata};
+    } else {
+      this.datasetName = '';
+      this.project.dataset = null;
+      this.project['metadata'] = null;
+    }
 
     const update = {...this.project};
-    update['metadata'] = JSON.stringify({...dataset.metadata});
+    if (update['metadata']) {
+      update['metadata'] = JSON.stringify({...dataset.metadata});
+    }
     this.projectService.updateProject(update).subscribe((project) => {
-      // project metadata updated
+      console.log('setDataset: ', project);
     })
   }
 

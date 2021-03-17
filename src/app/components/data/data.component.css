@@ -111,6 +111,10 @@ button {
 
 }
 
+.remove-button {
+    text-align: right;
+}
+
 .trash {
     border: none;
     background: none;

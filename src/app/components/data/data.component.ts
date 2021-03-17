@@ -80,6 +80,11 @@ export class DataComponent implements OnInit {
     })
   }
 
+  removeDataset(): void {
+    this.dataset = null;
+    this.setDataset.emit(null);
+  }
+
   selectAllRows(): void {
     this.datasetForm.get('startRow').setValue(0);
     this.datasetForm.get('endRow').setValue(this.columnData.length - 1);

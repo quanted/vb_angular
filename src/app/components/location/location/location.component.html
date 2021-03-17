@@ -13,5 +13,6 @@
     </div>
 </ng-container>
 <ng-container *ngIf="location">
+    <div class="remove-button"><button mat-flat-button (click)="removeLocation()" class="trash">Remove from project<mat-icon>delete_forever</mat-icon></button></div>
     <app-location-detail [location]="location"></app-location-detail>
 </ng-container>
