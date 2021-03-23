@@ -128,9 +128,13 @@
               <div *ngIf="defineRegVal">
                 <mat-form-field>
                   <mat-label>Regulatory value:</mat-label>
-                  <input matInput type="text" formControlName="regVal" />
+                  <input matInput type="number" formControlName="regVal" />
                 </mat-form-field>
               </div>
+            </div>
+
+            <div id="do-colinearity">
+              <div>Something about co-linearity? <input type="checkbox" formControlName="regVal" /></div>
             </div>
             
             <div class="form-buttons-container">
