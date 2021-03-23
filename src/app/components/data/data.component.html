@@ -24,7 +24,7 @@
     <div class="container">
       <form [formGroup]="datasetForm" class="container">
         <div id="section1">
-          <div class="form-select">
+          <div class="form-section">
             <div class="form-name">
               <mat-form-field>
                 <mat-label>Dataset name: </mat-label>
@@ -38,7 +38,7 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="form-select">
+          <div class="form-section">
             <div class="form-input">
               <mat-form-field>
                 <mat-label>Start row:</mat-label>
@@ -49,12 +49,12 @@
                 <input matInput type="number" formControlName="endRow" />
               </mat-form-field>
             </div>
-            <div class="button">
+            <div class="form-button">
               <button mat-flat-button color="primary"  type="button" (click)="selectRows()">Add range to selected rows</button>
             </div>
           </div>
 
-          <div class="form-select">
+          <div class="form-section">
             <div class="form-input">
               <mat-form-field>
                 <mat-label>Selected rows:</mat-label>
@@ -66,7 +66,7 @@
               </mat-form-field>
             </div>
             <div>
-              <div class="buttons">
+              <div class="form-buttons">
                 <button mat-flat-button color="primary" type="button" (click)="selectAllRows()">Select all rows</button>
                 <button mat-flat-button color="primary" type="button" (click)="clearSelectedRows()">Clear selected rows</button>
               </div>
@@ -74,18 +74,18 @@
           </div>
         </div>
 
-        <div class="form-select">
+        <div class="form-section">
           <div class="table-flex-container">
             <table mat-table [dataSource]="dataSource">
               <ng-container *ngFor="let disCol of columnNames" matColumnDef="{{disCol}}">
                 <th mat-header-cell *matHeaderCellDef>
-                  <div>{{ disCol }}</div>
                   <div><input type="radio" name="IV" (click)="updateInputs('IV', disCol)" id="{{disCol}}IV" /></div>
                   <div><input type="checkbox" id="DV" (click)="updateInputs('DV', disCol)" id="{{disCol}}DV" /></div>
                   <div *ngIf="generateAO">
                     <div><input type="radio" name="A" (click)="updateInputs('A', disCol)" id="{{disCol}}A" /></div>
                     <div><input type="radio" name="O" (click)="updateInputs('O', disCol)"  id="{{disCol}}O" /></div>
                   </div>
+                  <div>{{ disCol }}</div>
                 </th>
                 <td mat-cell *matCellDef="let row">{{ row[disCol] }}</td>
               </ng-container>
@@ -122,10 +122,20 @@
                 </mat-form-field>
               </div>
             </div>
+
+            <div id="reg-value">
+              <div>Define regulatory value? <input type="checkbox" (click)="toggleRegVal()" /></div>
+              <div *ngIf="defineRegVal">
+                <mat-form-field>
+                  <mat-label>Regulatory value:</mat-label>
+                  <input matInput type="text" formControlName="regVal" />
+                </mat-form-field>
+              </div>
+            </div>
             
-            <div class="buttons-right">
-              <div class="buttons">
-                <button mat-flat-button color="primary" type="button" (click)="createDataset()">Save Dataset</button>
+            <div class="form-buttons-container">
+              <div class="form-buttons">
+                <button mat-flat-button color="primary" (click)="createDataset()">Save Dataset</button>
                 <button mat-flat-button color="warn" type="button" (click)="cancel()">Cancel</button>
               </div>
             </div>

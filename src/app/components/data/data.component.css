@@ -30,7 +30,7 @@ input[type="file"] {
     width: 100%;
 }
 
-.form-select {
+.form-section {
     border: 1px solid gainsboro;
     border-radius: 8px;
     padding: 1rem;
@@ -38,7 +38,7 @@ input[type="file"] {
     grid-template-rows: 1fr auto;
 }
 
-.button {
+.form-button {
     display: grid;
     place-items: center;
 }
@@ -51,20 +51,23 @@ input[type="file"] {
 
 #section3,
 #ao-values,
-.buttons,
+.form-buttons,
 .form-input {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 1rem;
 }
 
-.buttons-right > .buttons {
-    margin: auto 0;
+#section3 {
+    grid-template-columns: 1fr 1fr auto;
 }
 
-.buttons-right {
+.form-buttons-container {
     display: grid;
-    justify-items: right;
+}
+
+.form-buttons {
+    margin-top: auto;
 }
 
 table {

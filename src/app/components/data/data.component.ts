@@ -30,6 +30,7 @@ export class DataComponent implements OnInit {
   dv = [];
 
   generateAO = false;
+  defineRegVal = false;
 
   statusMessage = '';
 
@@ -66,6 +67,7 @@ export class DataComponent implements OnInit {
       features: [null, Validators.required],
       bearing: [null],
       magnitude: [null],
+      regVal: [null]
     });
   }
 
@@ -136,7 +138,8 @@ export class DataComponent implements OnInit {
               velocity: { 
                 bearing: formValues.bearing, 
                 magnitude: formValues.magnitude
-              }
+              },
+              regVal: formValues.regVal
             })
           } else {
             this.statusMessage = "Bearing and magnitude required"
@@ -293,15 +296,17 @@ export class DataComponent implements OnInit {
       this.dataCSV = XLSX.utils.sheet_to_csv(ws);
 
       this.columnNames = this.dataArray[0];
+      this.columnNames = ['row', ...this.columnNames];
       const columnValues = this.dataArray.slice(1);
       for (let i = 0; i < columnValues.length; i++) {
         const record = {};
         const values = columnValues[i];
         for (let j = 0; j < this.columnNames.length; j++) {
-          record[this.columnNames[j]] = values[j];
+          record[this.columnNames[j]] = j == 0? i : values[j - 1];
         }
         this.columnData.push(record);
       }
+
       this.dataSource.data = this.columnData;
       this.dataSource.paginator = this.paginator;
     }
@@ -316,11 +321,15 @@ export class DataComponent implements OnInit {
     this.creatingDataset = true;
   }
 
-  toggleAO() {
+  toggleAO(): void {
     this.generateAO = !this.generateAO;
     if(!this.generateAO) {
       this.datasetForm.get('bearing').setValue(null);
       this.datasetForm.get('magnitude').setValue(null);
     }
+  }
+
+  toggleRegVal(): void {
+    this.defineRegVal = !this.defineRegVal;
   }
 }
