@@ -14,20 +14,20 @@ export class DatasetService {
   dataSet = [];
 
   constructor(private http: HttpClient) {}
-  
+
   ngOnDestroy(){
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
 
   getDataset(dataset_id): Observable<any> {
-    return this.http.get(`${environment.apiURL}dataset/${dataset_id}`)
+    return this.http.get(`${environment.apiURL}dataset/${dataset_id}/`)
     .pipe(
       takeUntil(this.ngUnsubscribe),
       catchError((err) => {
         return of({ error: `Failed to fetch dataset id=${dataset_id}!\n`, err });
       })
-    );;
+    );
   }
 
   getDatasets(): Observable<any> {
