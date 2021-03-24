@@ -1,0 +1,20 @@
+<div *ngIf="cvPipeInfo">
+  <h3>Cross Validation</h3>
+  <form [formGroup]="cvFormGroup">
+    <div class="wrapper">
+      <ng-container formArrayName="formControls">
+        <div *ngFor="let _ of hyperParams.controls; let i = index">
+          <mat-form-field [formGroupName]="i">
+            <mat-label>{{cvPipeInfo['hyper-parameters'][i].name}}</mat-label>
+            <mat-select [formControlName]="cvPipeInfo['hyper-parameters'][i].name">
+              <mat-option *ngFor="let option of getHyperParamOptions(cvPipeInfo['hyper-parameters'][i].options)"
+                          [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </ng-container>
+    </div>
+  </form>
+</div>

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {PipelineInfoModel} from '../../../models/pipeline-info.model';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PipelineService} from '../../../services/pipeline.service';
@@ -26,6 +26,7 @@ export class GlobalCvComponent implements OnInit, OnChanges {
     this.cvFormGroup = this.formBuilder.group({
       formControls: new FormArray([])
     });
+    this.setFormControls();
   }
 
   /**
@@ -33,13 +34,6 @@ export class GlobalCvComponent implements OnInit, OnChanges {
    * @param changes
    */
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('cvPipeInfo') && changes.hasOwnProperty('pipelines')) {
-      if (!changes.cvPipeInfo.firstChange && !changes.pipelines.firstChange) {
-        this.setFormControls();
-        this.cvFormGroup?.disable();
-      }
-    }
-    /*
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
@@ -57,23 +51,22 @@ export class GlobalCvComponent implements OnInit, OnChanges {
         }
       }
     }
-    */
   }
+
 
   /**
    *
    */
   setFormControls() {
     // First check if cv
-    const cv = this.pipelines.find(pipeline => {
+    const cv = {...this.pipelines.find(pipeline => {
       return pipeline.type === 'cvpipe';
-    });
-    console.log(this.cvPipeInfo);
+    })};
 
     // Create controls but set values of controls to cv values else set to default
     const control = this.cvFormGroup?.controls.formControls as FormArray;
 
-    if (cv === undefined) {
+    if (Object.keys(cv).length === 0) {
       this.cvPipeInfo?.['hyper-parameters'].forEach(param => {
         const newGroup = this.formBuilder.group({
           [param.name]: [param.value]
@@ -82,7 +75,7 @@ export class GlobalCvComponent implements OnInit, OnChanges {
       });
     } else {
       // Parse strings into objects
-      // cv.metadata = JSON.parse(cv.metadata);
+      //cv.metadata.hyper_parameters = JSON.parse(cv.metadata.hyper_parameters.replace(/'/g, '"'));
       // Assign value to form fields
       this.cvPipeInfo?.['hyper-parameters'].forEach(param => {
         const newGroup = this.formBuilder.group({
@@ -148,12 +141,12 @@ export class GlobalCvComponent implements OnInit, OnChanges {
    *
    */
   createCV() {
-    let cv = this.pipelines.find(pipeline => {
+    let cv = {...this.pipelines.find(pipeline => {
       return pipeline.type === 'cvpipe';
-    });
+    })};
 
     // Create new cvpipe pipeline if one is not in pipelines
-    if (cv === undefined) {
+    if (Object.keys(cv).length === 0) {
       cv = {
         name: 'cvpipe',
         description: 'cvpipe',
@@ -161,7 +154,10 @@ export class GlobalCvComponent implements OnInit, OnChanges {
         type: 'cvpipe',
         metadata: {
           hyper_parameters: {},
-          estimators: []
+          estimators: [{
+            type: '',
+            hyper_parameters: {}
+          }]
         }
       };
 
@@ -190,9 +186,8 @@ export class GlobalCvComponent implements OnInit, OnChanges {
    *
    */
   updateCVPipe(cv) {
-      cv.metadata.estimators = JSON.parse(cv.metadata.estimators.replace(/'/g, '"'));
-      cv.metadata.hyper_parameters = JSON.parse(cv.metadata.hyper_parameters.replace(/'/g, '"'));
-      console.log(cv);
+      // cv.metadata.estimators = JSON.parse(cv.metadata.estimators.replace(/'/g, '"'));
+      // cv.metadata.hyper_parameters = JSON.parse(cv.metadata.hyper_parameters.replace(/'/g, '"'));
 
       // Get type/hyperparams of each pipeline and append array of objects
       const estimatorObj = [];
@@ -208,8 +203,7 @@ export class GlobalCvComponent implements OnInit, OnChanges {
       cv.metadata.estimators = estimatorObj;
 
       // Get hyperparams from cvFormGroup
-      const hyperParams = this.cvFormGroup.getRawValue();//.controls.formControls as FormArray
-      console.log(hyperParams);
+      const hyperParams = this.cvFormGroup.controls.formControls as FormArray
       if (hyperParams.controls.length > 0) {
         console.log("here");
         // Get each formgroup in the hyperparams formarray and add values to object..
@@ -221,18 +215,18 @@ export class GlobalCvComponent implements OnInit, OnChanges {
 
         // Assign hyperparams object to cv hyper_parameters
         cv.metadata.hyper_parameters = hyperParamsObj;
-        cv.metadata.hyper_parameters['scorer_list'] = 'neg_mean_squared_error';
       }
 
-      /*
       // Stringify
+      cv.metadata.hyper_parameters = JSON.parse(cv.metadata.hyper_parameters.replace(/'/g, '"'));
       cv.metadata = JSON.stringify(cv.metadata);
-      console.log(cv);
-      // Issue with updating a cv pipeline, so delete and make a new one.
-      // this.pipelineService.deletePipeline(cv.id).subscribe();
+
+      // Issue with updating a cv pipeline
+    /*
       this.pipelineService.updatePipeline(cv, cv.id).subscribe(res => {
         console.log(res);
       });
-       */
+
+     */
   }
 }
