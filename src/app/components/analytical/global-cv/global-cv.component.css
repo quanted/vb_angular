@@ -12,3 +12,9 @@
   color: gray;
   cursor: pointer;
 }
+.btns {
+  display: flex;
+  width: 6rem;
+  align-items: center;
+  justify-content: space-between;
+}

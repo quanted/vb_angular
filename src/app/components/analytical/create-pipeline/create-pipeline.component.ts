@@ -119,20 +119,23 @@ export class CreatePipelineComponent implements OnInit {
         return this.pipelineFormGroup.controls.estimatorCtrl.value === pipeline.name;
       }).ptype,
       description: this.pipelineFormGroup.controls.pipelineDescCtrl.value,
-      metadata: ''
+      metadata: {
+        hyper_parameters: {}
+      }
     };
+
     // Get each formgroup and add values to object..
-    const obj = {};
     for (const control of hyperParams.controls) {
       const key = Object.entries(control.value)?.toString().split(',');
-      obj[`${key[0]}`] = key[1];
+      newPipeline.metadata.hyper_parameters[`${key[0]}`] = key[1];
     }
+
     // Endpoint only accepts metadata as a string with only double quotes allowed
     // and no escape characters. Stringify object and assign value to metadata.
-    newPipeline.metadata = `{"hyper_parameters":${JSON.stringify(obj)}}`
-      .replace(/'/g, '\"');
-    // Add pipeline
-    this.pipelineService.addPipeline(newPipeline).subscribe((response) => {
+    newPipeline.metadata = JSON.stringify(newPipeline.metadata);
+
+    this.pipelineService.addPipeline(newPipeline).subscribe(() => {
+      console.log(newPipeline);
       this.pipelineCreated.emit();
     });
   }

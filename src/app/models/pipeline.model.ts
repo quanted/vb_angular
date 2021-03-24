@@ -4,5 +4,5 @@ export interface PipelineModel {
   name: string;
   type: string;
   description: string;
-  metadata?: string;
+  metadata?: any;
 }

@@ -24,8 +24,8 @@ export class PipelineService {
     return this.http.get(`${environment.apiURL}pipeline/?project=${id}`)
     .pipe(
       takeUntil(this.ngUnsubscribe),
-      catchError((err) => {
-        return of({ error: `Failed to fetch poject pipelines!` });
+      catchError(() => {
+        return of({ error: `Failed to fetch project pipelines!` });
       })
     );
   }
@@ -39,10 +39,10 @@ export class PipelineService {
     return this.http.get(`${environment.infoURL}info/pipelines`)
     .pipe(
       takeUntil(this.ngUnsubscribe),
-      catchError((err) => {
+      catchError(() => {
         return of({ error: `Failed to fetch pipelines metadata!` });
       })
-    )
+    );
   }
 
   executePipeline(project, pipelineID): Observable<any> {
@@ -54,7 +54,7 @@ export class PipelineService {
       })
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
+        catchError(() => {
           return of({ error: `Failed to execute pipeline!` });
       })
     );
@@ -64,7 +64,7 @@ export class PipelineService {
     return this.http.get(`${environment.apiURL}pipeline/status/?project_id=${projectID}&pipeline_id=${pipelineID}`)
     .pipe(
       takeUntil(this.ngUnsubscribe),
-      catchError((err) => {
+      catchError(() => {
         return of({ error: `Failed to fetch pipeline status!` });
       })
     );
@@ -74,7 +74,7 @@ export class PipelineService {
     return this.http.post(environment.apiURL + 'pipeline/', pipeline)
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
+        catchError(() => {
           return of({ error: `Failed to add pipeline!` });
         })
       );
@@ -87,7 +87,7 @@ export class PipelineService {
       )
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
+        catchError(() => {
           return of({ error: `Failed to update pipeline!` });
         })
       );
@@ -97,7 +97,7 @@ export class PipelineService {
     return this.http.delete(environment.apiURL + `pipeline/${id}/`)
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
+        catchError(() => {
           return of({ error: `Failed to delete pipeline!` });
         })
       );

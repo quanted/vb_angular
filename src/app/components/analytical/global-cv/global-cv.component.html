@@ -18,6 +18,11 @@
   </ng-container>
 </div>
 </form>
+<div class="btns">
 <mat-icon class="lock" aria-hidden="false" aria-label="lock" (click)="toggleCV()">
   {{disabled ? 'lock' : 'lock_open'}}
 </mat-icon>
+<button *ngIf="!disabled" mat-flat-button color="primary" type="button" (click)="createCV()">
+  Save
+</button>
+</div>
