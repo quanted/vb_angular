@@ -60,6 +60,10 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { GlobalCvComponent } from './components/analytical/global-cv/global-cv.component';
 import { WelcomeComponent } from './components/home/welcome/welcome.component';
+import { CvComponent } from './components/analytical/cv/cv.component';
+import { ModelGraphsComponent } from './components/dashboard/model-graphs/model-graphs.component';
+import { ModelDataTableComponent } from './components/dashboard/model-data-table/model-data-table.component';
+import { ModelLineChartComponent } from './components/dashboard/model-graphs/model-line-chart/model-line-chart.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +94,11 @@ import { WelcomeComponent } from './components/home/welcome/welcome.component';
     ModelSelectionComponent,
     DataDetailComponent,
     GlobalCvComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    CvComponent,
+    ModelGraphsComponent,
+    ModelDataTableComponent,
+    ModelLineChartComponent
   ],
   imports: [
     BrowserModule,
