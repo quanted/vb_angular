@@ -21,6 +21,8 @@
     "@angular/platform-browser": "~11.2.3",
     "@angular/platform-browser-dynamic": "~11.2.3",
     "@angular/router": "~11.2.3",
+    "@types/d3": "^6.3.0",
+    "d3": "^6.6.0",
     "leaflet": "^1.6.0",
     "ngx-cookie-service": "^11.0.2",
     "rxjs": "~6.6.3",
