@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CvComponent } from './cv.component';
+import { ScatterPlotComponent } from './scatter-plot.component';
 
-describe('CvComponent', () => {
-  let component: CvComponent;
-  let fixture: ComponentFixture<CvComponent>;
+describe('ScatterPlotComponent', () => {
+  let component: ScatterPlotComponent;
+  let fixture: ComponentFixture<ScatterPlotComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CvComponent ]
+      declarations: [ ScatterPlotComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CvComponent);
+    fixture = TestBed.createComponent(ScatterPlotComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

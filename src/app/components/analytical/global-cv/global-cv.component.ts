@@ -26,7 +26,6 @@ export class GlobalCvComponent implements OnInit, OnChanges {
     this.cvFormGroup = this.formBuilder.group({
       formControls: new FormArray([])
     });
-    this.setFormControls();
   }
 
   /**
@@ -44,7 +43,7 @@ export class GlobalCvComponent implements OnInit, OnChanges {
           }
           case 'pipelines': {
             if (!changes[propName].firstChange) {
-              this.createCV();
+             this.createCV();
             }
             break;
           }
@@ -74,8 +73,10 @@ export class GlobalCvComponent implements OnInit, OnChanges {
         control.push(newGroup);
       });
     } else {
-      // Parse strings into objects
-      //cv.metadata.hyper_parameters = JSON.parse(cv.metadata.hyper_parameters.replace(/'/g, '"'));
+      // Parse if string
+      if (typeof cv.metadata.hyper_parameters === 'string') {
+        cv.metadata.hyper_parameters = JSON.parse(cv.metadata.hyper_parameters.replace(/'/g, '"'));
+      }
       // Assign value to form fields
       this.cvPipeInfo?.['hyper-parameters'].forEach(param => {
         const newGroup = this.formBuilder.group({
@@ -132,6 +133,7 @@ export class GlobalCvComponent implements OnInit, OnChanges {
     if (this.disabled) {
       this.cvFormGroup.enable();
     } else {
+      this.createCV();
       this.cvFormGroup.disable();
     }
     this.disabled = !this.disabled;
@@ -167,7 +169,7 @@ export class GlobalCvComponent implements OnInit, OnChanges {
       });
 
       // Work around for error for this default value
-      cv.metadata.hyper_parameters['scorer_list'] = 'neg_mean_absolute_error';
+      cv.metadata.hyper_parameters.scorer_list = 'neg_mean_absolute_error';
 
       // Stringify
       cv.metadata = JSON.stringify(cv.metadata);
@@ -186,26 +188,31 @@ export class GlobalCvComponent implements OnInit, OnChanges {
    *
    */
   updateCVPipe(cv) {
-      // cv.metadata.estimators = JSON.parse(cv.metadata.estimators.replace(/'/g, '"'));
-      // cv.metadata.hyper_parameters = JSON.parse(cv.metadata.hyper_parameters.replace(/'/g, '"'));
-
       // Get type/hyperparams of each pipeline and append array of objects
       const estimatorObj = [];
-      this.pipelines.forEach(pipeline => {
-        if (pipeline.type !== 'cvpipe') {
-          estimatorObj.push({
-            type: pipeline.type,
-            hyper_parameters: JSON.parse(pipeline.metadata.hyper_parameters.replace(/'/g, '"'))
-          });
-        }
-      });
+
+      if (this.pipelines.length > 1) {
+        this.pipelines.forEach(pipeline => {
+          if (pipeline.type !== 'cvpipe') {
+            estimatorObj.push({
+              type: pipeline.type,
+              hyper_parameters: JSON.parse(pipeline.metadata.hyper_parameters.replace(/'/g, '"'))
+            });
+          }
+        });
+      } else {
+        estimatorObj.push({
+          type: '',
+          hyper_parameters: {}
+        });
+      }
 
       cv.metadata.estimators = estimatorObj;
 
       // Get hyperparams from cvFormGroup
-      const hyperParams = this.cvFormGroup.controls.formControls as FormArray
+      const hyperParams = this.cvFormGroup.controls.formControls as FormArray;
       if (hyperParams.controls.length > 0) {
-        console.log("here");
+        console.log('here');
         // Get each formgroup in the hyperparams formarray and add values to object..
         const hyperParamsObj = {};
         for (const control of hyperParams.controls) {
@@ -218,15 +225,19 @@ export class GlobalCvComponent implements OnInit, OnChanges {
       }
 
       // Stringify
-      cv.metadata.hyper_parameters = JSON.parse(cv.metadata.hyper_parameters.replace(/'/g, '"'));
-      cv.metadata = JSON.stringify(cv.metadata);
+      cv.metadata = JSON.stringify(cv.metadata).replace(/'/g, '\"');
+      cv.metadata = cv.metadata.replace(/ /g, '');
+      cv.metadata = cv.metadata.replace(/"{/, '{');
+      cv.metadata = cv.metadata.replace(/}"/, '}');
 
-      // Issue with updating a cv pipeline
-    /*
-      this.pipelineService.updatePipeline(cv, cv.id).subscribe(res => {
-        console.log(res);
-      });
+      const data = new FormData();
+      data.append('project', cv.project);
+      data.append('description', cv.description);
+      data.append('type', cv.type);
+      data.append('name', cv.name);
+      data.append('metadata', cv.metadata);
 
-     */
+      this.pipelineService.updatePipelineXHR(data, cv.id);
+
   }
 }

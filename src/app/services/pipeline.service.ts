@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 import { environment } from '../../environments/environment';
 import { PipelineModel } from '../models/pipeline.model';
@@ -13,7 +14,7 @@ import { PipelineModel } from '../models/pipeline.model';
 export class PipelineService {
   private ngUnsubscribe = new Subject();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   ngOnDestroy(){
     this.ngUnsubscribe.next();
@@ -82,15 +83,20 @@ export class PipelineService {
 
   updatePipeline(updatedModel, id): Observable<any> {
     return this.http.put(
-        environment.apiURL + `pipeline/${id}/`,
-        updatedModel
-      )
+        environment.apiURL + `pipeline/${id}/`, updatedModel)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError(() => {
           return of({ error: `Failed to update pipeline!` });
         })
       );
+  }
+
+  updatePipelineXHR(data: FormData, id) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', environment.apiURL + `pipeline/${id}/`);
+    xhr.setRequestHeader('Authorization', `Token ${this.auth.getToken()}`);
+    xhr.send(data);
   }
 
   deletePipeline(id): Observable<any> {
