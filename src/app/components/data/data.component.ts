@@ -67,7 +67,8 @@ export class DataComponent implements OnInit {
       features: [null, Validators.required],
       bearing: [null],
       magnitude: [null],
-      regVal: [null]
+      regVal: [null],
+      split: [null]
     });
   }
 

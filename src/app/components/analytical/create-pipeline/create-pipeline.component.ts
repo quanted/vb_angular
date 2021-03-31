@@ -111,28 +111,27 @@ export class CreatePipelineComponent implements OnInit {
    */
   addPipeline() {
     const hyperParams = this.pipelineFormGroup.controls.hyperParamCtrl as FormArray;
+
+    // Get each formgroup and add values to object..
+    const new_hyper_params = {};
+    for (const control of hyperParams.controls) {
+      const key = Object.entries(control.value)?.toString().split(',');
+      new_hyper_params[`${key[0]}`] = key[1];
+    }
     // Populate a pipeline object.
-    const newPipeline: PipelineModel = {
+    const newPipeline = {
       project: this.projectID,
       name: this.pipelineFormGroup.controls.pipelineNameCtrl.value,
       type: this.pipelineInfo.find(pipeline => {
         return this.pipelineFormGroup.controls.estimatorCtrl.value === pipeline.name;
       }).ptype,
       description: this.pipelineFormGroup.controls.pipelineDescCtrl.value,
-      metadata: {
-        hyper_parameters: {}
-      }
+      metadata: JSON.stringify(new_hyper_params)
     };
-
-    // Get each formgroup and add values to object..
-    for (const control of hyperParams.controls) {
-      const key = Object.entries(control.value)?.toString().split(',');
-      newPipeline.metadata.hyper_parameters[`${key[0]}`] = key[1];
-    }
 
     // Endpoint only accepts metadata as a string with only double quotes allowed
     // and no escape characters. Stringify object and assign value to metadata.
-    newPipeline.metadata = JSON.stringify(newPipeline.metadata);
+    // newPipeline.metadata = JSON.stringify(newPipeline.metadata);
 
     this.pipelineService.addPipeline(newPipeline).subscribe(() => {
       console.log(newPipeline);

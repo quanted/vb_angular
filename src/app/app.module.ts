@@ -63,7 +63,7 @@ import { WelcomeComponent } from './components/home/welcome/welcome.component';
 import { CvComponent } from './components/analytical/cv/cv.component';
 import { ModelGraphsComponent } from './components/dashboard/model-graphs/model-graphs.component';
 import { ModelDataTableComponent } from './components/dashboard/model-data-table/model-data-table.component';
-import { ModelLineChartComponent } from './components/dashboard/model-graphs/model-line-chart/model-line-chart.component';
+// import { ModelLineChartComponent } from './components/dashboard/model-graphs/model-line-chart/model-line-chart.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +98,7 @@ import { ModelLineChartComponent } from './components/dashboard/model-graphs/mod
     CvComponent,
     ModelGraphsComponent,
     ModelDataTableComponent,
-    ModelLineChartComponent
+    // ModelLineChartComponent
   ],
   imports: [
     BrowserModule,
