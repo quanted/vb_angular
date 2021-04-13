@@ -3,4 +3,6 @@
   grid-column-end: 6;
   grid-row-start: 4;
   grid-row-end: 6;
+  min-height: 0;
+  min-width: 0;
 }

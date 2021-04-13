@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
 
-  apiURL: 'http://127.0.0.1:51822/api/',
-  infoURL: 'http://127.0.0.1:51822/',
+  apiURL: 'http://127.0.0.1:8000/api/',
+  infoURL: 'http://127.0.0.1:8000/',
 };
 
 /*

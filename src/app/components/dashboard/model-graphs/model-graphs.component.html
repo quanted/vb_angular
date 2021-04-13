@@ -1,7 +1,25 @@
 <mat-card>
+  <div *ngIf="!data">
+    <h3>Welcome</h3>
+    <p>to the project training dashboard. Select a model from one of the pipelines on the left to
+    get started.</p>
+  </div>
+  <div *ngIf="data">
   <h3>Graphs</h3>
   <div class="grid-container">
+    <div class="grid-item" *ngFor="let a of loop; let index = index">
+    <app-line-plot [data]="data"></app-line-plot>
+      <label>
+        <select>
+          <option value="line">Line Chart</option>
+          <mat-option value="box">Box Plot</mat-option>
+        </select>
+      </label>
+    </div>
     <app-line-plot></app-line-plot>
-    <app-scatter-plot></app-scatter-plot>
+    <app-line-plot></app-line-plot>
+    <app-line-plot></app-line-plot>
+    <!--<app-scatter-plot></app-scatter-plot>-->
+  </div>
   </div>
 </mat-card>

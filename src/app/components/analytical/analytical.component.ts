@@ -1,9 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import { PipelineService } from 'src/app/services/pipeline.service';
-import {PipelineModel} from '../../models/pipeline.model';
-import {ProjectModel} from '../../models/project.model';
 import {PipelineInfoModel} from '../../models/pipeline-info.model';
-import {pipe} from 'rxjs';
 
 
 @Component({
@@ -32,7 +29,7 @@ export class AnalyticalComponent implements OnInit {
   getPipelineInfo() {
     this.pipelineService.getPipelines().subscribe(pipelines => {
       this.cvPipe = pipelines.find(pipeline => {
-        return pipeline.ptype === 'cvpipe';
+        return pipeline.ptype === 'vbhelper';
       });
       const index = pipelines.indexOf(this.cvPipe);
       pipelines.splice(index, 1);

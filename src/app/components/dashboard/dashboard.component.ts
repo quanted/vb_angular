@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * Get the project pipeliones for use by child components.
+   * Get the project pipelines for use by child components.
    * @param projectID - ID of current project obtained from route.
    */
   getPipelines(projectID: string) {
