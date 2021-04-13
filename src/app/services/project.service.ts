@@ -54,7 +54,7 @@ export class ProjectService {
   }
 
   deleteProject(id): Observable<any> {
-    return this.http.delete(environment.apiURL + "project/" + id)
+    return this.http.delete(environment.apiURL + "project/" + id + '/')
     .pipe(
       takeUntil(this.ngUnsubscribe),
       catchError((err) => {
