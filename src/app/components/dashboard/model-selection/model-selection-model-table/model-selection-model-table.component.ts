@@ -1,5 +1,4 @@
-import {Component, OnInit, EventEmitter, Output} from '@angular/core';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import {Component, OnInit, EventEmitter, Output, Input} from '@angular/core';
 
 @Component({
   selector: 'app-model-selection-model-table',
@@ -8,10 +7,22 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 })
 export class ModelSelectionModelTableComponent implements OnInit {
 
+  // @Input() dataSource: any;
   dataSource = [
     {
-      Models: 'Model #1',
-      id: '1'
+      Models: 'Model #1'
+    },
+    {
+      Models: 'Model #2'
+    },
+    {
+      Models: 'Model #3'
+    },
+    {
+      Models: 'Model #4'
+    },
+    {
+      Models: 'Model #5'
     }
   ];
   columnsToDisplay = ['Models'];

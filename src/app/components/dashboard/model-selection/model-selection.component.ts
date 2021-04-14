@@ -23,17 +23,24 @@ export class ModelSelectionComponent implements OnInit {
   models = [];
   dataSource = [
     {
-      Pipelines: 'Pipeline #1',
-      description: 'Pipeline description'
+      Pipelines: 'elastic-net',
+      count: 10
     },
     {
-      Pipelines: 'Pipeline #2',
-      description: 'Pipeline description'
+      Pipelines: 'rbf-svr-cv',
+      count: 10
+    },
+    {
+      Pipelines: 'lassolars',
+      count: 10
+    },
+    {
+      Pipelines: 'multi_pipe',
+      count: 10
     }
   ];
   columnsToDisplay = ['Pipelines'];
   expandedElement: any | null;
-  isExpanded = true;
 
   constructor(
     private route: ActivatedRoute,
