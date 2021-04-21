@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as data from '../../../../../test_data/projec_cv_results.json';
+import * as data from '../../../../../test_data/project_cv_results.json';
 
 @Component({
   selector: 'app-model-graphs',

@@ -22,6 +22,7 @@ export class DataComponent implements OnInit {
   
   dataCSV = '';
   dataArray = [];
+  
   columnData = [];
   columnNames = [];
   
