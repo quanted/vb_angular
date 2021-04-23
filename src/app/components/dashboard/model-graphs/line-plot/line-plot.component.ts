@@ -65,7 +65,7 @@ export class LinePlotComponent implements OnInit, OnChanges {
 
     // Add X axis
     const x = d3.scaleLinear()
-      .domain([1, this.data.length])
+      .domain([1, this.data.y.length])
       .range([ 0, this.contentWidth ]);
     this.g.append('g')
       .attr('class', 'x axis')
@@ -74,17 +74,18 @@ export class LinePlotComponent implements OnInit, OnChanges {
 
     // Add Y axis
     const y = d3.scaleLinear()
-      .domain([Math.min(...this.data),
-        Math.max(...this.data) + 1])
+      .domain([Math.min(...this.data.y),
+        Math.max(...this.data.y) + 1])
       .range([this.contentHeight, 0]);
     this.g.append('g')
       .attr('class', 'y axis')
       // .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
       .call(d3.axisLeft(y)); // Create an axis component with d3.axisLeft
 
+    // Add y data
     let index = 0;
     const lines = this.g.append('path')
-      .datum(this.data)
+      .datum(this.data.y)
       .attr('fill', 'none')
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 1.5)

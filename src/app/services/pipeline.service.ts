@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable, of, Subject } from 'rxjs';
@@ -11,7 +11,7 @@ import { PipelineModel } from '../models/pipeline.model';
 @Injectable({
   providedIn: 'root',
 })
-export class PipelineService {
+export class PipelineService implements OnDestroy {
   private ngUnsubscribe = new Subject();
 
   constructor(private http: HttpClient, private auth: AuthService) {}
@@ -34,7 +34,7 @@ export class PipelineService {
   /**
    * Gets the available pipelines.
    * - GET info/pipelines/
-   * @returns A list of the available pipelines.
+   * @returns - A list of the available pipelines.
    */
   getPipelines(): Observable<any> {
     return this.http.get(`${environment.infoURL}info/pipelines`)
@@ -71,7 +71,7 @@ export class PipelineService {
     );
   }
 
-  addPipeline(pipeline: PipelineModel): Observable<any> {
+  addPipeline(pipeline: any): Observable<any> {
     return this.http.post(environment.apiURL + 'pipeline/', pipeline)
       .pipe(
         takeUntil(this.ngUnsubscribe),
@@ -81,9 +81,9 @@ export class PipelineService {
       );
   }
 
-  updatePipeline(updatedModel, id): Observable<any> {
+  updatePipeline(updatedPipeline): Observable<any> {
     return this.http.put(
-        environment.apiURL + `pipeline/${id}/`, updatedModel)
+        environment.apiURL + `pipeline/${updatedPipeline.id}/`, updatedPipeline)
       .pipe(
         takeUntil(this.ngUnsubscribe),
         catchError(() => {

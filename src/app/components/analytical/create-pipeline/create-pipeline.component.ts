@@ -4,7 +4,7 @@ import {PipelineService} from '../../../services/pipeline.service';
 import {PipelineInfoModel} from '../../../models/pipeline-info.model';
 import {PipelineModel} from '../../../models/pipeline.model';
 import {ActivatedRoute} from '@angular/router';
-import {split} from 'ts-node';
+
 
 @Component({
   selector: 'app-create-pipeline',
@@ -19,7 +19,7 @@ export class CreatePipelineComponent implements OnInit {
   // Form Groups
   pipelineFormGroup: FormGroup;
 
-  @Input() projectID;
+  @Input() vbHelper: any;
   @Input() pipelineInfo: PipelineInfoModel[];
   @Output() pipelineCreated = new EventEmitter();
   @Output() pipelineCancelled = new EventEmitter();
@@ -113,29 +113,30 @@ export class CreatePipelineComponent implements OnInit {
     const hyperParams = this.pipelineFormGroup.controls.hyperParamCtrl as FormArray;
 
     // Get each formgroup and add values to object..
-    const new_hyper_params = {};
+    const newHyperParams = {};
     for (const control of hyperParams.controls) {
       const key = Object.entries(control.value)?.toString().split(',');
-      new_hyper_params[`${key[0]}`] = key[1];
+      newHyperParams[`${key[0]}`] = key[1];
     }
     // Populate a pipeline object.
     const newPipeline = {
-      project: this.projectID,
+      project: this.vbHelper.project,
       name: this.pipelineFormGroup.controls.pipelineNameCtrl.value,
       type: this.pipelineInfo.find(pipeline => {
         return this.pipelineFormGroup.controls.estimatorCtrl.value === pipeline.name;
       }).ptype,
       description: this.pipelineFormGroup.controls.pipelineDescCtrl.value,
-      metadata: JSON.stringify(new_hyper_params)
+      parameters: newHyperParams
     };
 
-    // Endpoint only accepts metadata as a string with only double quotes allowed
-    // and no escape characters. Stringify object and assign value to metadata.
-    // newPipeline.metadata = JSON.stringify(newPipeline.metadata);
+    // Add new pipeline to vbhelper estimator
+    this.vbHelper.metadata.estimators = JSON.parse(this.vbHelper.metadata.estimators.replace(/'/g, '"'));
+    this.vbHelper.metadata.estimators.push(newPipeline);
+    this.vbHelper.metadata = JSON.stringify(this.vbHelper.metadata);
 
-    this.pipelineService.addPipeline(newPipeline).subscribe(() => {
-      console.log(newPipeline);
-      this.pipelineCreated.emit();
+    // Update vbHelper
+    this.pipelineService.updatePipeline(this.vbHelper).subscribe((returnVal) => {
+      this.pipelineCreated.emit(returnVal);
     });
   }
 

@@ -14,7 +14,6 @@ export class ModelGraphsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loop = new Array(4);
-    this.data = data.cv_score?.['elastic-net'].neg_mean_absolute_error;
+    this.data = data;
   }
-
 }

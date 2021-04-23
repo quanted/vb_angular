@@ -1,8 +1,10 @@
 <mat-card>
+  <!--
   <app-global-cv
     [projectID]="projectID"
     [cvPipeInfo]="cvPipe"
     [pipelines]="pipelines"></app-global-cv>
+    -->
 </mat-card>
 
 <ng-container>
@@ -22,8 +24,8 @@
 
 <ng-container *ngIf="creatingPipeline">
   <app-create-pipeline
-    [projectID]="projectID"
+    [vbHelper]="vbHelper"
     [pipelineInfo]="pipelineInfo"
-    (pipelineCreated)="pipelineCreated()"
+    (pipelineCreated)="pipelineCreated($event)"
     (pipelineCancelled)="pipelineCancelled()"></app-create-pipeline>
 </ng-container>
