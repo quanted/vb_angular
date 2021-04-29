@@ -49,7 +49,7 @@ export class ProjectComponent implements OnInit {
       this.locationName = 'No location selected';
       this.project.location = null;
     }
-    
+
     const update = {...this.project};
     update.metadata = JSON.stringify(this.project.metadata);
     this.projectService.updateProject(update).subscribe((project) => {
@@ -86,11 +86,14 @@ export class ProjectComponent implements OnInit {
       typeList.push(pipeline.type);
     }
     this.pipelineNames = typeList.join(', ');
+    if (this.pipelines.length < 1) {
+      this.pipelineNames = 'No pipelines selected';
+    }
     this.checkReady();
   }
 
   checkReady(): void {
-    this.canExecute = this.project.location && this.project.dataset && this.pipelines.length > 0;   
+    this.canExecute = this.project.location && this.project.dataset && this.pipelines.length > 0;
   }
 
   executeProject(): void {

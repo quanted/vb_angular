@@ -1,16 +1,12 @@
 <mat-card>
-  <!--
-  <app-global-cv
-    [projectID]="projectID"
-    [cvPipeInfo]="cvPipe"
-    [pipelines]="pipelines"></app-global-cv>
-    -->
+  <app-global-cv *ngIf="vbHelper !== undefined && vbHelperPipeInfo !== undefined"
+    [vbHelper]="vbHelper" [vbHelperPipeInfo]="vbHelperPipeInfo"></app-global-cv>
 </mat-card>
 
 <ng-container>
   <mat-card>
     <h3>Project pipelines:</h3>
-    <p *ngIf="pipelines.length < 1">No pipelines have been created for this project.</p>
+    <p *ngIf="pipelines === undefined || pipelines.length < 1">No pipelines have been created for this project.</p>
     <div *ngFor="let pipeline of pipelines">
       {{ pipeline.name }}
       <button mat-button color="primary" (click)="deletePipeline(pipeline)">dev delete pipeline</button>
@@ -23,7 +19,7 @@
 </ng-container>
 
 <ng-container *ngIf="creatingPipeline">
-  <app-create-pipeline
+  <app-create-pipeline *ngIf="vbHelper !== undefined && pipelineInfo !== undefined"
     [vbHelper]="vbHelper"
     [pipelineInfo]="pipelineInfo"
     (pipelineCreated)="pipelineCreated($event)"

@@ -129,14 +129,13 @@ export class CreatePipelineComponent implements OnInit {
       parameters: newHyperParams
     };
 
-    // Add new pipeline to vbhelper estimator
-    this.vbHelper.metadata.estimators = JSON.parse(this.vbHelper.metadata.estimators.replace(/'/g, '"'));
+    console.log(this.vbHelper);
     this.vbHelper.metadata.estimators.push(newPipeline);
     this.vbHelper.metadata = JSON.stringify(this.vbHelper.metadata);
 
     // Update vbHelper
-    this.pipelineService.updatePipeline(this.vbHelper).subscribe((returnVal) => {
-      this.pipelineCreated.emit(returnVal);
+    this.pipelineService.updatePipeline(this.vbHelper).subscribe((res) => {
+      this.pipelineCreated.emit(res);
     });
   }
 

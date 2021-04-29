@@ -1,12 +1,8 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
-import { AuthService } from 'src/app/services/auth/auth.service';
-
 import { environment } from '../../environments/environment';
-import { PipelineModel } from '../models/pipeline.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +10,7 @@ import { PipelineModel } from '../models/pipeline.model';
 export class PipelineService implements OnDestroy {
   private ngUnsubscribe = new Subject();
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   ngOnDestroy(){
     this.ngUnsubscribe.next();
@@ -81,7 +77,7 @@ export class PipelineService implements OnDestroy {
       );
   }
 
-  updatePipeline(updatedPipeline): Observable<any> {
+  updatePipeline(updatedPipeline: any): Observable<any> {
     return this.http.put(
         environment.apiURL + `pipeline/${updatedPipeline.id}/`, updatedPipeline)
       .pipe(
@@ -90,13 +86,6 @@ export class PipelineService implements OnDestroy {
           return of({ error: `Failed to update pipeline!` });
         })
       );
-  }
-
-  updatePipelineXHR(data: FormData, id) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('PUT', environment.apiURL + `pipeline/${id}/`);
-    xhr.setRequestHeader('Authorization', `Token ${this.auth.getToken()}`);
-    xhr.send(data);
   }
 
   deletePipeline(id): Observable<any> {

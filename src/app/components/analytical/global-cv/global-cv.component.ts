@@ -1,21 +1,19 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {PipelineInfoModel} from '../../../models/pipeline-info.model';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {PipelineService} from '../../../services/pipeline.service';
-import {PipelineModel} from '../../../models/pipeline.model';
 
 @Component({
   selector: 'app-global-cv',
   templateUrl: './global-cv.component.html',
   styleUrls: ['./global-cv.component.css']
 })
-export class GlobalCvComponent implements OnInit, OnChanges {
+export class GlobalCvComponent implements OnInit {
 
-  @Input() projectID;
-  @Input() cvPipeInfo: PipelineInfoModel;
-  @Input() pipelines: PipelineModel[];
+  @Input() vbHelper: any;
+  @Input() vbHelperPipeInfo: any;
   cvFormGroup: FormGroup;
   disabled = true;
+  outer = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,67 +24,31 @@ export class GlobalCvComponent implements OnInit, OnChanges {
     this.cvFormGroup = this.formBuilder.group({
       formControls: new FormArray([])
     });
+    this.setFormControls();
+    this.cvFormGroup.disable();
+    this.outer = (this.vbHelper.metadata.outer_cv === 'True');
   }
-
-  /**
-   * When @Input changes, this function is called by Angular.
-   * @param changes - contains property names of @Input changes
-   */
-  ngOnChanges(changes: SimpleChanges): void {
-    for (const propName in changes) {
-      if (changes.hasOwnProperty(propName)) {
-        switch (propName) {
-          case 'cvPipeInfo': {
-            this.setFormControls();
-            this.cvFormGroup?.disable();
-            break;
-          }
-          case 'pipelines': {
-            if (!changes[propName].firstChange) {
-             this.createCV();
-            }
-            break;
-          }
-        }
-      }
-    }
-  }
-
 
   /**
    *
    */
   setFormControls() {
-    // First check if cv
-    const cv = {...this.pipelines.find(pipeline => {
-      return pipeline.type === 'vbhelper';
-    })};
-
-    // Create controls but set values of controls to cv values else set to default
+    // Create controls as formArray
     const control = this.cvFormGroup?.controls.formControls as FormArray;
 
-    // Check if cv is empty
-    if (Object.keys(cv).length === 0) {
-      // cv is empty {}, generate forms with default values from cvPipeInfo
-      this.cvPipeInfo?.['hyper-parameters'].forEach(param => {
+    // Parse vbhelper parameters
+    if (typeof this.vbHelper.metadata.parameters === 'string') {
+      this.vbHelper.metadata.parameters = JSON.parse(this.vbHelper.metadata.parameters.replace(/'/g, '"'));
+    }
+
+    // Iterate over key/value pairs of vbHelper params
+    for (const key in this.vbHelper.metadata.parameters) {
+      if (this.vbHelper.metadata.parameters.hasOwnProperty(key)) {
         const newGroup = this.formBuilder.group({
-          [param.name]: [param.value]
+          [key]: [this.vbHelper.metadata.parameters[key]]
         });
         control.push(newGroup);
-      });
-    } else {
-      // cv is not empty
-      // Check that type of hyper_parameters is string before parsing.
-      if (typeof cv.metadata.hyper_parameters === 'string') {
-        cv.metadata.hyper_parameters = JSON.parse(cv.metadata.hyper_parameters.replace(/'/g, '"'));
       }
-      // Assign value to form fields from cv values
-      this.cvPipeInfo?.['hyper-parameters'].forEach(param => {
-        const newGroup = this.formBuilder.group({
-          [param.name]: [cv.metadata.hyper_parameters[`${param.name}`]]
-        });
-        control.push(newGroup);
-      });
     }
   }
 
@@ -144,79 +106,26 @@ export class GlobalCvComponent implements OnInit, OnChanges {
     if (this.disabled) {
       this.cvFormGroup.enable();
     } else {
-      this.createCV();
+      this.updateCVPipe();
       this.cvFormGroup.disable();
     }
     this.disabled = !this.disabled;
   }
 
-  /**
-   *
-   */
-  createCV() {
-    let cv = {...this.pipelines.find(pipeline => {
-      return pipeline.type === 'vbhelper';
-    })};
-
-    // Create new vbhelper pipeline if one is not in pipelines
-    if (Object.keys(cv).length === 0) {
-      cv = {
-        name: 'vbhelper',
-        description: 'vbhelper',
-        project: `${this.projectID}`,
-        type: 'vbhelper',
-        metadata: {
-          hyper_parameters: {},
-          estimators: [{
-            type: '',
-            hyper_parameters: {}
-          }]
-        }
-      };
-
-      // Add default hyper parameters from cvpipeinfo
-      this.cvPipeInfo?.['hyper-parameters'].forEach(param => {
-        cv.metadata.hyper_parameters[`${param.name}`] = param.value;
-      });
-
-      // Stringify
-      cv.metadata = JSON.stringify(cv.metadata);
-
-      // Create
-      this.pipelineService.addPipeline(cv).subscribe(response => {
-          console.log(response);
-        }
-      );
+  updateOuterCV() {
+    // Stringify and update
+    if (this.outer) {
+      this.vbHelper.metadata.outer_cv = 'True';
     } else {
-      this.updateCVPipe(cv);
+      this.vbHelper.metadata.outer_cv = 'False';
     }
+    this.vbHelper.metadata = JSON.stringify(this.vbHelper.metadata);
+    this.pipelineService.updatePipeline(this.vbHelper).subscribe();
+    // Unstringify
+    this.vbHelper.metadata = JSON.parse(this.vbHelper.metadata);
   }
 
-  /**
-   *
-   */
-  updateCVPipe(cv) {
-      // Get type/hyperparams of each pipeline and append array of objects
-      const estimatorObj = [];
-
-      if (this.pipelines.length > 1) {
-        this.pipelines.forEach(pipeline => {
-          if (pipeline.type !== 'vbhelper') {
-            estimatorObj.push({
-              type: pipeline.type,
-              hyper_parameters: JSON.parse(pipeline.metadata.hyper_parameters.replace(/'/g, '"'))
-            });
-          }
-        });
-      } else {
-        estimatorObj.push({
-          type: '',
-          hyper_parameters: {}
-        });
-      }
-
-      cv.metadata.estimators = estimatorObj;
-
+  updateCVPipe() {
       // Get hyperparams from cvFormGroup
       const hyperParams = this.cvFormGroup.controls.formControls as FormArray;
       if (hyperParams.controls.length > 0) {
@@ -227,23 +136,19 @@ export class GlobalCvComponent implements OnInit, OnChanges {
           hyperParamsObj[`${key[0]}`] = key[1];
         }
 
-        // Assign hyperparams object to cv hyper_parameters
-        cv.metadata.hyper_parameters = hyperParamsObj;
+        // Assign value to vbhelper parameters
+        this.vbHelper.metadata.parameters = hyperParamsObj;
+
+        // Parse vbhelper estimators before stringifying
+        if (typeof this.vbHelper.metadata.estimators === 'string') {
+          this.vbHelper.metadata.estimators = JSON.parse(this.vbHelper.metadata.estimators.replace(/'/g, '"'));
+        }
+
+        // Stringify and update
+        this.vbHelper.metadata = JSON.stringify(this.vbHelper.metadata);
+        this.pipelineService.updatePipeline(this.vbHelper).subscribe();
+        // Unstringify
+        this.vbHelper.metadata = JSON.parse(this.vbHelper.metadata);
       }
-
-      // Stringify
-      cv.metadata = JSON.stringify(cv.metadata).replace(/'/g, '\"');
-      cv.metadata = cv.metadata.replace(/ /g, '');
-      cv.metadata = cv.metadata.replace(/"{/, '{');
-      cv.metadata = cv.metadata.replace(/}"/, '}');
-
-      const data = new FormData();
-      data.append('project', cv.project);
-      data.append('description', cv.description);
-      data.append('type', cv.type);
-      data.append('name', cv.name);
-      data.append('metadata', cv.metadata);
-
-      this.pipelineService.updatePipelineXHR(data, cv.id);
   }
 }

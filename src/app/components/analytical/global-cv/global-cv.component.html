@@ -1,14 +1,17 @@
 <h3>Global Cross Validation:</h3>
-<p>{{cvPipeInfo?.description}}</p>
+<mat-slide-toggle [(ngModel)]="outer"
+                  (change)="updateOuterCV()"
+                  color="primary"></mat-slide-toggle>
+<p>{{vbHelper?.description}}</p>
 <!-- Dynamically handle hyper params based on selection change -->
-<form [formGroup]="cvFormGroup">
+<form *ngIf="outer" [formGroup]="cvFormGroup">
 <div class="wrapper">
   <ng-container formArrayName="formControls">
     <div *ngFor="let _ of hyperParams.controls; let i = index">
       <mat-form-field [formGroupName]="i">
-        <mat-label>{{cvPipeInfo['hyper-parameters'][i].name}}</mat-label>
-        <mat-select [formControlName]="cvPipeInfo['hyper-parameters'][i].name">
-          <mat-option *ngFor="let option of getHyperParamOptions(cvPipeInfo['hyper-parameters'][i].options)"
+        <mat-label>{{vbHelperPipeInfo['hyper-parameters'][i].name}}</mat-label>
+        <mat-select [formControlName]="vbHelperPipeInfo['hyper-parameters'][i].name">
+          <mat-option *ngFor="let option of getHyperParamOptions(vbHelperPipeInfo['hyper-parameters'][i].options)"
                       [value]="option">
             {{option}}
           </mat-option>

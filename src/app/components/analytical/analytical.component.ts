@@ -23,6 +23,16 @@ export class AnalyticalComponent implements OnInit {
     this.getPipelineInfo();
   }
 
+  parseVBHelepr() {
+    if (typeof this.vbHelper.metadata.parameters === 'string') {
+      this.vbHelper.metadata.parameters =  JSON.parse(this.vbHelper.metadata.parameters.replace(/'/g, '"'));
+    }
+
+    if (typeof this.vbHelper.metadata.estimators === 'string') {
+      this.vbHelper.metadata.estimators =  JSON.parse(this.vbHelper.metadata.estimators.replace(/'/g, '"'));
+    }
+  }
+
   /**
    * Calls the pipeline service to populate the "create pipeline" UI.
    */
@@ -49,7 +59,12 @@ export class AnalyticalComponent implements OnInit {
   }
 
   deletePipeline(pipeline): void {
-    this.pipelineService.deletePipeline(pipeline.id).subscribe(() => {
+    const index = this.vbHelper.metadata.estimators.indexOf(pipeline);
+    this.vbHelper.metadata.estimators.splice(index, 1);
+    // Stringify
+    this.vbHelper.metadata = JSON.stringify(this.vbHelper.metadata);
+    this.pipelineService.updatePipeline(this.vbHelper).subscribe(res => {
+      this.vbHelper = res;
       this.updateAvailablePipelineList();
     });
   }
@@ -87,9 +102,9 @@ export class AnalyticalComponent implements OnInit {
     // Populate default info and parameters with vbHelperPipeInfo
     this.vbHelper = {
       project: this.projectID,
-      description: 'new vbhelper created',
-      type: 'vbhelper',
-      name: 'vbhelper',
+      description: this.vbHelperPipeInfo.description,
+      type: this.vbHelperPipeInfo.ptype,
+      name: this.vbHelperPipeInfo.name,
       metadata: {
         parameters: {},
         estimators: [],
@@ -105,17 +120,23 @@ export class AnalyticalComponent implements OnInit {
     // Stringify metadata
     this.vbHelper.metadata = JSON.stringify(this.vbHelper.metadata);
 
-    // Add pipeline
+    // Create the vbhelper pipeline for this project
     this.pipelineService.addPipeline(this.vbHelper).subscribe(() => {
       console.log(this.vbHelper);
     });
+
+    // Unstringify
+    this.parseVBHelepr();
   }
 
   /**
    * Gets the list of estimators from vbHelper and updates UI.
    */
   updateAvailablePipelineList(): void {
-    this.pipelines = JSON.parse(this.vbHelper.metadata.estimators.replace(/'/g, '"'));
-    this.setPipelines.emit(this.pipelines);
+    this.parseVBHelepr();
+    this.pipelines = this.vbHelper.metadata.estimators;
+    if (this.pipelines !== undefined) {
+      this.setPipelines.emit(this.pipelines);
+    }
   }
 }
