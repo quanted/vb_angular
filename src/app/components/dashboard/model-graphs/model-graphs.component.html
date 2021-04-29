@@ -5,22 +5,17 @@
     get started.</p>
   </div>
   <div *ngIf="data">
-  <h3>Graphs</h3>
-  <div class="grid-container">
-    <div class="grid-item" *ngFor="let a of loop; let index = index">
-    <app-line-plot [data]="data"></app-line-plot>
-      <label>
-        <select>
-          <option value="line">Line Chart</option>
-          <option value="box">Box Plot</option>
-        </select>
-      </label>
-      <label>
-        <select>
-          <option value="y">y vs y-hat</option>
-        </select>
-      </label>
-    </div>
-  </div>
+    <app-line-plot [data]="graphData"></app-line-plot>
+    <label>
+      <select>
+        <option value="line">Line Chart</option>
+        <option value="box">Box Plot</option>
+      </select>
+    </label>
+    <label>
+      <select>
+        <option value="y">y vs y-hat</option>
+      </select>
+    </label>
   </div>
 </mat-card>
