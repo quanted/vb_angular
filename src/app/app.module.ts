@@ -22,6 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSortModule } from '@angular/material/sort';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -125,7 +126,8 @@ import { ModelSelectionModelTableComponent } from './components/dashboard/model-
     MatIconModule,
     MatStepperModule,
     MatCheckboxModule,
-    MatSortModule
+    MatSortModule,
+    MatSlideToggleModule
   ],
   providers: [
     CookieService,
