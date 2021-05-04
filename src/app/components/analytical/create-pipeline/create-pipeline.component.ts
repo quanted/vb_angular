@@ -2,7 +2,6 @@ import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {PipelineService} from '../../../services/pipeline.service';
 import {PipelineInfoModel} from '../../../models/pipeline-info.model';
-import {PipelineModel} from '../../../models/pipeline.model';
 import {ActivatedRoute} from '@angular/router';
 
 
@@ -84,19 +83,37 @@ export class CreatePipelineComponent implements OnInit {
   /**
    *
    */
+  /**
+   *
+   */
   getHyperParamOptions(options: string): string[] {
     let result: string[] = [];
 
     // Check for range of integer values.
     if (options.includes(':') && !options.includes('.')) {
       // Allocate array of value range.
-      const min = Number(options.charAt(0));
-      const max = Number(options.charAt(options.length - 1)) + 1;
+      const splits = options.split(':', 2);
+      const min = Number(splits[0]);
+      const max = splits[1] === 'inf' ? 100 : Number(splits[1]) + 1;
       for (let i = min; i < max; i++) {
         result.push(i.toString());
       }
     } else if (options.includes(':') && options.includes('.')) {
       // Allocate range of float values
+      const splits = options.split(':', 2);
+      const min = Number.parseFloat(splits[0]);
+      const max = Number.parseFloat(splits[1]);
+      for (let i = min; i < max; i += 0.1) {
+        result.push(i.toPrecision(1).toString());
+      }
+    } else if (options.includes(',') && options.includes('.')) {
+      // Allocate range of float values
+      const splits = options.split(',', 2);
+      const min = Number.parseFloat(splits[0]);
+      const max = Number.parseFloat(splits[1]);
+      for (let i = min; i < max; i += 0.1) {
+        result.push(i.toPrecision(1).toString());
+      }
     } else {
       // Allocate string parameters options
       options = options.replace(/[\[\]']+/g, '');
@@ -128,8 +145,6 @@ export class CreatePipelineComponent implements OnInit {
       description: this.pipelineFormGroup.controls.pipelineDescCtrl.value,
       parameters: newHyperParams
     };
-
-    console.log(this.vbHelper);
     this.vbHelper.metadata.estimators.push(newPipeline);
     this.vbHelper.metadata = JSON.stringify(this.vbHelper.metadata);
 

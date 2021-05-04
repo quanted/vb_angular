@@ -49,3 +49,40 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-element-description-attribution {
   opacity: 0.5;
 }
+
+tr.mat-header-row {
+  height: 0;
+}
+
+.mat-expansion-panel:not([class*='mat-elevation-z']) {
+  box-shadow: none;
+  margin-bottom: 2rem;
+}
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mat-form-field {
+  margin: 16px;
+}
+
+.lock {
+  transform: scale(1.1);
+  color: gray;
+  cursor: pointer;
+}
+.btns {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  width: 75px;
+}
