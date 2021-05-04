@@ -14,7 +14,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
@@ -50,11 +49,8 @@ import { DataDetailComponent } from './components/data/data-detail/data-detail.c
 import { AnalyticalComponent } from './components/analytical/analytical.component';
 import { CreatePipelineComponent } from './components/analytical/create-pipeline/create-pipeline.component';
 import { AnalyticalModelsComponent } from './components/analytical/analytical-models/analytical-models.component';
-import { ModelDialogComponent } from './components/analytical/analytical-models/model-dialog/model-dialog.component';
 import { ModelSelectionComponent } from './components/dashboard/model-selection/model-selection.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-
-import { ElipseComponent } from './components/icons/elipse/elipse.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -90,8 +86,6 @@ import { ModelSelectionModelTableComponent } from './components/dashboard/model-
     AnalyticalComponent,
     AnalyticalModelsComponent,
     CreatePipelineComponent,
-    ModelDialogComponent,
-    ElipseComponent,
     CreateProjectComponent,
     LocationComponent,
     ModelSelectionComponent,
@@ -119,7 +113,6 @@ import { ModelSelectionModelTableComponent } from './components/dashboard/model-
     MatTableModule,
     MatPaginatorModule,
     MatExpansionModule,
-    MatDialogModule,
     MatGridListModule,
     MatSelectModule,
     MatChipsModule,
