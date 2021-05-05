@@ -1,15 +1,21 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DashboardService {
-
+export class DashboardService implements OnDestroy{
+  private ngUnsubscribe = new Subject();
   data: any;
   negMeanAbsoluteError = [];
   negMeanSquaredError = [];
 
   constructor() { }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
   /**
    * The data is supplied here as a variable and formatted
