@@ -4,6 +4,8 @@ import {PipelineModel} from '../../models/pipeline.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProjectModel} from '../../models/project.model';
 import {ProjectService} from '../../services/project.service';
+import {DashboardService} from '../../services/dashboard.service';
+import * as data from '../../../../test_data/project_cv_results.json';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,6 +23,7 @@ export class DashboardComponent implements OnInit {
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private pipelineService: PipelineService,
+    private dashboardService: DashboardService
   ) {
     this.projectID = this.route.snapshot.paramMap.get('id');
   }
@@ -28,6 +31,9 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getProject(this.projectID);
     this.getPipelines(this.projectID);
+    // Data should be retrieved from pipelines/project, now place
+    // into singleton service and parse for chart consumption.
+    this.dashboardService.parseData(data['default']);
   }
 
   /**

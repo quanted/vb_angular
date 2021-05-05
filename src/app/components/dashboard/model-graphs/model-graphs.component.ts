@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as data from '../../../../../test_data/project_cv_results.json';
+import {DashboardService} from '../../../services/dashboard.service';
 
 @Component({
   selector: 'app-model-graphs',
@@ -8,17 +8,17 @@ import * as data from '../../../../../test_data/project_cv_results.json';
 })
 export class ModelGraphsComponent implements OnInit {
 
-  public data: any;
-  graphData = {
-    x: [],
-    y: []
-  };
-  constructor() { }
+  data: any;
+  chartType = 'line';
+  chartValue = 'score';
+  selected = 'negMeanAbsoluteError';
+
+  constructor(
+    private dashboardService: DashboardService
+  ) { }
 
   ngOnInit(): void {
-    this.data = data;
-    this.graphData.x = [...Array(10)].map((_, i) => 1 + i);
-    this.graphData.y = this.data.default.cv_score['elastic-net'].r2;
+    this.setData();
   }
 
   /**
@@ -30,5 +30,9 @@ export class ModelGraphsComponent implements OnInit {
       cur.forEach((e, i) => acc[i] = acc[i] ? acc[i] + e : e);
       return acc;
     }, []).map(e => e / dataArray.length);
+  }
+
+  setData() {
+    this.data = this.dashboardService[this.selected];
   }
 }

@@ -5,16 +5,24 @@
     get started.</p>
   </div>
   <div *ngIf="data">
-    <app-line-plot></app-line-plot>
+    <app-line-plot *ngIf="chartType === 'line'" [data]="data"></app-line-plot>
+    <app-box-plot *ngIf="chartType === 'box'" [data]="data"></app-box-plot>
     <label>
-      <select>
-        <option value="line">Line Chart</option>
+      <select (change)="chartType = $event.target.value">
+        <option value="line" selected>Line Chart</option>
         <option value="box">Box Plot</option>
       </select>
     </label>
     <label>
-      <select>
-        <option value="y">y vs y-hat</option>
+      <select (change)="chartValue = $event.target.value">
+        <option value="y">Y vs Y-Hat</option>
+        <option value="score" selected>CV Score</option>
+      </select>
+    </label>
+    <label *ngIf="chartValue === 'score'">
+      <select (change)="selected = $event.target.value; setData();">
+        <option value="negMeanAbsoluteError" selected>neg_mean_absolute_error</option>
+        <option value="negMeanSquaredError">neg_mean_squared_error</option>
       </select>
     </label>
   </div>
