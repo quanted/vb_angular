@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges, OnDestroy} from '@angular/core';
 import * as d3 from 'd3';
 import {nest} from 'd3-collection';
 
@@ -34,7 +34,7 @@ export class LinePlotComponent implements OnInit, OnChanges {
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('data') && this.data) {
+    if (changes.hasOwnProperty('data') && this.data && !changes['data'].firstChange) {
       if (this.svg !== undefined) {
         // remove appended 'g's
         this.svg.selectAll('g').remove();
@@ -74,7 +74,7 @@ export class LinePlotComponent implements OnInit, OnChanges {
 
     this.scaleY = d3.scaleLinear()
       .domain(d3.extent(this.data, d =>  d.y))
-      .range([this.height - this.margin.bottom, this.margin.top/2]);
+      .range([this.height - this.margin.bottom, this.margin.top / 2]);
 
     this.svg.append('g')
       .attr('class', 'y axis')
@@ -108,7 +108,6 @@ export class LinePlotComponent implements OnInit, OnChanges {
       .attr('d',  d => {
         return d3.line()
           .x(D => {
-            console.log(D)
             return this.scaleX(D['x']);
           })
           .y(D => this.scaleY(D['y']))
