@@ -1,6 +1,7 @@
-import {Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges, OnDestroy} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges} from '@angular/core';
 import * as d3 from 'd3';
 import {nest} from 'd3-collection';
+import {style} from '@angular/animations';
 
 @Component({
   selector: 'app-line-plot',
@@ -34,20 +35,23 @@ export class LinePlotComponent implements OnInit, OnChanges {
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('data') && this.data && !changes['data'].firstChange) {
-      if (this.svg !== undefined) {
+    if (changes.hasOwnProperty('data') && this.data) {
+      if (this.svg !== undefined && !changes.data.firstChange) {
         // remove appended 'g's
         this.svg.selectAll('g').remove();
         // remove append 'paths'
         this.svg.selectAll('path').remove();
+        this.initChart();
+        this.createChart();
       }
-      this.initChart();
-      this.createChart();
       window.addEventListener('resize', () => {
         // remove appended 'g's
         this.svg.selectAll('g').remove();
         // remove append 'paths'
         this.svg.selectAll('path').remove();
+        // Remove legend
+        this.svg.selectAll('rect').remove();
+        this.svg.selectAll('circle').remove();
         // Re-init and draw
         this.initChart();
         this.createChart();
@@ -55,6 +59,10 @@ export class LinePlotComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Initializes the chart: width, height, and axis scales.
+   * @private
+   */
   private initChart(): void {
     this.svg = d3.select(this.chart.nativeElement);
 
@@ -63,6 +71,7 @@ export class LinePlotComponent implements OnInit, OnChanges {
 
     this.svg.append('g').attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
+    // TODO: Add typeof check for string data and use scaleOrdinal or scalePoint instead.
     this.scaleX = d3.scaleLinear()
       .domain(d3.extent(this.data, d => d.x))
       .range([this.margin.left, this.width - this.margin.right]);
@@ -82,13 +91,21 @@ export class LinePlotComponent implements OnInit, OnChanges {
       .call(d3.axisLeft(this.scaleY).ticks(5));
   }
 
+  /**
+   * Draws the chart on the webpage.
+   * @private
+   */
   private createChart(): void {
+
+    // Parse the data data into keys based on type for d3 charting
     const sumstat = nest()
       .key(d => d.type)
       .entries(this.data);
 
-    console.log(sumstat);
+    // Get each key and place in a list
     const lineNames = sumstat.map(d => d.key);
+
+    // Create a function color() that returns a mapped hex color from a key name.
     const color = d3.scaleOrdinal().domain(lineNames).range([
       '#003f5c',
       '#58508d',
@@ -97,6 +114,7 @@ export class LinePlotComponent implements OnInit, OnChanges {
       '#ffa600'
     ]);
 
+    // Draw the chart
     this.svg.selectAll('.line')
       .style('background', 'none')
       .attr('width', this.width)
@@ -108,16 +126,48 @@ export class LinePlotComponent implements OnInit, OnChanges {
       .attr('d',  d => {
         return d3.line()
           .x(D => {
-            return this.scaleX(D['x']);
+            return this.scaleX(D[`x`]);
           })
-          .y(D => this.scaleY(D['y']))
+          .y(D => this.scaleY(D[`y`]))
           .curve(d3.curveBasis)
-          (d['values']);
+          (d.values);
       })
       .attr('fill', 'none')
       .attr('stroke', d => {
-        return color(d['key']) as string;
+        return color(d.key) as string;
       })
-      .attr('stroke-width', 1.5);
+      .attr('stroke-width', 2);
+
+    // Draw legend box
+    this.svg.append('rect')
+      .attr('x', this.margin.left * 2)
+      .attr('y', 0)
+      .attr('width', 100)
+      .attr('height', 60)
+      .attr('stroke', 'black')
+      .attr('fill', 'white');
+
+    // Draw legend circles
+    this.svg.selectAll('dots')
+      .data(lineNames)
+      .enter()
+      .append('circle')
+      .attr('cx', this.margin.left * 2 + 5)
+      .attr('cy', (d, i) => 7 + i * (60 / lineNames.length)) // 100 is where the first dot appears. 25 is the distance between dots
+      .attr('r', 2)
+      .style('fill', (d) => color(d));
+
+    // Draw legend text
+    this.svg.selectAll('labels')
+      .data(lineNames)
+      .enter()
+      .append('text')
+      .attr('x', this.margin.left * 2 + 10)
+      .attr('y', (d, i) => 7 + i * (60 / lineNames.length)) // 100 is where the first dot appears. 25 is the distance between dots
+      .style('fill', (d) => color(d))
+      .text((d) => d)
+      .attr('text-anchor', 'left')
+      .style('alignment-baseline', 'middle')
+      .style('font-size', '11px');
   }
 }
