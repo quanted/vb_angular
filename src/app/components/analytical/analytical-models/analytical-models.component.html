@@ -19,7 +19,7 @@
           <mat-form-field>
             <mat-label>Estimator</mat-label>
             <mat-select formControlName="estimatorCtrl" (selectionChange)="estimatorChange($event)">
-              <mat-option *ngFor="let pipeline of pipelineInfo" [value]="pipeline.name">
+              <mat-option *ngFor="let pipeline of pipelineInfo" [value]="pipeline.ptype">
                 {{pipeline.name}}
               </mat-option>
             </mat-select>

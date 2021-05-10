@@ -6,6 +6,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PipelineModel} from '../../../models/pipeline.model';
 import {MatTableDataSource} from '@angular/material/table';
 import {PipelineInfoModel} from '../../../models/pipeline-info.model';
+import {isNewline} from 'codelyzer/angular/styles/cssLexer';
 
 @Component({
   selector: 'app-analytical-models',
@@ -23,6 +24,7 @@ export class AnalyticalModelsComponent implements OnInit, OnChanges {
 
   @Input() vbHelper: any;
   @Input() pipelineInfo: any;
+  @Output() pipelineCreated = new EventEmitter();
   pipelines: any;
   dataSource: MatTableDataSource<any>;
   // State management variables for Advanced options expansion panel.
@@ -69,9 +71,9 @@ export class AnalyticalModelsComponent implements OnInit, OnChanges {
     if (this.expandedElement !== null) {
       // Set the selected pipeline.
       this.selectedPipeline = this.pipelineInfo.find(pipeline => {
-        return this.expandedElement.name === pipeline.name;
+        return this.expandedElement.type === pipeline.ptype;
       });
-      this.pipelineFormGroup.controls.estimatorCtrl.setValue(this.expandedElement.name);
+      this.pipelineFormGroup.controls.estimatorCtrl.setValue(this.selectedPipeline.ptype);
       this.pipelineFormGroup.controls.pipelineNameCtrl.setValue(this.expandedElement.name);
       this.pipelineFormGroup.controls.pipelineDescCtrl.setValue(this.expandedElement.description);
       // Clear form array
@@ -110,7 +112,7 @@ export class AnalyticalModelsComponent implements OnInit, OnChanges {
   estimatorChange(e): void {
     // Get the selected pipeline.
     this.selectedPipeline = this.pipelineInfo.find(pipeline => {
-      return e.source.triggerValue === pipeline.name;
+      return e.source.value === pipeline.ptype;
     });
     // Update name and description with defaults.
     this.pipelineFormGroup.controls.pipelineNameCtrl.setValue(this.selectedPipeline.name);
@@ -181,11 +183,62 @@ export class AnalyticalModelsComponent implements OnInit, OnChanges {
     } else {
       if (val === 'save') {
         // save pipeline
+        this.updatePipeline();
       } else if (val === 'delete') {
         // delete pipeline
+        this.deletePipeline();
       }
       this.pipelineFormGroup.disable();
     }
     this.disabled = !this.disabled;
+  }
+
+
+  updatePipeline() {
+    // Get params
+    const hyperParams = this.pipelineFormGroup.controls.hyperParamCtrl as FormArray;
+
+    // Get each formgroup and add values to object..
+    const newHyperParams = {};
+    for (const control of hyperParams.controls) {
+      const key = Object.entries(control.value)?.toString().split(',');
+      newHyperParams[`${key[0]}`] = key[1];
+    }
+    // Populate a pipeline object.
+    const newPipeline = {
+      project: this.vbHelper.project,
+      name: this.pipelineFormGroup.controls.pipelineNameCtrl.value,
+      type: this.pipelineFormGroup.controls.estimatorCtrl.value,
+      description: this.pipelineFormGroup.controls.pipelineDescCtrl.value,
+      parameters: newHyperParams
+    };
+
+    // Update pipeline in vbHelper estimators with the new pipeline
+    const index = this.vbHelper.metadata.estimators.indexOf(this.expandedElement);
+    if (index !== -1) {
+      this.vbHelper.metadata.estimators[index] = newPipeline;
+    }
+
+    this.vbHelper.metadata = JSON.stringify(this.vbHelper.metadata);
+
+    // Update vbHelper
+    this.pipelineService.updatePipeline(this.vbHelper).subscribe((res) => {
+      this.pipelineCreated.emit(res);
+    });
+  }
+
+  deletePipeline()  {
+    // Update pipeline in vbHelper estimators with the new pipeline
+    const index = this.vbHelper.metadata.estimators.indexOf(this.expandedElement);
+    if (index !== -1) {
+      this.vbHelper.metadata.estimators.splice(index, 1);
+    }
+
+    this.vbHelper.metadata = JSON.stringify(this.vbHelper.metadata);
+
+    // Update vbHelper
+    this.pipelineService.updatePipeline(this.vbHelper).subscribe((res) => {
+      this.pipelineCreated.emit(res);
+    });
   }
 }

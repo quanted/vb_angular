@@ -8,14 +8,7 @@
     <h3>Project pipelines:</h3>
     <app-analytical-models *ngIf="vbHelper !== undefined && pipelineInfo !== undefined"
       [vbHelper]="vbHelper"
-      [pipelineInfo]="pipelineInfo"></app-analytical-models>
-    <!--
-    <p *ngIf="pipelines === undefined || pipelines.length < 1">No pipelines have been created for this project.</p>
-    <div *ngFor="let pipeline of pipelines">
-      {{ pipeline.name }}
-      <button mat-button color="primary" (click)="deletePipeline(pipeline)">dev delete pipeline</button>
-    </div>
-    -->
+      [pipelineInfo]="pipelineInfo" (pipelineCreated)="pipelineCreated($event)"></app-analytical-models>
   </mat-card>
 </ng-container>
 

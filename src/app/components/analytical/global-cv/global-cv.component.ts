@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {PipelineService} from '../../../services/pipeline.service';
 
@@ -7,7 +7,7 @@ import {PipelineService} from '../../../services/pipeline.service';
   templateUrl: './global-cv.component.html',
   styleUrls: ['./global-cv.component.css']
 })
-export class GlobalCvComponent implements OnInit {
+export class GlobalCvComponent implements OnInit, OnChanges {
 
   @Input() vbHelper: any;
   @Input() vbHelperPipeInfo: any;
@@ -15,18 +15,31 @@ export class GlobalCvComponent implements OnInit {
   disabled = true;
   outer = false;
 
+
   constructor(
     private formBuilder: FormBuilder,
     private pipelineService: PipelineService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.cvFormGroup = this.formBuilder.group({
       formControls: new FormArray([])
     });
+    this.outer = (this.vbHelper.metadata.outer_cv === 'True');
     this.setFormControls();
     this.cvFormGroup.disable();
-    this.outer = (this.vbHelper.metadata.outer_cv === 'True');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.hasOwnProperty('vbHelper') || changes.hasOwnProperty('vbHelperPipeInfo')) {
+      this.cvFormGroup = this.formBuilder.group({
+        formControls: new FormArray([])
+      });
+      this.outer = (this.vbHelper.metadata.outer_cv === 'True');
+      this.setFormControls();
+      this.cvFormGroup.disable();
+    }
   }
 
   /**

@@ -121,12 +121,11 @@ export class AnalyticalComponent implements OnInit {
     this.vbHelper.metadata = JSON.stringify(this.vbHelper.metadata);
 
     // Create the vbhelper pipeline for this project
-    this.pipelineService.addPipeline(this.vbHelper).subscribe(() => {
-      console.log(this.vbHelper);
+    this.pipelineService.addPipeline(this.vbHelper).subscribe(res => {
+      this.vbHelper = res;
+      // Unstringify
+      this.updateAvailablePipelineList();
     });
-
-    // Unstringify
-    this.parseVBHelepr();
   }
 
   /**
