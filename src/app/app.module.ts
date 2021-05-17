@@ -63,6 +63,7 @@ import { ScatterPlotComponent } from './components/dashboard/model-graphs/scatte
 import { LinePlotComponent } from './components/dashboard/model-graphs/line-plot/line-plot.component';
 import { BoxPlotComponent } from './components/dashboard/model-graphs/box-plot/box-plot.component';
 import { ModelSelectionModelTableComponent } from './components/dashboard/model-selection/model-selection-model-table/model-selection-model-table.component';
+import { DashpanelComponent } from './components/dashboard/dashpanel/dashpanel.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import { ModelSelectionModelTableComponent } from './components/dashboard/model-
     ScatterPlotComponent,
     LinePlotComponent,
     BoxPlotComponent,
-    ModelSelectionModelTableComponent
+    ModelSelectionModelTableComponent,
+    DashpanelComponent
   ],
   imports: [
     BrowserModule,

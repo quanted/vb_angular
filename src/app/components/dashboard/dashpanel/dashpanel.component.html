@@ -1,0 +1,5 @@
+<div class="dashpanel">
+    <select name="panel-type" (selectionchange)="loadPanel()">
+        <option *ngFor="let panel of PANEL_TYPES" value="panel">{{panel}}</option>
+    </select>
+</div>
