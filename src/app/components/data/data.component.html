@@ -157,5 +157,6 @@
 <ng-container *ngIf="dataset">
   <div class="remove-button"><button mat-flat-button (click)="removeDataset()" class="trash">Remove from project<mat-icon>delete_forever</mat-icon></button></div>
   <app-data-detail [dataset]="dataset"></app-data-detail>
+  <app-data-statistics [dataset]="dataset"></app-data-statistics>
 </ng-container>
 

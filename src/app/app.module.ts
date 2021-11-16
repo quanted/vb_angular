@@ -64,6 +64,7 @@ import { LinePlotComponent } from './components/dashboard/model-graphs/line-plot
 import { BoxPlotComponent } from './components/dashboard/model-graphs/box-plot/box-plot.component';
 import { ModelSelectionModelTableComponent } from './components/dashboard/model-selection/model-selection-model-table/model-selection-model-table.component';
 import { DashpanelComponent } from './components/dashboard/dashpanel/dashpanel.component';
+import { DataStatisticsComponent } from './components/data/data-statistics/data-statistics.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import { DashpanelComponent } from './components/dashboard/dashpanel/dashpanel.c
     LinePlotComponent,
     BoxPlotComponent,
     ModelSelectionModelTableComponent,
-    DashpanelComponent
+    DashpanelComponent,
+    DataStatisticsComponent
   ],
   imports: [
     BrowserModule,
