@@ -65,6 +65,7 @@ import { BoxPlotComponent } from './components/dashboard/model-graphs/box-plot/b
 import { ModelSelectionModelTableComponent } from './components/dashboard/model-selection/model-selection-model-table/model-selection-model-table.component';
 import { DashpanelComponent } from './components/dashboard/dashpanel/dashpanel.component';
 import { DataStatisticsComponent } from './components/data/data-statistics/data-statistics.component';
+import { CvYhatVsY1Component } from './components/dashboard/model-graphs/cv-yhat-vs-y1/cv-yhat-vs-y1.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import { DataStatisticsComponent } from './components/data/data-statistics/data-
     BoxPlotComponent,
     ModelSelectionModelTableComponent,
     DashpanelComponent,
-    DataStatisticsComponent
+    DataStatisticsComponent,
+    CvYhatVsY1Component
   ],
   imports: [
     BrowserModule,

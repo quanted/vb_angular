@@ -1,7 +1,6 @@
-import {Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import * as d3 from 'd3';
-import {nest} from 'd3-collection';
-import {style} from '@angular/animations';
+import { nest } from 'd3-collection';
 
 @Component({
   selector: 'app-line-plot',
@@ -14,11 +13,11 @@ export class LinePlotComponent implements OnInit, OnChanges {
   // The static attribute is set to True to resolve query results before change
   // detection runs. Without this, changes are applied to data before chart is
   // retrieved and set to a variable.
-  @ViewChild('chart', {static: true}) public chart: ElementRef;
+  @ViewChild('chart', { static: true }) public chart: ElementRef;
 
   // @Input data must be of the specified format to properly render multi data
   // group charts.
-  @Input() data: {type: string, x: any, y: number}[];
+  @Input() data: { type: string, x: any, y: number }[];
 
   svg: any;
   width: number;
@@ -27,7 +26,7 @@ export class LinePlotComponent implements OnInit, OnChanges {
   scaleX: any;
   scaleY: any;
 
-  public constructor(public chartElem: ElementRef) {}
+  public constructor(public chartElem: ElementRef) { }
 
   ngOnInit(): void {
     this.initChart();
@@ -82,7 +81,7 @@ export class LinePlotComponent implements OnInit, OnChanges {
       .call(d3.axisBottom(this.scaleX)); // Create an axis component with d3.axisBottom
 
     this.scaleY = d3.scaleLinear()
-      .domain(d3.extent(this.data, d =>  d.y))
+      .domain(d3.extent(this.data, d => d.y))
       .range([this.height - this.margin.bottom, this.margin.top / 2]);
 
     this.svg.append('g')
@@ -123,7 +122,7 @@ export class LinePlotComponent implements OnInit, OnChanges {
       .data(sumstat)
       .enter()
       .append('path')
-      .attr('d',  d => {
+      .attr('d', d => {
         return d3.line()
           .x(D => {
             return this.scaleX(D[`x`]);
@@ -153,7 +152,7 @@ export class LinePlotComponent implements OnInit, OnChanges {
       .enter()
       .append('circle')
       .attr('cx', this.margin.left * 2 + 5)
-      .attr('cy', (d, i) => 7 + i * (60 / lineNames.length)) // 100 is where the first dot appears. 25 is the distance between dots
+      .attr('cy', (d, i) => 7 + i * (60 / lineNames.length))
       .attr('r', 2)
       .style('fill', (d) => color(d));
 
@@ -163,7 +162,7 @@ export class LinePlotComponent implements OnInit, OnChanges {
       .enter()
       .append('text')
       .attr('x', this.margin.left * 2 + 10)
-      .attr('y', (d, i) => 7 + i * (60 / lineNames.length)) // 100 is where the first dot appears. 25 is the distance between dots
+      .attr('y', (d, i) => 7 + i * (60 / lineNames.length))
       .style('fill', (d) => color(d))
       .text((d) => d)
       .attr('text-anchor', 'left')

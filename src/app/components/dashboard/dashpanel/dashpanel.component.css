@@ -1,4 +1,19 @@
 .dashpanel {
     background-color: yellow;
     height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    padding: 5px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.panel-top {
+    display: grid;
+    width: fit-content;
+}
+
+.chart-container {
+    width: 100%;
+    height: 100%;
 }

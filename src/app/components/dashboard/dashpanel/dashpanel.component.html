@@ -1,5 +1,10 @@
 <div class="dashpanel">
-    <select name="panel-type" (selectionchange)="loadPanel()">
-        <option *ngFor="let panel of PANEL_TYPES" value="panel">{{panel}}</option>
-    </select>
+    <div class="panel-top">
+        <select name="panel-type" (selectionchange)="loadPanel()">
+            <option *ngFor="let panel of PANEL_TYPES" value="panel">{{panel}}</option>
+        </select>
+    </div>
+    <div class="chart-container">
+        <app-cv-yhat-vs-y1 *ngIf="data" [data]="data"></app-cv-yhat-vs-y1>
+    </div>
 </div>
