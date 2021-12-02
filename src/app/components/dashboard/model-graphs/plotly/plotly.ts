@@ -2,18 +2,21 @@ import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } fro
 import * as Plotly from 'plotly.js/dist/plotly.js';
 
 @Component({
-  selector: 'app-cv-yhat-vs-y1',
-  templateUrl: './cv-yhat-vs-y1.component.html',
-  styleUrls: ['./cv-yhat-vs-y1.component.css']
+  selector: 'app-plotly',
+  templateUrl: './plotly.component.html',
+  styleUrls: ['./plotly.component.css']
 })
-export class CvYhatVsY1Component implements OnChanges {
+export class PlotlyComponent implements OnChanges {
   // Get access to the plot element in the DOM
   @ViewChild("plot", { static: true }) public plot: ElementRef;
 
   // Titles
-  plotTitle = "Y and CV-test-Yhat";
-  xAxisTitle = "Observed Y";
-  yAxisTitle = "Predicted Y";
+  @Input() plotTitle: string;
+  @Input() xAxisTitle: string;
+  @Input() yAxisTitle: string;
+  // Set to 0 for auto scaling # of tiks on xaxis or set to a number for custom tik count
+  @Input() xNTicks: number;
+
   // Array of data with x values, y values, type (line, bar, etc...),
   // and name for each line to be plotted 
   @Input() data: {
@@ -32,6 +35,10 @@ export class CvYhatVsY1Component implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.chart && this.data) {
+      this.chart.layout.title.text = this.plotTitle;
+      this.chart.layout.xaxis.title.text = this.xAxisTitle;
+      this.chart.layout.yaxis.title.text = this.yAxisTitle;
+      this.chart.layout.xaxis.nticks = this.xNTicks ?? 0;
       this.chart.data = this.data;
       Plotly.react(this.plot.nativeElement, this.chart);
     }
@@ -43,8 +50,8 @@ export class CvYhatVsY1Component implements OnChanges {
     this.chart = {
       data: this.data,
       layout: {
-        paper_bgcolor: "#404040",
-        plot_bgcolor: "#404040",
+        paper_bgcolor: "#282828",
+        plot_bgcolor: "#282828",
         title: {
           text: this.plotTitle,
           font: { size: 14, color: color }

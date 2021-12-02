@@ -1,5 +1,5 @@
 .dashpanel {
-    background-color: yellow;
+    background-color: #181818;
     height: 100%;
     display: grid;
     grid-template-rows: auto 1fr;
@@ -9,8 +9,8 @@
 }
 
 .panel-top {
-    display: grid;
-    width: fit-content;
+    display: flex;
+    width: 100%;
 }
 
 .chart-container {

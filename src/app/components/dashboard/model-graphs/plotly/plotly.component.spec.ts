@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CvYhatVsY1Component } from './cv-yhat-vs-y1.component';
+import { CvYhatVsY1Component } from './plotly';
 
 describe('CvYhatVsY1Component', () => {
   let component: CvYhatVsY1Component;
@@ -8,9 +8,9 @@ describe('CvYhatVsY1Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CvYhatVsY1Component ]
+      declarations: [CvYhatVsY1Component]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
