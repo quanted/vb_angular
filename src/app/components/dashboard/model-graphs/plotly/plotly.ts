@@ -16,6 +16,7 @@ export class PlotlyComponent implements OnChanges {
   @Input() yAxisTitle: string;
   // Set to 0 for auto scaling # of tiks on xaxis or set to a number for custom tik count
   @Input() xNTicks: number;
+  @Input() xAxisType: string;
 
   // Array of data with x values, y values, type (line, bar, etc...),
   // and name for each line to be plotted 
@@ -39,6 +40,7 @@ export class PlotlyComponent implements OnChanges {
       this.chart.layout.xaxis.title.text = this.xAxisTitle;
       this.chart.layout.yaxis.title.text = this.yAxisTitle;
       this.chart.layout.xaxis.nticks = this.xNTicks ?? 0;
+      this.chart.layout.xaxis.type = this.xAxisType ?? "linear";
       this.chart.data = this.data;
       Plotly.react(this.plot.nativeElement, this.chart);
     }

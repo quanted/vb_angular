@@ -11,6 +11,17 @@
 .panel-top {
     display: flex;
     width: 100%;
+    min-width: 0;
+}
+
+.panel-top label {
+    color: white;
+}
+
+.label-input {
+    display: grid;
+    min-width: 0;
+    font-size: 11px;
 }
 
 .chart-container {

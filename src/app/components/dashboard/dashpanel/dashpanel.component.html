@@ -1,13 +1,30 @@
 <div class="dashpanel">
     <div class="panel-top">
-        <select name="panel-type" (change)="loadPanel($event)">
-            <option *ngFor="let panel of PANEL_TYPES" value="{{panel.title}}">{{panel.title}}</option>
-        </select>
-        <label for="decision-criteria">Decision Criteria</label>
-        <input type="number" name="decision-criteria" placeholder="100" (keyup)="decisionCriteriaChange($event)" />
+        <div class="label-input">
+            <label for="panel-type">Chart</label>
+            <select name="panel-type" [(ngModel)]="chart" (change)="loadPanel($event)">
+                <option *ngFor="let panel of PANEL_TYPES" [ngValue]="panel">{{panel.title}}</option>
+            </select>
+        </div>
+        <div class="label-input" *ngIf="chart.title != 'Y vs. CV Test YHat'">
+            <label for="chart-type">Chart Type</label>
+            <select name="chart-type" [(ngModel)]="chartType" (change)="loadPanel($event)">
+                <option *ngFor="let type of CHART_TYPES" [ngValue]="type">{{type}}</option>
+            </select>
+        </div>
+        <div class="label-input" *ngIf="chart.title == 'Y vs. CV Test YHat'">
+            <label for="decision-criteria">Decision Criteria</label>
+            <input type="number" name="decision-standard" value="{{decisionCriteria}}"
+                (change)="decisionCriteriaChange($event)" />
+        </div>
+        <div class="label-input" *ngIf="chart.title == 'Y vs. CV Test YHat'">
+            <label for="reg-standard">Regulatory Standard</label>
+            <input type="number" name="reg-standard" value="{{regulatoryStandard}}"
+                (change)="regulatoryStandardChange($event)" />
+        </div>
     </div>
     <div class="chart-container">
         <app-plotly *ngIf="data" [data]="data" [plotTitle]="plotTitle" [xAxisTitle]="xAxisTitle"
-            [yAxisTitle]="yAxisTitle" [xNTicks]="nTicks"></app-plotly>
+            [yAxisTitle]="yAxisTitle" [xNTicks]="nTicks" [xAxisType]="xAxisType"></app-plotly>
     </div>
 </div>
