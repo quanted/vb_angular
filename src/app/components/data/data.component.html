@@ -4,10 +4,21 @@
       <ng-container *ngIf="datasets.length > 0">
         <h4>Use an existing dataset</h4>
         <div *ngFor="let dataset of datasets" class="dataset-buttons">
-          <button mat-flat-button color="primary" type="button" (click)="selectDataset(dataset)">Use</button>
-          <div class="dataset-name">{{ dataset.name }}, {{ dataset.description }}</div>
-          <button (click)="deleteDataset(dataset)" class="trash"><mat-icon>delete_forever</mat-icon></button>
-      </div>
+          <button
+            mat-flat-button
+            color="primary"
+            type="button"
+            (click)="selectDataset(dataset)"
+          >
+            Use
+          </button>
+          <div class="dataset-name">
+            {{ dataset.name }}, {{ dataset.description }}
+          </div>
+          <button (click)="deleteDataset(dataset)" class="trash">
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </div>
         <h4>- Or -</h4>
       </ng-container>
     </div>
@@ -50,7 +61,14 @@
               </mat-form-field>
             </div>
             <div class="form-button">
-              <button mat-flat-button color="primary"  type="button" (click)="selectRows()">Add range to selected rows</button>
+              <button
+                mat-flat-button
+                color="primary"
+                type="button"
+                (click)="selectRows()"
+              >
+                Add range to selected rows
+              </button>
             </div>
           </div>
 
@@ -58,17 +76,41 @@
             <div class="form-input">
               <mat-form-field>
                 <mat-label>Selected rows:</mat-label>
-                <input matInput type="text" formControlName="selectedRows" readonly/>
+                <input
+                  matInput
+                  type="text"
+                  formControlName="selectedRows"
+                  readonly
+                />
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Total rows: </mat-label>
-                <input matInput type="text" formControlName="totalRows" readonly />
+                <input
+                  matInput
+                  type="text"
+                  formControlName="totalRows"
+                  readonly
+                />
               </mat-form-field>
             </div>
             <div>
               <div class="form-buttons">
-                <button mat-flat-button color="primary" type="button" (click)="selectAllRows()">Select all rows</button>
-                <button mat-flat-button color="primary" type="button" (click)="clearSelectedRows()">Clear selected rows</button>
+                <button
+                  mat-flat-button
+                  color="primary"
+                  type="button"
+                  (click)="selectAllRows()"
+                >
+                  Select all rows
+                </button>
+                <button
+                  mat-flat-button
+                  color="primary"
+                  type="button"
+                  (click)="clearSelectedRows()"
+                >
+                  Clear selected rows
+                </button>
               </div>
             </div>
           </div>
@@ -77,26 +119,60 @@
         <div class="form-section">
           <div class="table-flex-container">
             <table mat-table [dataSource]="dataSource">
-              <ng-container *ngFor="let disCol of columnNames" matColumnDef="{{disCol}}">
+              <ng-container
+                *ngFor="let disCol of columnNames"
+                matColumnDef="{{ disCol }}"
+              >
                 <th mat-header-cell *matHeaderCellDef>
-                  <div><input type="radio" name="IV" (click)="updateInputs('IV', disCol)" id="{{disCol}}IV" /></div>
-                  <div><input type="checkbox" id="DV" (click)="updateInputs('DV', disCol)" id="{{disCol}}DV" /></div>
+                  <div>
+                    <input
+                      type="radio"
+                      name="IV"
+                      (click)="updateInputs('IV', disCol)"
+                      id="{{ disCol }}IV"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      id="DV"
+                      (click)="updateInputs('DV', disCol)"
+                      id="{{ disCol }}DV"
+                    />
+                  </div>
                   <div *ngIf="generateAO">
-                    <div><input type="radio" name="A" (click)="updateInputs('A', disCol)" id="{{disCol}}A" /></div>
-                    <div><input type="radio" name="O" (click)="updateInputs('O', disCol)"  id="{{disCol}}O" /></div>
+                    <div>
+                      <input
+                        type="radio"
+                        name="A"
+                        (click)="updateInputs('A', disCol)"
+                        id="{{ disCol }}A"
+                      />
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        name="O"
+                        (click)="updateInputs('O', disCol)"
+                        id="{{ disCol }}O"
+                      />
+                    </div>
                   </div>
                   <div>{{ disCol }}</div>
                 </th>
                 <td mat-cell *matCellDef="let row">{{ row[disCol] }}</td>
               </ng-container>
-          
+
               <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
-          
+
               <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
             </table>
           </div>
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-          
+          <mat-paginator
+            [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons
+          ></mat-paginator>
+
           <div id="variables">
             <mat-form-field>
               <mat-label>Response variable:</mat-label>
@@ -110,21 +186,37 @@
 
           <div id="section3">
             <div>
-              <div>Define components to generate A/O values? <input type="checkbox" (click)="toggleAO()" /></div>
+              <div>
+                Define components to generate A/O values?
+                <input type="checkbox" (click)="toggleAO()" />
+              </div>
               <div *ngIf="generateAO" id="ao-values">
                 <mat-form-field>
                   <mat-label>Bearing:</mat-label>
-                  <input matInput type="text" formControlName="bearing" readonly />
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="bearing"
+                    readonly
+                  />
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>Magnitude:</mat-label>
-                  <input matInput type="text" formControlName="magnitude" readonly />
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="magnitude"
+                    readonly
+                  />
                 </mat-form-field>
               </div>
             </div>
 
             <div id="reg-value">
-              <div>Define regulatory value? <input type="checkbox" (click)="toggleRegVal()" /></div>
+              <div>
+                Define regulatory value?
+                <input type="checkbox" (click)="toggleRegVal()" />
+              </div>
               <div *ngIf="defineRegVal">
                 <mat-form-field>
                   <mat-label>Regulatory value:</mat-label>
@@ -133,30 +225,37 @@
               </div>
             </div>
 
-            <div id="do-colinearity">
-              <div>Something about co-linearity? <input type="checkbox" formControlName="regVal" /></div>
-            </div>
-
-            <div id="hold-data">
-              <div>Something about training split? <input type="checkbox" formControlName="split" /></div>
-            </div>
-            
             <div class="form-buttons-container">
               <div class="form-buttons">
-                <button mat-flat-button color="primary" (click)="createDataset()">Save Dataset</button>
-                <button mat-flat-button color="warn" type="button" (click)="cancel()">Cancel</button>
+                <button
+                  mat-flat-button
+                  color="primary"
+                  (click)="createDataset()"
+                >
+                  Save Dataset
+                </button>
+                <button
+                  mat-flat-button
+                  color="warn"
+                  type="button"
+                  (click)="cancel()"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           </div>
-
         </div>
       </form>
     </div>
   </ng-container>
 </ng-container>
 <ng-container *ngIf="dataset">
-  <div class="remove-button"><button mat-flat-button (click)="removeDataset()" class="trash">Remove from project<mat-icon>delete_forever</mat-icon></button></div>
+  <div class="remove-button">
+    <button mat-flat-button (click)="removeDataset()" class="trash">
+      Remove from project<mat-icon>delete_forever</mat-icon>
+    </button>
+  </div>
   <app-data-detail [dataset]="dataset"></app-data-detail>
   <app-data-statistics [dataset]="dataset"></app-data-statistics>
 </ng-container>
-
