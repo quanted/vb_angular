@@ -1,0 +1,15 @@
+::ng-deep .js-plotly-plot .plotly .modebar {
+    position: absolute;
+    left: 50%;
+    right: unset;
+    top: 27px;
+    transform: translateX(-50%);
+}
+
+::ng-deep .js-plotly-plot .plotly .modebar-group {
+    padding-left: 0;
+}
+
+::ng-deep .js-plotly-plot .plotly .modebar-btn {
+    background-color: unset;
+}

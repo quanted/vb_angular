@@ -65,6 +65,7 @@ import { BoxPlotComponent } from './components/dashboard/model-graphs/box-plot/b
 import { ModelSelectionModelTableComponent } from './components/dashboard/model-selection/model-selection-model-table/model-selection-model-table.component';
 import { DashpanelComponent } from './components/dashboard/dashpanel/dashpanel.component';
 import { DataStatisticsComponent } from './components/data/data-statistics/data-statistics.component';
+import { PlotlyComponent } from './components/dashboard/model-graphs/plotly/plotly';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import { DataStatisticsComponent } from './components/data/data-statistics/data-
     BoxPlotComponent,
     ModelSelectionModelTableComponent,
     DashpanelComponent,
-    DataStatisticsComponent
+    DataStatisticsComponent,
+    PlotlyComponent
   ],
   imports: [
     BrowserModule,
@@ -141,4 +143,4 @@ import { DataStatisticsComponent } from './components/data/data-statistics/data-
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
