@@ -1,6 +1,5 @@
 @import url("https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css");
 
-
 /* You can add global styles to this file, and also import other style files */
 
 /* Responsive Styles */
@@ -12,11 +11,11 @@
 
 html,
 body {
-  margin: 0;
-  padding: 0;
-  background: #0e6993;
+    margin: 0;
+    padding: 0;
+    background: #0e6993;
 }
 
 body {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
 }

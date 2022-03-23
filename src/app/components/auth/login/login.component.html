@@ -1,57 +1,42 @@
 <div class="container">
-  <div class="login">
-    <div class="title">
-      <h1>Welcome to Virtual Beach</h1>
-      <img src="./assets/images/d2d.png" />
-    </div>
+    <div class="login">
+        <div class="title">
+            <h1>Welcome to Virtual Beach</h1>
+            <img src="./assets/images/d2d.png" />
+        </div>
 
-    <form class="fields" [formGroup]="loginForm" (keyup.enter)="login()">
-      <mat-form-field>
-        <mat-label>Enter Username</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Ex. doe.john@epa.gov"
-          formControlName="username"
-        />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Enter Password</mat-label>
-        <input matInput type="password" formControlName="password" />
-      </mat-form-field>
-    </form>
+        <form class="fields" [formGroup]="loginForm" (keyup.enter)="login()">
+            <mat-form-field>
+                <mat-label>Enter Username</mat-label>
+                <input matInput type="text" placeholder="Ex. doe.john@epa.gov" formControlName="username" />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Enter Password</mat-label>
+                <input matInput type="password" formControlName="password" />
+            </mat-form-field>
+        </form>
 
-    <div id="status-message">{{ statusMessage }}</div>
+        <div id="status-message">{{ statusMessage }}</div>
 
-    <div>
-      <div id="login-button">
-        <button mat-flat-button color="primary"  (click)="login()">
-          Login
-        </button>
-        <button mat-flat-button color="primary"  (click)="register()">
-          Register
-        </button>
-      </div>
-      <div id="reset-button">
-        <button mat-flat-button color="primary"  (click)="resetPW()">
-          Forgot password?
-        </button>
-      </div>
-    </div>
-    <div>
-      <ng-container *ngIf="registeringUser">
-        <app-registration
-          (registeringUser)="isRegistering($event)"
-        ></app-registration>
-      </ng-container>
-    </div>
+        <div>
+            <div id="login-button">
+                <button mat-flat-button color="primary" (click)="login()">Login</button>
+                <button mat-flat-button color="primary" (click)="register()">Register</button>
+            </div>
+            <div id="reset-button">
+                <button mat-flat-button color="primary" (click)="resetPW()">Forgot password?</button>
+            </div>
+        </div>
+        <div>
+            <ng-container *ngIf="registeringUser">
+                <app-registration (registeringUser)="isRegistering($event)"></app-registration>
+            </ng-container>
+        </div>
 
-    <div>
-      <ng-container *ngIf="resetUserPW">
-        <app-reset-password
-          (resetUserPW)="isResetting($event)"
-        ></app-reset-password>
-      </ng-container>
+        <div>
+            <ng-container *ngIf="resetUserPW">
+                <app-reset-password (resetUserPW)="isResetting($event)"></app-reset-password>
+            </ng-container>
+        </div>
     </div>
-  </div>
 </div>

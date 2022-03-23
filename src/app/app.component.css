@@ -4,6 +4,10 @@ body {
     height: 100vh;
 }
 
+.main {
+    overflow-y: scroll;
+}
+
 app-footer {
     text-align: center;
 }
