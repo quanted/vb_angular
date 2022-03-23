@@ -1,38 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AnalyticalComponent } from './analytical.component';
-import { HttpClientTestingModule }
-       from '@angular/common/http/testing';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import { HttpRequestInterceptor } 
-       from '../../services/testing/HttpRequestInterceptor';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-describe('AnalyticalComponent', () => {
-  let component: AnalyticalComponent;
-  let fixture: ComponentFixture<AnalyticalComponent>;
+import { AnalyticalComponent } from "./analytical.component";
 
-  beforeEach(async () => {
-    TestBed.configureTestingModule({
-      declarations: [AnalyticalComponent],
-      imports: [
-        HttpClientTestingModule
-      ],
-      providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: HttpRequestInterceptor,
-          multi: true
-        }
-      ]
-    }).compileComponents();
-  });
+describe("AnalyticalComponent", () => {
+    let component: AnalyticalComponent;
+    let fixture: ComponentFixture<AnalyticalComponent>;
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AnalyticalComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [AnalyticalComponent],
+        }).compileComponents();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(AnalyticalComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
+
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });
