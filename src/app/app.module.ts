@@ -65,6 +65,7 @@ import { BoxPlotComponent } from "./components/dashboards/model-graphs/box-plot/
 import { DashpanelComponent } from "./components/dashboards/dashpanel/dashpanel.component";
 
 import { FluidHeightDirective } from "./directives/fluid-height.directive";
+import { PipelineStatusComponent } from './components/project/pipelines/pipeline-status/pipeline-status.component';
 
 @NgModule({
     declarations: [
@@ -103,6 +104,7 @@ import { FluidHeightDirective } from "./directives/fluid-height.directive";
         BoxPlotComponent,
         DashpanelComponent,
         FluidHeightDirective,
+        PipelineStatusComponent,
     ],
     imports: [
         BrowserModule,

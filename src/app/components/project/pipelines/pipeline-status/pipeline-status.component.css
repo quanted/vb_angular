@@ -1,0 +1,49 @@
+#pipeline-panel {
+    display: grid;
+    padding: 1rem;
+    padding-top: 0;
+}
+
+mat-expansion-panel {
+    background-color: #ffffff;
+}
+
+#project-pipelines {
+    width: max-content;
+    max-width: 100%;
+}
+
+#buttons {
+    padding: 0 1rem 1rem 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    column-gap: 1rem;
+}
+
+#buttons > button {
+    border-radius: 4px;
+    border: 1px solid rgb(80, 80, 80);
+    width: 10rem;
+}
+
+.status-container {
+    display: flex;
+    place-items: center;
+    flex-direction: row;
+    margin: 0.25rem 0 0.25rem 0;
+}
+
+.status {
+    padding: 0;
+    display: flex;
+    place-items: center;
+}
+
+.trash {
+    border: none;
+    background: none;
+}
+
+.trash:hover {
+    background-color: rgb(228, 228, 228);
+}

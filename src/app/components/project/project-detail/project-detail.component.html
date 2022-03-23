@@ -1,48 +1,33 @@
 <div *ngIf="project" class="project-info">
-  <div id="project-description">
-    <div id="description">
-      <div id="project-name">
-          <span>{{ project.name }}:  </span>
-          <span>{{ project.description }}</span>
-      </div>
-      <div id="details">
-        <p>
-          Location: {{ locationName || "no location"}}
-        </p>
-        <p>
-          Dataset: {{ datasetName || "no dataset" }}
-        </p>
-        <p id="pipeline-heading">Project pipelines:</p>
-      </div>
-    </div>
-    <div id="mini-map">
-      <app-mini-map [location]="project"></app-mini-map>
-    </div>
-  </div>
-
-  <div id="pipeline-panel">
-    <mat-accordion id="project-pipelines">
-      <mat-expansion-panel (opened)="panelOpenState=true"
-                                (closed)="panelOpenState=false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-              <span class="pipelines-status">{{ pipelinesStatusMessage }}</span>
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div *ngFor="let pipeline of pipelines" class="status-container">{{ pipeline.name }}
-          <div class="status">Status: {{ pipeline.metadata.status || "Pipeline has not been executed" }}</div>
-          <button (click)="cancelPipeline()" *ngIf="!pipeline.completed" class="trash"><mat-icon>delete_forever</mat-icon></button>
+    <div id="project-description">
+        <div id="description">
+            <div id="project-name">
+                <span>{{ project.name }}: </span>
+                <span>{{ project.description }}</span>
+            </div>
+            <div id="details">
+                <p>Location: {{ locationName || "no location" }}</p>
+                <p>Dataset: {{ datasetName || "no dataset" }}</p>
+                <p id="pipeline-heading">Project pipelines:</p>
+            </div>
         </div>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
+        <div id="mini-map">
+            <app-mini-map [location]="project"></app-mini-map>
+        </div>
+    </div>
 
-  <div id="buttons">
-    <button mat-flat-button color="primary"  type="button" (click)="editProject(project)">Project setup</button>
-    <ng-container *ngIf="true">
-      <button mat-flat-button color="primary"  type="button" (click)="gotoDashboard(project)">Project dashboard</button>
-    </ng-container> 
-    <button mat-flat-button color="primary"  type="button" (click)="cloneProject(project)">Clone Project</button>
-    <button mat-flat-button color="primary"  type="button" (click)="deleteProject(project)">Delete Project</button>
-  </div>
+    <div id="pipeline-panel">
+        <app-pipeline-status [pipelines]="pipelines"></app-pipeline-status>
+    </div>
+
+    <div id="buttons">
+        <button mat-flat-button color="primary" type="button" (click)="editProject(project)">Project setup</button>
+        <ng-container *ngIf="true">
+            <button mat-flat-button color="primary" type="button" (click)="gotoDashboard(project)">
+                Project dashboard
+            </button>
+        </ng-container>
+        <button mat-flat-button color="primary" type="button" (click)="cloneProject(project)">Clone Project</button>
+        <button mat-flat-button color="primary" type="button" (click)="deleteProject(project)">Delete Project</button>
+    </div>
 </div>
