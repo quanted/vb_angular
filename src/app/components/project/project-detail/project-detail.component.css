@@ -4,21 +4,18 @@ mat-expansion-panel {
 }
 
 .project-info {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
+    display: grid;
+    grid-template-rows: 1fr auto;
     border-radius: 5px;
+    padding: 1rem;
 }
 
 #project-description {
     display: grid;
-    padding: 1rem;
     grid-template-columns: 1fr auto;
 }
 
 #description {
-    display: grid;
-    grid-template-rows: auto 1fr;
 }
 
 #project-name {
@@ -31,4 +28,11 @@ p {
 
 #mini-map {
     background-color: lightsteelblue;
+}
+
+#buttons {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 0.25rem;
+    width: 100%;
 }

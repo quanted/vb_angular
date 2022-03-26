@@ -10,20 +10,27 @@
                 <p>Dataset: {{ datasetName || "no dataset" }}</p>
                 <p id="pipeline-heading">Project pipelines:</p>
             </div>
+
+            <div id="pipeline-panel">
+                <app-pipeline-status [project]="project"></app-pipeline-status>
+            </div>
         </div>
+
         <div id="mini-map">
             <app-mini-map [location]="project"></app-mini-map>
         </div>
     </div>
 
-    <div id="pipeline-panel">
-        <app-pipeline-status [pipelines]="pipelines"></app-pipeline-status>
-    </div>
-
     <div id="buttons">
         <button mat-flat-button color="primary" type="button" (click)="editProject(project)">Project setup</button>
         <ng-container *ngIf="true">
-            <button mat-flat-button color="primary" type="button" (click)="gotoDashboard(project)">
+            <button
+                *ngIf="project.completed"
+                mat-flat-button
+                color="primary"
+                type="button"
+                (click)="gotoDashboard(project)"
+            >
                 Project dashboard
             </button>
         </ng-container>
