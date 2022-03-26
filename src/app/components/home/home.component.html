@@ -1,10 +1,10 @@
 <div class="panel">
     <app-navigation></app-navigation>
-    <div id="projects">
+    <div class="home">
         <ng-container *ngIf="projects.length == 0">
             <app-welcome></app-welcome>
         </ng-container>
-        <ng-container *ngIf="projects">
+        <div *ngIf="projects" class="project-list">
             <app-project-detail
                 *ngFor="let project of projects"
                 [project]="project"
@@ -15,6 +15,6 @@
                     Create new project
                 </button>
             </div>
-        </ng-container>
+        </div>
     </div>
 </div>

@@ -5,9 +5,14 @@
     grid-template-rows: auto 1fr;
 }
 
-#projects {
-    padding: 1rem;
+.home {
     overflow-y: auto;
+}
+
+.project-list {
+    display: grid;
+    row-gap: 0.25rem;
+    margin: 0.25rem;
 }
 
 #create {
