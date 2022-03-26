@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
   }
   
   createProject(): void {
-    this.router.navigateByUrl("create-project");
+    this.router.navigateByUrl("project");
   }
 
   projectDeleted(): void {

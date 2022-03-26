@@ -1,5 +1,8 @@
 <div class="project-panel">
     <app-navigation></app-navigation>
+    <div *ngIf="!project">
+        <app-project-create></app-project-create>
+    </div>
     <div class="project">
         <mat-card class="project-card">
             <ng-container *ngIf="project">

@@ -5,27 +5,26 @@ import { RouteGuardService as RouteGuard } from "./services/auth/route-guard.ser
 
 import { LoginComponent } from "./components/auth/login/login.component";
 import { HomeComponent } from "./components/home/home.component";
-import { CreateProjectComponent } from "./components/project/project-create/create-project.component";
-import { CreateLocationComponent } from "./components/project/location/create-location/create-location.component";
 import { ProjectComponent } from "./components/project/project.component";
+import { CreateLocationComponent } from "./components/project/location/create-location/create-location.component";
 import { DashboardComponent } from "./components/dashboards/dashboard/dashboard.component";
 
 const routes: Routes = [
     { path: "", component: LoginComponent },
     { path: "home", component: HomeComponent, canActivate: [RouteGuard] },
     {
-        path: "create-project",
-        component: CreateProjectComponent,
-        canActivate: [RouteGuard],
-    },
-    {
-        path: "create-location/:id",
-        component: CreateLocationComponent,
+        path: "project",
+        component: ProjectComponent,
         canActivate: [RouteGuard],
     },
     {
         path: "project/:id",
         component: ProjectComponent,
+        canActivate: [RouteGuard],
+    },
+    {
+        path: "create-location/:id",
+        component: CreateLocationComponent,
         canActivate: [RouteGuard],
     },
     {

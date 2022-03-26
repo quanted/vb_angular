@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
-  selector: 'app-create-project',
-  templateUrl: './create-project.component.html',
-  styleUrls: ['./create-project.component.css']
+  selector: 'app-project-create',
+  templateUrl: './project-create.component.html',
+  styleUrls: ['./project-create.component.css']
 })
-export class CreateProjectComponent implements OnInit {
+export class ProjectCreateComponent implements OnInit {
   statusMessage = '';
   projectForm: FormGroup;
 

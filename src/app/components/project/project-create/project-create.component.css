@@ -8,9 +8,9 @@
 }
 
 form {
-    display: grid;
+    /* display: grid;
     grid-template-columns: 1fr 2fr;
-    grid-column-gap: 1rem;
+    grid-column-gap: 1rem; */
 }
 
 .centered {
@@ -19,6 +19,12 @@ form {
 
 mat-form-field {
     width: 100%;
+}
+
+mat-card-actions {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    column-gap: 0.25rem;
 }
 
 button {
