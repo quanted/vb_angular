@@ -59,7 +59,7 @@ input[type="file"] {
 }
 
 #section3 {
-    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    grid-template-columns: 1fr auto;
 }
 
 .form-buttons-container {

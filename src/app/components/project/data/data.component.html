@@ -212,19 +212,6 @@
               </div>
             </div>
 
-            <div id="reg-value">
-              <div>
-                Define regulatory value?
-                <input type="checkbox" (click)="toggleRegVal()" />
-              </div>
-              <div *ngIf="defineRegVal">
-                <mat-form-field>
-                  <mat-label>Regulatory value:</mat-label>
-                  <input matInput type="number" formControlName="regVal" />
-                </mat-form-field>
-              </div>
-            </div>
-
             <div class="form-buttons-container">
               <div class="form-buttons">
                 <button

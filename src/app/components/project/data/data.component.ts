@@ -330,8 +330,4 @@ export class DataComponent implements OnInit {
       this.datasetForm.get('magnitude').setValue(null);
     }
   }
-
-  toggleRegVal(): void {
-    this.defineRegVal = !this.defineRegVal;
-  }
 }
