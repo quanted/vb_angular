@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 import { HttpClient } from "@angular/common/http";
 
@@ -7,60 +7,74 @@ import { catchError, takeUntil } from "rxjs/operators";
 
 import { environment } from "../../environments/environment";
 
+import { PipelineService } from "./pipeline.service";
+
 @Injectable({
-  providedIn: 'root'
+    providedIn: "root",
 })
 export class ProjectService {
-  private ngUnsubscribe = new Subject();
+    private ngUnsubscribe = new Subject();
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private pipelineService: PipelineService) {}
 
-  ngOnDestroy(){
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
+    ngOnDestroy() {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
 
-  createProject(project): Observable<any> {
-    return this.http.post(environment.apiURL + "project/", project)
-    .pipe(
-      takeUntil(this.ngUnsubscribe),
-      catchError((err) => {
-        console.log(err);
-        return of({ error: `Failed to create project!` });
-      })
-    );
-  }
+    getProjects(): Observable<any> {
+        return this.http.get(environment.apiURL + "project/").pipe(
+            takeUntil(this.ngUnsubscribe),
+            catchError((err) => {
+                console.log(err);
+                return of({ error: `Failed to fetch projects!` });
+            })
+        );
+    }
 
-  getProjects(): Observable<any> {
-    return this.http.get(environment.apiURL + "project/")
-    .pipe(
-      takeUntil(this.ngUnsubscribe),
-      catchError((err) => {
-        console.log(err);
-        return of({ error: `Failed to fetch projects!` });
-      })
-    );
-  }
+    createProject(project): Observable<any> {
+        return this.http.post(environment.apiURL + "project/", project).pipe(
+            takeUntil(this.ngUnsubscribe),
+            catchError((err) => {
+                console.log(err);
+                return of({ error: `Failed to create project!` });
+            })
+        );
+    }
 
-  updateProject(update): Observable<any> {
-    return this.http.put(`${environment.apiURL}project/${update.id}/`, update)
-    .pipe(
-      takeUntil(this.ngUnsubscribe),
-      catchError((err) => {
-        console.log(err);
-        return of({ error: `Failed to update project!` });
-      })
-    );
-  }
+    cloneProject(project): Observable<any> {
+        const newProject = { ...project };
+        newProject.name = project.name + " - Copy";
+        return this.createProject(newProject);
+    }
 
-  deleteProject(id): Observable<any> {
-    return this.http.delete(environment.apiURL + "project/" + id + '/')
-    .pipe(
-      takeUntil(this.ngUnsubscribe),
-      catchError((err) => {
-        console.log(err);
-        return of({ error: `Failed to delete project!` });
-      })
-    );
-  }
+    updateProject(update): Observable<any> {
+        return this.http.put(`${environment.apiURL}project/${update.id}/`, update).pipe(
+            takeUntil(this.ngUnsubscribe),
+            catchError((err) => {
+                console.log(err);
+                return of({ error: `Failed to update project!` });
+            })
+        );
+    }
+
+    executeProject(project): Observable<any> {
+        for (let pipeline of project.pipelines) {
+            console.log(`project ${project.id} executing ${pipeline.name} pipeline on dataset ${project.dataset}`);
+            this.pipelineService.executePipeline(project, pipeline.id).subscribe((response) => {
+                console.log("execute: ", response);
+            });
+        }
+        return;
+    }
+
+    deleteProject(id): Observable<any> {
+        return this.http.delete(environment.apiURL + "project/" + id + "/").pipe(
+            takeUntil(this.ngUnsubscribe),
+            catchError((err) => {
+                console.log(err);
+                return of({ error: `Failed to delete project!` });
+            })
+        );
+    }
 }
