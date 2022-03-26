@@ -38,7 +38,7 @@ import { LoginComponent } from "./components/auth/login/login.component";
 import { RegistrationComponent } from "./components/auth/registration/registration.component";
 import { ResetPasswordComponent } from "./components/auth/reset-password/reset-password.component";
 
-import { CreateProjectComponent } from "./components/project/project-create/create-project.component";
+import { ProjectCreateComponent } from "./components/project/project-create/project-create.component";
 import { ProjectDetailComponent } from "./components/project/project-detail/project-detail.component";
 import { LocationComponent } from "./components/project/location/location/location.component";
 import { CreateLocationComponent } from "./components/project/location/create-location/create-location.component";
@@ -79,7 +79,7 @@ import { PipelineStatusComponent } from './components/project/pipelines/pipeline
         LoginComponent,
         RegistrationComponent,
         ResetPasswordComponent,
-        CreateProjectComponent,
+        ProjectCreateComponent,
         ProjectDetailComponent,
         LocationComponent,
         CreateLocationComponent,
