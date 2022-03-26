@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { PipelineService } from "../../services/pipeline.service";
-import { PipelineModel } from "../../models/pipeline.model";
+import { PipelineService } from "../../../services/pipeline.service";
+import { PipelineModel } from "../../../models/pipeline.model";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ProjectModel } from "../../models/project.model";
-import { ProjectService } from "../../services/project.service";
-import { DashboardService } from "../../services/dashboard.service";
-import * as data from "../../../../test_data/project_cv_results.json";
+import { ProjectModel } from "../../../models/project.model";
+import { ProjectService } from "../../../services/project.service";
+import { DashboardService } from "../../../services/dashboard.service";
+import * as data from "../../../../../test_data/project_cv_results.json";
 
 @Component({
   selector: "app-dashboard",

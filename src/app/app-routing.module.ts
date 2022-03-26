@@ -8,7 +8,7 @@ import { HomeComponent } from "./components/home/home.component";
 import { CreateProjectComponent } from "./components/project/project-create/create-project.component";
 import { CreateLocationComponent } from "./components/project/location/create-location/create-location.component";
 import { ProjectComponent } from "./components/project/project.component";
-import { DashboardComponent } from "./components/dashboards/dashboard.component";
+import { DashboardComponent } from "./components/dashboards/dashboard/dashboard.component";
 
 const routes: Routes = [
     { path: "", component: LoginComponent },

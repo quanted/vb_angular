@@ -56,7 +56,7 @@ import { GlobalCvComponent } from "./components/project/pipelines/global-cv/glob
 import { ModelSelectionComponent } from "./components/dashboards/model-selection/model-selection.component";
 import { ModelSelectionModelTableComponent } from "./components/dashboards/model-selection/model-selection-model-table/model-selection-model-table.component";
 
-import { DashboardComponent } from "./components/dashboards/dashboard.component";
+import { DashboardComponent } from "./components/dashboards/dashboard/dashboard.component";
 import { ModelGraphsComponent } from "./components/dashboards/model-graphs/model-graphs.component";
 import { ModelDataTableComponent } from "./components/dashboards/model-data-table/model-data-table.component";
 import { ScatterPlotComponent } from "./components/dashboards/model-graphs/scatter-plot/scatter-plot.component";
