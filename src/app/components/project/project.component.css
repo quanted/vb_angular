@@ -16,13 +16,7 @@
     background-color: gainsboro;
 }
 
-#project-name {
-    text-align: left;
-    padding: 1rem;
-    padding-top: 0.25rem;
-}
-
-#name {
+.name {
     font-size: 1.5rem;
     margin-right: 1rem;
 }

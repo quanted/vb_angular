@@ -41,9 +41,13 @@ export class ProjectComponent implements OnInit {
     // js is weird
     // console.log(+[++[[]][+[]]+[[][[]]+[]][+[]][++[++[++[[]][+[]]][+[]]][+[]]]+[++[[]][+[]]]+[+[]]+[+[]]+[+[]]][+[]]); ?
 
+    editName(): void {
+        console.log('edit name');
+    }
+
     setLocation(location): void {
         if (location) {
-            this.locationName = location.name;
+            this.locationName = location.name + ", " + location.description;
             this.project.location = location.id;
         } else {
             this.locationName = "No location selected";

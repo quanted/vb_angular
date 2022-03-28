@@ -7,17 +7,21 @@
         <mat-card class="project-card">
             <ng-container *ngIf="project">
                 <!-- Project Details-->
-                <div id="project-name">
-                    <span id="name">{{ project.name }}</span>
-                    <span id="description">{{ project.description }}</span>
-                </div>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <div>
+                                <span class="name">{{ project.name }}</span>
+                                <span>{{ project.description }}</span>
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <app-project-create></app-project-create>
+                </mat-expansion-panel>
                 <!-- Location -->
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Location</mat-panel-title>
-                        <mat-panel-description>
-                            {{ locationName }}
-                        </mat-panel-description>
+                        <mat-panel-title>Location: {{ locationName }}</mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-location
                         [locationID]="project.location"
@@ -28,20 +32,14 @@
                 <!-- Data -->
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Data</mat-panel-title>
-                        <mat-panel-description>
-                            {{ datasetName }}
-                        </mat-panel-description>
+                        <mat-panel-title>Data: {{ datasetName }}</mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-data [datasetID]="project.dataset" (setDataset)="setDataset($event)"></app-data>
                 </mat-expansion-panel>
                 <!-- Analytical -->
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Model</mat-panel-title>
-                        <mat-panel-description>
-                            {{ pipelineNames }}
-                        </mat-panel-description>
+                        <mat-panel-title>Model: {{ pipelineNames }}</mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-analytical [projectID]="project.id" (setPipelines)="setPipelines($event)"></app-analytical>
                 </mat-expansion-panel>
