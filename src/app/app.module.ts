@@ -66,6 +66,7 @@ import { DashpanelComponent } from "./components/dashboards/dashpanel/dashpanel.
 
 import { FluidHeightDirective } from "./directives/fluid-height.directive";
 import { PipelineStatusComponent } from './components/project/pipelines/pipeline-status/pipeline-status.component';
+import { ProjectMetaComponent } from './components/project/project-meta/project-meta.component';
 
 @NgModule({
     declarations: [
@@ -105,6 +106,7 @@ import { PipelineStatusComponent } from './components/project/pipelines/pipeline
         DashpanelComponent,
         FluidHeightDirective,
         PipelineStatusComponent,
+        ProjectMetaComponent,
     ],
     imports: [
         BrowserModule,

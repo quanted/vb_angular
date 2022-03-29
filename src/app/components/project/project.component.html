@@ -1,22 +1,22 @@
 <div class="project-panel">
     <app-navigation></app-navigation>
-    <div *ngIf="!project">
-        <app-project-create></app-project-create>
-    </div>
     <div class="project">
         <mat-card class="project-card">
+            <div *ngIf="!project">
+                <app-project-create></app-project-create>
+            </div>
             <ng-container *ngIf="project">
                 <!-- Project Details-->
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <div>
-                                <span class="name">{{ project.name }}</span>
-                                <span>{{ project.description }}</span>
+                                <span class="name">{{ project.metadata.name }}</span>
+                                <span>{{ project.metadata.description }}</span>
                             </div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-project-create></app-project-create>
+                    <app-project-meta [projectMetadata]="project.metadata"></app-project-meta>
                 </mat-expansion-panel>
                 <!-- Location -->
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">

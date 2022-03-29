@@ -1,0 +1,25 @@
+<div class="panel">
+    <mat-card id="project">
+        <form class="fields" [formGroup]="projectMetadataForm" (keyup.enter)="sendForm()">
+            <div class="formField">
+                <mat-form-field>
+                    <mat-label>Project Name</mat-label>
+                    <input matInput type="text" formControlName="name" />
+                </mat-form-field>
+            </div>
+
+            <div class="formField">
+                <mat-form-field>
+                    <mat-label>Project Description</mat-label>
+                    <input matInput type="test" formControlName="description" />
+                </mat-form-field>
+            </div>
+        </form>
+        <div class="centered">{{ statusMessage }}</div>
+
+        <mat-card-actions>
+            <button mat-flat-button color="primary" (click)="cancel()">Cancel</button>
+            <button mat-flat-button color="primary" (click)="sendForm()">Create Project</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

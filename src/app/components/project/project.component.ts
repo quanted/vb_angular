@@ -34,6 +34,8 @@ export class ProjectComponent implements OnInit {
                 this.project = projects.find((project) => {
                     return project.id == projectID;
                 });
+                this.project["metadata"]["name"] = this.project.name;
+                this.project["metadata"]["description"] = this.project.description;
             });
         }
     }
