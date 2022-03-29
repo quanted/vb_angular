@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse } from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, EMPTY } from 'rxjs';
 
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { filter, tap } from 'rxjs/operators';
+import { catchError, filter, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -20,13 +20,12 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     return next.handle(request)
     .pipe(
-      filter(event => event instanceof HttpResponse),
-      tap((event: HttpResponse<any>) => {
-        // clear token and redirect to / if status code === 401
-        if (event.status === 401) {
-          console.log("STATUS.401>>> ", event);
+      catchError((error: HttpErrorResponse) => {
+        if (error && error.status === 401) {
           this.auth.logout();
+          this.router.navigateByUrl("");
         }
+        return EMPTY;
       })
     );
   }

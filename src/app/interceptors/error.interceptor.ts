@@ -1,20 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse } from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
-import { Router } from '@angular/router';
+
+import { AuthService } from '../services/auth/auth.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {}
   
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(request).pipe(
-      filter(event => event instanceof HttpResponse),
-      tap((event: HttpResponse<any>) => {
-        // console.log("RESPONSE>>> ", event);
-      })
-    );
+    return next.handle(request);
   }
 }
