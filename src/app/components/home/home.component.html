@@ -1,10 +1,10 @@
 <div class="panel">
     <app-navigation></app-navigation>
     <div class="home">
-        <div *ngIf="projects.length == 0" class="project-list">
-            <app-welcome></app-welcome>
-        </div>
-        <div *ngIf="projects" class="project-list">
+        <div class="project-list">
+            <div *ngIf="projects.length == 0">
+                <app-welcome></app-welcome>
+            </div>
             <app-project-detail
                 *ngFor="let project of projects"
                 [project]="project"
