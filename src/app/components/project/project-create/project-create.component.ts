@@ -1,45 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ProjectService } from 'src/app/services/project.service';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { ProjectService } from "src/app/services/project.service";
 
 @Component({
-  selector: 'app-project-create',
-  templateUrl: './project-create.component.html',
-  styleUrls: ['./project-create.component.css']
+    selector: "app-project-create",
+    templateUrl: "./project-create.component.html",
+    styleUrls: ["./project-create.component.css"],
 })
 export class ProjectCreateComponent implements OnInit {
-  statusMessage = '';
-  projectForm: FormGroup;
+    formType = "Create Project";
+    statusMessage = "";
 
-  constructor(private fb: FormBuilder, private router: Router, private projectService: ProjectService) { }
+    constructor(private router: Router, private projectService: ProjectService) {}
 
-  ngOnInit(): void {
-    this.projectForm = this.fb.group({
-      name: [null, Validators.required],
-      description: [null, Validators.required],
-    });
-  }
+    ngOnInit(): void {}
 
-  createProject() {
-    if (this.projectForm.valid) {
-      this.projectService
-        .createProject({
-            name: this.projectForm.get('name').value,
-            description: this.projectForm.get('description').value
-        })
-        .subscribe((project) => {
-          if (project.error) {
-            this.statusMessage = project.error;
-          }
-          this.router.navigateByUrl(`project/${project.id}`);
-        });
-    } else {
-      this.statusMessage = 'Name and description are required';
+    createProject(project): void {
+        console.log("project: ", project);
+        if (project) {
+            this.projectService.createProject(project).subscribe((project) => {
+                if (project.error) {
+                    this.statusMessage = project.error;
+                }
+                this.router.navigateByUrl(`project/${project.id}`);
+            });
+        } else {
+            this.router.navigateByUrl("home");
+        }
     }
-  }
-
-  cancel() {
-    this.router.navigateByUrl("home");
-  }
 }

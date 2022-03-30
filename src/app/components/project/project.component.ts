@@ -14,7 +14,7 @@ export class ProjectComponent implements OnInit {
 
     canExecute = false;
 
-    project;
+    project = null;
     pipelines = [];
     locationName = "No location selected";
     datasetName = "No data selected";
@@ -34,6 +34,7 @@ export class ProjectComponent implements OnInit {
                 this.project = projects.find((project) => {
                     return project.id == projectID;
                 });
+                // this will get refactored into the project object
                 this.project["metadata"]["name"] = this.project.name;
                 this.project["metadata"]["description"] = this.project.description;
             });
@@ -44,7 +45,7 @@ export class ProjectComponent implements OnInit {
     // console.log(+[++[[]][+[]]+[[][[]]+[]][+[]][++[++[++[[]][+[]]][+[]]][+[]]]+[++[[]][+[]]]+[+[]]+[+[]]+[+[]]][+[]]); ?
 
     editName(): void {
-        console.log('edit name');
+        console.log("edit name");
     }
 
     setLocation(location): void {
