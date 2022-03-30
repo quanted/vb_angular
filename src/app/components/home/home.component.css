@@ -12,7 +12,7 @@
 .project-list {
     display: grid;
     row-gap: 0.25rem;
-    margin: 0.25rem;
+    margin: 1rem;
 }
 
 #create {
