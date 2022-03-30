@@ -35,8 +35,10 @@ export class ProjectComponent implements OnInit {
                     return project.id == projectID;
                 });
                 // this will get refactored into the project object
-                this.project["metadata"]["name"] = this.project.name;
-                this.project["metadata"]["description"] = this.project.description;
+                if (this.project) {
+                    this.project["metadata"]["name"] = this.project.name;
+                    this.project["metadata"]["description"] = this.project.description;
+                }
             });
         }
     }

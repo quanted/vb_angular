@@ -8,7 +8,7 @@ import { BehaviorSubject } from "rxjs";
     styleUrls: ["./project-meta.component.css"],
 })
 export class ProjectMetaComponent implements OnInit {
-    @Input() projectMetadata: any = {};
+    @Input() projectMetadata: any;
     @Input() formType: string = "";
     @Output() formCompleted: EventEmitter<any> = new EventEmitter<any>(null);
 
