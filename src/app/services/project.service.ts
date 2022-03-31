@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from "@angular/core";
 
 import { HttpClient } from "@angular/common/http";
 
-import { Observable, of, Subject } from "rxjs";
+import { BehaviorSubject, Observable, of, Subject } from "rxjs";
 import { catchError, takeUntil, tap } from "rxjs/operators";
 
 import { environment } from "../../environments/environment";
@@ -17,15 +17,27 @@ import { PipelineService } from "./pipeline.service";
 })
 export class ProjectService implements OnDestroy {
     private ngUnsubscribe = new Subject();
+    private projectSubject: BehaviorSubject<any>;
 
     private projects;
+    private selectedProjectID;
     private project;
 
-    constructor(private http: HttpClient, private pipelineService: PipelineService) {}
+    constructor(private http: HttpClient, private pipelineService: PipelineService) {
+        this.projectSubject = new BehaviorSubject(this.project);
+        this.getProjects().subscribe((projects) => {
+            this.projects = projects;
+            this.loadProject(this.selectedProjectID);
+        });
+    }
 
     ngOnDestroy() {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
+    }
+
+    monitorProject(): BehaviorSubject<any> {
+        return this.projectSubject;
     }
 
     getProjects(): Observable<any> {
@@ -42,14 +54,16 @@ export class ProjectService implements OnDestroy {
         );
     }
 
-    getProject(projectID): any {
+    loadProject(projectID): void {
+        console.log("projectID: ", projectID);
+        this.selectedProjectID = projectID;
         if (this.projects) {
-            this.project = this.projects.find((project) => {
+            const project = this.projects.find((project) => {
                 return project.id == projectID;
             });
-            return this.project;
+            this.project = project;
+            this.projectSubject.next(this.project);
         }
-        return null;
     }
 
     createProject(project): Observable<any> {

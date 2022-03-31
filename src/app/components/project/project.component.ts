@@ -30,8 +30,12 @@ export class ProjectComponent implements OnInit {
     ngOnInit(): void {
         if (this.route.paramMap) {
             const projectID = this.route.snapshot.paramMap.get("id");
-            this.project = this.projectService.getProject(projectID);
+            this.projectService.loadProject(projectID);
         }
+        this.projectService.monitorProject().subscribe((project) => {
+            console.log("monitor: ", project);
+            this.project = project;
+        });
     }
 
     // js is weird
