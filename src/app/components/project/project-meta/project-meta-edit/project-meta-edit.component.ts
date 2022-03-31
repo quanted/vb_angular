@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 
 import { Metadata } from "src/app/models/metadata.model";
 
 import { ProjectService } from "src/app/services/project.service";
+import { ProjectMetaComponent } from "../project-meta.component";
 
 @Component({
     selector: "app-project-meta-edit",
@@ -13,13 +14,22 @@ export class ProjectMetaEditComponent implements OnInit {
     @Input() project: any = {};
     formType = "Update Project Metadata";
 
+    @ViewChild(ProjectMetaComponent)
+    private editor: ProjectMetaComponent;
+
     constructor(private projectService: ProjectService) {}
 
     ngOnInit(): void {}
 
     updateMetadata(metadata: Metadata): void {
+        this.editor.statusMessage = "updating...";
         this.projectService.updateProjectMetadata(metadata).subscribe((response) => {
-            console.log("end: ", response);
+            console.log("update: ", response);
+            if (response.error) {
+                this.editor.statusMessage = "error updating!";
+                return;
+            }
+            this.editor.statusMessage = "update saved";
         });
     }
 }
