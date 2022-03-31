@@ -1,96 +1,87 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Injectable, OnDestroy } from "@angular/core";
+import { Router } from "@angular/router";
 
-import { Observable, of, Subject } from 'rxjs';
-import { catchError, tap, takeUntil } from 'rxjs/operators';
+import { Observable, of, Subject } from "rxjs";
+import { catchError, tap, takeUntil } from "rxjs/operators";
 
-import { environment } from '../../../environments/environment';
+import { environment } from "../../../environments/environment";
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient } from "@angular/common/http";
 
-import { CookieService } from 'ngx-cookie-service';
-import { RegistrationResponse } from '../../models/registration-response';
-import { LoginResponse } from '../../models/login-response';
+import { CookieService } from "ngx-cookie-service";
+import { RegistrationResponse } from "../../models/registration-response";
+import { LoginResponse } from "../../models/login-response";
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: "root",
 })
-export class AuthService {
-  private ngUnsubscribe = new Subject();
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private cookieService: CookieService
-  ) {}
+export class AuthService implements OnDestroy {
+    private ngUnsubscribe = new Subject<boolean>();
 
-  ngOnDestroy(){
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
+    constructor(private router: Router, private http: HttpClient, private cookieService: CookieService) {}
 
-  userIsAuthenticated(): boolean {
-    return (this.cookieService.check('TOKEN') && this.cookieService.check('USERNAME'));
-  }
+    ngOnDestroy() {
+        this.ngUnsubscribe.next(true);
+        this.ngUnsubscribe.complete();
+    }
 
-  getToken() {
-    return this.cookieService.get('TOKEN');
-  }
+    userIsAuthenticated(): boolean {
+        return this.cookieService.check("TOKEN") && this.cookieService.check("USERNAME");
+    }
 
-  login(username, password): Observable<any> {
-    return this.http
-      .post(environment.apiURL + 'user/login/', { username, password })
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        tap((response: LoginResponse) => {
-          this.cookieService.set('TOKEN', response.token);
-          this.cookieService.set('USERNAME', response.username);
-          this.router.navigateByUrl('home');
-        }),
-        catchError((error) => {
-          return of({ error });
-        })
-      );
-  }
+    getToken() {
+        return this.cookieService.get("TOKEN");
+    }
 
-  logout(): void {
-    this.cookieService.deleteAll();
-    this.router.navigateByUrl('');
-  }
+    login(username, password): Observable<any> {
+        return this.http.post(environment.apiURL + "user/login/", { username, password }).pipe(
+            takeUntil(this.ngUnsubscribe),
+            tap((response: LoginResponse) => {
+                this.cookieService.set("TOKEN", response.token);
+                this.cookieService.set("USERNAME", response.username);
+                this.router.navigateByUrl("home");
+            }),
+            catchError((error) => {
+                return of({ error });
+            })
+        );
+    }
 
-  register(username, email, password): Observable<any> {
-    const newUser = {
-      username,
-      email,
-      password,
-    };
-    return this.http
-      .post(environment.apiURL + 'user/register/', newUser)
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        tap((response: RegistrationResponse) => {
-          this.cookieService.set('TOKEN', response.token);
-          this.cookieService.set('USERNAME', response.username);
-          this.router.navigateByUrl('home');
-        }),
-        catchError((err) => {
-          console.log(err);
-          return of({ error: `Failed to register!` });
-        })
-      );
-  }
+    logout(): void {
+        this.cookieService.deleteAll();
+        this.router.navigateByUrl("");
+    }
 
-  resetPW(email): Observable<any> {
-    return this.http
-      .post(environment.apiURL + 'user/reset', { email })
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        catchError((err) => {
-          return of({ error: 'Failed to request password reset!' });
-        })
-      );
-  }
+    register(username, email, password): Observable<any> {
+        const newUser = {
+            username,
+            email,
+            password,
+        };
+        return this.http.post(environment.apiURL + "user/register/", newUser).pipe(
+            takeUntil(this.ngUnsubscribe),
+            tap((response: RegistrationResponse) => {
+                this.cookieService.set("TOKEN", response.token);
+                this.cookieService.set("USERNAME", response.username);
+                this.router.navigateByUrl("home");
+            }),
+            catchError((err) => {
+                console.log(err);
+                return of({ error: `Failed to register!` });
+            })
+        );
+    }
 
-  getUsername() {
-    return this.cookieService.get('USERNAME');
-  }
+    resetPW(email): Observable<any> {
+        return this.http.post(environment.apiURL + "user/reset", { email }).pipe(
+            takeUntil(this.ngUnsubscribe),
+            catchError((err) => {
+                return of({ error: "Failed to request password reset!" });
+            })
+        );
+    }
+
+    getUsername() {
+        return this.cookieService.get("USERNAME");
+    }
 }
