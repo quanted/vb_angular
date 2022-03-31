@@ -1,8 +1,4 @@
 <mat-card>
     <mat-card-title>Project Metadata (can be edited at any time)</mat-card-title>
-    <app-project-meta
-        [projectMetadata]=""
-        [formType]="formType"
-        (formCompleted)="createProject($event)"
-    ></app-project-meta>
+    <app-project-meta [project]="" [formType]="formType" (formCompleted)="createProject($event)"></app-project-meta>
 </mat-card>

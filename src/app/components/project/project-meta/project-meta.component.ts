@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { BehaviorSubject } from "rxjs";
 
 @Component({
     selector: "app-project-meta",
@@ -8,7 +7,7 @@ import { BehaviorSubject } from "rxjs";
     styleUrls: ["./project-meta.component.css"],
 })
 export class ProjectMetaComponent implements OnInit {
-    @Input() projectMetadata: any;
+    @Input() project: any;
     @Input() formType: string = "";
     @Output() formCompleted: EventEmitter<any> = new EventEmitter<any>(null);
 
@@ -23,8 +22,11 @@ export class ProjectMetaComponent implements OnInit {
             name: [null, Validators.required],
             description: [null, Validators.required],
         });
-        if (this.projectMetadata) {
-            this.projectMetadataForm.setValue(this.projectMetadata);
+        if (this.project) {
+            this.projectMetadataForm.setValue({
+                name: this.project.name,
+                description: this.project.description,
+            });
         }
     }
 

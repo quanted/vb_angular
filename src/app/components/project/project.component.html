@@ -11,12 +11,12 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <div>
-                                <span class="name">{{ project.metadata.name }}</span>
-                                <span>{{ project.metadata.description }}</span>
+                                <span class="name">{{ project.name }}</span>
+                                <span>{{ project.description }}</span>
                             </div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-project-meta-edit [projectMetadata]="project.metadata"></app-project-meta-edit>
+                    <app-project-meta-edit [project]="project"></app-project-meta-edit>
                 </mat-expansion-panel>
                 <!-- Location -->
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">

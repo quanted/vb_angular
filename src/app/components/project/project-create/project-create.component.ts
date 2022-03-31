@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ProjectService } from "src/app/services/project.service";
 
@@ -17,6 +16,9 @@ export class ProjectCreateComponent implements OnInit {
     ngOnInit(): void {}
 
     createProject(project): void {
+        // the object emitted by button click from project-meta-component
+        // will either be a project - proceed
+        // or null                  - cancel
         console.log("project: ", project);
         if (project) {
             this.projectService.createProject(project).subscribe((project) => {

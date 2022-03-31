@@ -30,16 +30,7 @@ export class ProjectComponent implements OnInit {
     ngOnInit(): void {
         if (this.route.paramMap) {
             const projectID = this.route.snapshot.paramMap.get("id");
-            this.projectService.getProjects().subscribe((projects) => {
-                this.project = projects.find((project) => {
-                    return project.id == projectID;
-                });
-                // this will get refactored into the project object
-                if (this.project) {
-                    this.project["metadata"]["name"] = this.project.name;
-                    this.project["metadata"]["description"] = this.project.description;
-                }
-            });
+            this.project = this.projectService.getProject(projectID);
         }
     }
 
@@ -99,7 +90,7 @@ export class ProjectComponent implements OnInit {
             this.pipelineNames = "No pipelines selected";
         }
         this.checkReady();
-        console.log("project.setPipelines() ", this.pipelines);
+        // console.log("project.setPipelines() ", this.pipelines);
     }
 
     checkReady(): void {
