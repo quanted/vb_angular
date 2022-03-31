@@ -1,6 +1,6 @@
 export const environment = {
-  production: true,
+    production: true,
 
-  apiURL: "/api/",
-  infoURL: '/',
+    apiURL: "/vb/api/",
+    infoURL: "/vb/",
 };
