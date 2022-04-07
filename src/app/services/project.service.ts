@@ -70,8 +70,8 @@ export class ProjectService implements OnDestroy {
         console.log("project service create: ", project);
         return this.http.post(environment.apiURL + "project/", project).pipe(
             tap((project) => {
-                console.log("createProject: ", project);
                 this.project = project;
+                this.projectSubject.next(this.project);
             }),
             takeUntil(this.ngUnsubscribe),
             catchError((err) => {
@@ -82,7 +82,7 @@ export class ProjectService implements OnDestroy {
     }
 
     cloneProject(project): Observable<any> {
-        const newProject = { ...project };
+        const newProject = deepCopy.Copy(project);
         newProject.name = project.name + " - Copy";
         return this.createProject(newProject);
     }
