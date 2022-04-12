@@ -6,7 +6,7 @@
                 <app-project-create></app-project-create>
             </div>
             <ng-container *ngIf="project">
-                <!-- Project Details-->
+                <!-- Project Metadata -->
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
@@ -36,15 +36,15 @@
                     </mat-expansion-panel-header>
                     <app-data [datasetID]="project.dataset" (setDataset)="setDataset($event)"></app-data>
                 </mat-expansion-panel>
-                <!-- Analytical -->
+                <!-- Pipelines -->
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
                         <mat-panel-title>Model: {{ pipelineNames }}</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-analytical [projectID]="project.id" (setPipelines)="setPipelines($event)"></app-analytical>
+                    <app-pipelines [projectID]="project.id" (setPipelines)="setPipelines($event)"></app-pipelines>
                 </mat-expansion-panel>
                 <!-- project execution -->
-                <ng-container *ngIf="canExecute">
+                <ng-container *ngIf="isExecutionReady()">
                     <div id="execute">
                         <button type="button" mat-flat-button color="warn" (click)="executeProject()">
                             Execute project

@@ -49,7 +49,7 @@ import { MiniMapComponent } from "./components/project/location/mini-map/mini-ma
 import { DataComponent } from "./components/project/data/data.component";
 import { DataStatisticsComponent } from "./components/project/data/data-statistics/data-statistics.component";
 import { DataDetailComponent } from "./components/project/data/data-detail/data-detail.component";
-import { AnalyticalComponent } from "./components/project/pipelines/analytical.component";
+import { PipelinesComponent } from "./components/project/pipelines/pipelines.component";
 import { AnalyticalModelsComponent } from "./components/project/pipelines/analytical-models/analytical-models.component";
 import { CreatePipelineComponent } from "./components/project/pipelines/create-pipeline/create-pipeline.component";
 import { GlobalCvComponent } from "./components/project/pipelines/global-cv/global-cv.component";
@@ -65,9 +65,9 @@ import { BoxPlotComponent } from "./components/dashboards/model-graphs/box-plot/
 import { DashpanelComponent } from "./components/dashboards/dashpanel/dashpanel.component";
 
 import { FluidHeightDirective } from "./directives/fluid-height.directive";
-import { PipelineStatusComponent } from './components/project/pipelines/pipeline-status/pipeline-status.component';
-import { ProjectMetaComponent } from './components/project/project-meta/project-meta.component';
-import { ProjectMetaEditComponent } from './components/project/project-meta/project-meta-edit/project-meta-edit.component';
+import { PipelineStatusComponent } from "./components/project/pipelines/pipeline-status/pipeline-status.component";
+import { ProjectMetaComponent } from "./components/project/project-meta/project-meta.component";
+import { ProjectMetaEditComponent } from "./components/project/project-meta/project-meta-edit/project-meta-edit.component";
 
 @NgModule({
     declarations: [
@@ -92,7 +92,7 @@ import { ProjectMetaEditComponent } from './components/project/project-meta/proj
         DataComponent,
         DataStatisticsComponent,
         DataDetailComponent,
-        AnalyticalComponent,
+        PipelinesComponent,
         AnalyticalModelsComponent,
         CreatePipelineComponent,
         GlobalCvComponent,

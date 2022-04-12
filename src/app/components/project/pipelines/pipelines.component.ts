@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { PipelineService } from "src/app/services/pipeline.service";
 import { PipelineInfoModel } from "../../../models/pipeline-info.model";
 
 @Component({
-    selector: "app-analytical",
-    templateUrl: "./analytical.component.html",
-    styleUrls: ["./analytical.component.css"],
+    selector: "app-pipelines",
+    templateUrl: "./pipelines.component.html",
+    styleUrls: ["./pipelines.component.css"],
 })
-export class AnalyticalComponent implements OnInit {
+export class PipelinesComponent implements OnInit {
     @Input() projectID;
     creatingPipeline = false;
     pipelines = [];
