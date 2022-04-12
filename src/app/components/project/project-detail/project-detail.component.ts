@@ -40,7 +40,7 @@ export class ProjectDetailComponent implements OnInit {
         }
     }
 
-    editProject(project) {
+    editProject(project): void {
         this.router.navigateByUrl(`project/${project.id}`);
     }
 
@@ -48,18 +48,17 @@ export class ProjectDetailComponent implements OnInit {
         this.projectService.executeProject(project);
     }
 
-    gotoDashboard(project) {
+    gotoDashboard(project): void {
         this.router.navigateByUrl(`dashboard/${project.id}`);
     }
 
-    cloneProject(project) {
-        this.projectService.cloneProject(project).subscribe((response) => {
-            console.log("clone: ", response);
-            this.router.navigateByUrl(`project/${response.id}`);
+    cloneProject(project): void {
+        this.projectService.cloneProject(project).subscribe((projectClone) => {
+            this.router.navigateByUrl(`project/${projectClone.id}`);
         });
     }
 
-    deleteProject(project) {
+    deleteProject(project): void {
         this.projectService.deleteProject(project.id).subscribe(() => {
             this.projectDeleted.emit();
         });

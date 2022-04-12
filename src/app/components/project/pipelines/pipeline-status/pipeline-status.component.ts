@@ -35,7 +35,7 @@ export class PipelineStatusComponent implements OnInit, OnDestroy {
         this.pipelinesStatusMessage = "Updating status...";
         this.pipelineService.getProjectPipelines(this.project.id).subscribe((pipelines) => {
             if (pipelines.length > 0) {
-                console.log("pipelines: ", pipelines);
+                // console.log("pipelines: ", pipelines);
                 this.pipelines = [...pipelines];
 
                 let pipelinesCompleted = true;

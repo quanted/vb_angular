@@ -33,17 +33,12 @@ export class ProjectComponent implements OnInit {
             this.projectService.loadProject(projectID);
         }
         this.projectService.monitorProject().subscribe((project) => {
-            console.log("monitor: ", project);
             this.project = project;
         });
     }
 
     // js is weird
     // console.log(+[++[[]][+[]]+[[][[]]+[]][+[]][++[++[++[[]][+[]]][+[]]][+[]]]+[++[[]][+[]]]+[+[]]+[+[]]+[+[]]][+[]]); ?
-
-    editName(): void {
-        console.log("edit name");
-    }
 
     setLocation(location): void {
         if (location) {

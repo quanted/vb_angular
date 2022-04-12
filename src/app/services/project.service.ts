@@ -43,7 +43,6 @@ export class ProjectService implements OnDestroy {
     getProjects(): Observable<any> {
         return this.http.get(environment.apiURL + "project/").pipe(
             tap((projects) => {
-                console.log("getProjects: ", projects);
                 this.projects = projects;
             }),
             takeUntil(this.ngUnsubscribe),
@@ -55,7 +54,6 @@ export class ProjectService implements OnDestroy {
     }
 
     loadProject(projectID): void {
-        console.log("projectID: ", projectID);
         this.selectedProjectID = projectID;
         if (this.projects) {
             const project = this.projects.find((project) => {
@@ -67,10 +65,10 @@ export class ProjectService implements OnDestroy {
     }
 
     createProject(project): Observable<any> {
-        console.log("project service create: ", project);
         return this.http.post(environment.apiURL + "project/", project).pipe(
             tap((project) => {
                 this.project = project;
+                this.projects.push(project);
                 this.projectSubject.next(this.project);
             }),
             takeUntil(this.ngUnsubscribe),
@@ -95,10 +93,9 @@ export class ProjectService implements OnDestroy {
     }
 
     updateProject(update): Observable<any> {
-        console.log("updateProject...");
         return this.http.put(`${environment.apiURL}project/${update.id}/`, update).pipe(
             tap((response) => {
-                console.log("projectService.updateProject.response: ", response);
+                console.log("projectService.updateProject returned");
             }),
             takeUntil(this.ngUnsubscribe),
             catchError((err) => {
