@@ -1,25 +1,21 @@
 <div class="pipelines">
     <mat-expansion-panel (opened)="globalCVOpenState = true" (closed)="globalCVOpenState = false">
         <mat-expansion-panel-header>
-            <mat-panel-title><h3>Project Cross Validation Options:</h3></mat-panel-title>
+            <mat-panel-title>Project Cross Validation Options</mat-panel-title>
         </mat-expansion-panel-header>
-        <app-global-cv
+        <app-pipeline-global-options
             *ngIf="vbHelper !== undefined && vbHelperPipeInfo !== undefined"
             [vbHelper]="vbHelper"
             [vbHelperPipeInfo]="vbHelperPipeInfo"
-        ></app-global-cv>
+        ></app-pipeline-global-options>
     </mat-expansion-panel>
 
-    <mat-expansion-panel (opened)="projectPipelinesOpenState = true" (closed)="projectPipelinesOpenState = false">
-        <mat-expansion-panel-header>
-            <mat-panel-title><h3>Project Pipelines:</h3></mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-pipeline-detail
-            *ngFor="let pipeline of pipelines"
-            [pipeline]="pipeline"
-            [pipelineInfo]="pipelineInfo"
-        ></app-pipeline-detail>
-    </mat-expansion-panel>
+    <h3>Project Models</h3>
+    <app-pipeline-detail
+        *ngFor="let pipeline of pipelines"
+        [pipeline]="pipeline"
+        [pipelineInfo]="pipelineInfo"
+    ></app-pipeline-detail>
 
     <div *ngIf="!creatingPipeline">
         <button mat-flat-button color="primary" type="button" mat-button (click)="createPipeline()">

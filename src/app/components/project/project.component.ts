@@ -77,7 +77,7 @@ export class ProjectComponent implements OnInit {
         this.pipelines = [...pipelines];
         const typeList = [];
         for (let pipeline of pipelines) {
-            typeList.push(pipeline.type);
+            typeList.push(pipeline.name);
         }
         this.pipelineNames = typeList;
         if (this.pipelines.length < 1) {

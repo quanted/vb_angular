@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GlobalCvComponent } from './global-cv.component';
+import { PipelineCreateComponent } from './pipeline-create.component';
 
-describe('GlobalCvComponent', () => {
-  let component: GlobalCvComponent;
-  let fixture: ComponentFixture<GlobalCvComponent>;
+describe('PipelineCreateComponent', () => {
+  let component: PipelineCreateComponent;
+  let fixture: ComponentFixture<PipelineCreateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GlobalCvComponent ]
+      declarations: [ PipelineCreateComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GlobalCvComponent);
+    fixture = TestBed.createComponent(PipelineCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

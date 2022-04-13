@@ -3,11 +3,11 @@ import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { PipelineService } from "../../../../services/pipeline.service";
 
 @Component({
-    selector: "app-global-cv",
-    templateUrl: "./global-cv.component.html",
-    styleUrls: ["./global-cv.component.css"],
+    selector: "app-pipeline-global-options",
+    templateUrl: "./pipeline-global-options.component.html",
+    styleUrls: ["./pipeline-global-options.component.css"],
 })
-export class GlobalCvComponent implements OnInit, OnChanges {
+export class PipelineGlobalOptionsComponent implements OnInit, OnChanges {
     @Input() vbHelper: any;
     @Input() vbHelperPipeInfo: any;
     cvFormGroup: FormGroup;

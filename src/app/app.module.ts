@@ -52,7 +52,7 @@ import { DataDetailComponent } from "./components/project/data/data-detail/data-
 import { PipelinesComponent } from "./components/project/pipelines/pipelines.component";
 import { AnalyticalModelsComponent } from "./components/project/pipelines/analytical-models/analytical-models.component";
 import { CreatePipelineComponent } from "./components/project/pipelines/create-pipeline/create-pipeline.component";
-import { GlobalCvComponent } from "./components/project/pipelines/global-cv/global-cv.component";
+import { PipelineGlobalOptionsComponent } from "./components/project/pipelines/pipeline-global-options/pipeline-global-options.component";
 import { ModelSelectionComponent } from "./components/dashboards/model-selection/model-selection.component";
 import { ModelSelectionModelTableComponent } from "./components/dashboards/model-selection/model-selection-model-table/model-selection-model-table.component";
 
@@ -68,7 +68,8 @@ import { FluidHeightDirective } from "./directives/fluid-height.directive";
 import { PipelineStatusComponent } from "./components/project/pipelines/pipeline-status/pipeline-status.component";
 import { ProjectMetaComponent } from "./components/project/project-meta/project-meta.component";
 import { ProjectMetaEditComponent } from "./components/project/project-meta/project-meta-edit/project-meta-edit.component";
-import { PipelineDetailComponent } from './components/project/pipelines/pipeline-detail/pipeline-detail.component';
+import { PipelineDetailComponent } from "./components/project/pipelines/pipeline-detail/pipeline-detail.component";
+import { PipelineCreateComponent } from "./components/project/pipelines/pipeline-create/pipeline-create.component";
 
 @NgModule({
     declarations: [
@@ -96,7 +97,7 @@ import { PipelineDetailComponent } from './components/project/pipelines/pipeline
         PipelinesComponent,
         AnalyticalModelsComponent,
         CreatePipelineComponent,
-        GlobalCvComponent,
+        PipelineGlobalOptionsComponent,
         ModelSelectionComponent,
         ModelSelectionModelTableComponent,
         DashboardComponent,
@@ -111,6 +112,7 @@ import { PipelineDetailComponent } from './components/project/pipelines/pipeline
         ProjectMetaComponent,
         ProjectMetaEditComponent,
         PipelineDetailComponent,
+        PipelineCreateComponent,
     ],
     imports: [
         BrowserModule,

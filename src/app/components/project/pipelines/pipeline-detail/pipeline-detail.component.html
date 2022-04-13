@@ -7,7 +7,7 @@
             <div>{{ pipeline | json }}</div>
             <mat-form-field>
                 <mat-label>{{ parameter.name }}</mat-label>
-                <mat-select [formControlName]="parameter.name">
+                <mat-select formControlName="parameter.name">
                     <mat-option *ngFor="let option of parameter.options" [value]="option">
                         {{ option }}
                     </mat-option>

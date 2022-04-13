@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { PipelineService } from "src/app/services/pipeline.service";
 import { ProjectService } from "src/app/services/project.service";
 
@@ -20,11 +20,16 @@ export class PipelineDetailComponent implements OnInit {
 
     pipelineOptionForm: FormGroup;
 
-    constructor(private pipelineService: PipelineService, private projectService: ProjectService) {}
+    constructor(
+        private fb: FormBuilder,
+        private pipelineService: PipelineService,
+        private projectService: ProjectService
+    ) {}
 
     ngOnInit(): void {
         console.log("pipeline: ", this.pipeline);
         console.log("pipelineInfo: ", this.pipelineInfo);
+        this.pipelineOptionForm = this.fb.group(null);
     }
 
     updatePipelineOptions(): void {
