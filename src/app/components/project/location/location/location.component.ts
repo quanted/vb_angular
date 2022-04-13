@@ -11,17 +11,16 @@ export class LocationComponent implements OnInit {
     constructor(private router: Router, private locationService: LocationService) {}
 
     @Input() project;
-    @Input() locationID;
     location;
     @Output() setLocation: EventEmitter<any> = new EventEmitter<any>();
     locations = [];
 
     ngOnInit(): void {
         this.locationService.getLocations().subscribe((locations) => {
-            this.locations = [...locations];
-            if (this.locationID) {
+            this.locations = locations;
+            if (this.project.location) {
                 for (let location of locations) {
-                    if (location.id === this.locationID) {
+                    if (location.id === this.project.location) {
                         this.selectLocation(location);
                     }
                 }

@@ -1,4 +1,4 @@
-<ng-container *ngIf="!locationID">
+<ng-container *ngIf="!location">
     <div>
         <ng-container *ngIf="locations.length > 0">
             <h4>Use an existing location</h4>
@@ -9,10 +9,14 @@
             </div>
             <h4>- Or -</h4>
         </ng-container>
-        <button mat-flat-button color="primary"  (click)="createLocation()">Create Location</button>
+        <button mat-flat-button color="primary" (click)="createLocation()">Create Location</button>
     </div>
 </ng-container>
 <ng-container *ngIf="location">
-    <div class="remove-button"><button mat-flat-button (click)="removeLocation()" class="trash">Remove from project<mat-icon>delete_forever</mat-icon></button></div>
+    <div class="remove-button">
+        <button mat-flat-button (click)="removeLocation()" class="trash">
+            Remove from project<mat-icon>delete_forever</mat-icon>
+        </button>
+    </div>
     <app-location-detail [location]="location"></app-location-detail>
 </ng-container>

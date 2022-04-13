@@ -23,11 +23,7 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title>Location: {{ locationName }}</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-location
-                        [locationID]="project.location"
-                        [project]="project"
-                        (setLocation)="setLocation($event)"
-                    ></app-location>
+                    <app-location [project]="project" (setLocation)="setLocation($event)"></app-location>
                 </mat-expansion-panel>
                 <!-- Data -->
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
