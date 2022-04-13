@@ -18,7 +18,6 @@ export class ProjectMetaComponent implements OnInit {
     constructor(private fb: FormBuilder) {}
 
     ngOnInit(): void {
-        console.log("meta project: ", this.project);
         this.projectMetadataForm = this.fb.group({
             name: [null, Validators.required],
             description: [null, Validators.required],

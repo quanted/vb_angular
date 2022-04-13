@@ -1,0 +1,21 @@
+<mat-expansion-panel (opened)="pipelineOptionOpenState = true" (closed)="pipelineOptionOpenState = false">
+    <mat-expansion-panel-header>
+        <mat-panel-title>{{ pipeline.name }}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="pipeline-options" [formGroup]="pipelineOptionForm">
+        <div *ngFor="let parameter of pipeline.hyperParameters">
+            <div>{{ pipeline | json }}</div>
+            <mat-form-field>
+                <mat-label>{{ parameter.name }}</mat-label>
+                <mat-select [formControlName]="parameter.name">
+                    <mat-option *ngFor="let option of parameter.options" [value]="option">
+                        {{ option }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <button type="button" mat-flat-button color="primary" (click)="updatePipelineOptions()">
+            Update Pipeline Options
+        </button>
+    </div>
+</mat-expansion-panel>

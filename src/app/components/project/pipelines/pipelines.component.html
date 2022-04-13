@@ -10,19 +10,20 @@
         ></app-global-cv>
     </mat-expansion-panel>
 
-    <mat-card>
-        <h3>Project pipelines:</h3>
-        <app-analytical-models
-            *ngIf="vbHelper !== undefined && pipelineInfo !== undefined"
-            [vbHelper]="vbHelper"
+    <mat-expansion-panel (opened)="projectPipelinesOpenState = true" (closed)="projectPipelinesOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title><h3>Project Pipelines:</h3></mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-pipeline-detail
+            *ngFor="let pipeline of pipelines"
+            [pipeline]="pipeline"
             [pipelineInfo]="pipelineInfo"
-            (pipelineCreated)="pipelineCreated($event)"
-        ></app-analytical-models>
-    </mat-card>
+        ></app-pipeline-detail>
+    </mat-expansion-panel>
 
     <div *ngIf="!creatingPipeline">
         <button mat-flat-button color="primary" type="button" mat-button (click)="createPipeline()">
-            Create pipeline
+            Add Pipeline
         </button>
     </div>
 

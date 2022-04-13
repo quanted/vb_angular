@@ -68,6 +68,7 @@ import { FluidHeightDirective } from "./directives/fluid-height.directive";
 import { PipelineStatusComponent } from "./components/project/pipelines/pipeline-status/pipeline-status.component";
 import { ProjectMetaComponent } from "./components/project/project-meta/project-meta.component";
 import { ProjectMetaEditComponent } from "./components/project/project-meta/project-meta-edit/project-meta-edit.component";
+import { PipelineDetailComponent } from './components/project/pipelines/pipeline-detail/pipeline-detail.component';
 
 @NgModule({
     declarations: [
@@ -109,6 +110,7 @@ import { ProjectMetaEditComponent } from "./components/project/project-meta/proj
         PipelineStatusComponent,
         ProjectMetaComponent,
         ProjectMetaEditComponent,
+        PipelineDetailComponent,
     ],
     imports: [
         BrowserModule,

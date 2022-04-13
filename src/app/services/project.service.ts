@@ -94,9 +94,6 @@ export class ProjectService implements OnDestroy {
 
     updateProject(update): Observable<any> {
         return this.http.put(`${environment.apiURL}project/${update.id}/`, update).pipe(
-            tap((response) => {
-                console.log("projectService.updateProject returned");
-            }),
             takeUntil(this.ngUnsubscribe),
             catchError((err) => {
                 console.log(err);

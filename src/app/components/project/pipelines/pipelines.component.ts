@@ -17,11 +17,13 @@ export class PipelinesComponent implements OnInit {
     @Output() setPipelines: EventEmitter<any> = new EventEmitter<any>();
 
     globalCVOpenState = false;
+    projectPipelinesOpenState = false;
 
     constructor(private pipelineService: PipelineService) {}
 
     ngOnInit(): void {
         this.getPipelineInfo();
+        this.pipelines = this.project.pipelines;
     }
 
     parseVBHelepr() {
@@ -38,8 +40,9 @@ export class PipelinesComponent implements OnInit {
      * Calls the pipeline service to populate the "create pipeline" UI.
      */
     getPipelineInfo() {
-        // Get all pipeline info
+        // returns available estimator info
         this.pipelineService.getPipelines().subscribe((pipelines) => {
+            console.log("getPipelineInfo: ", pipelines);
             // Find vbhelper info
             this.vbHelperPipeInfo = pipelines.find((pipeline) => {
                 return pipeline.ptype === "vbhelper";
