@@ -1,25 +1,38 @@
-<mat-card>
-  <app-global-cv *ngIf="vbHelper !== undefined && vbHelperPipeInfo !== undefined"
-    [vbHelper]="vbHelper" [vbHelperPipeInfo]="vbHelperPipeInfo"></app-global-cv>
-</mat-card>
+<div class="pipelines">
+    <mat-expansion-panel (opened)="globalCVOpenState = true" (closed)="globalCVOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title><h3>Project Cross Validation Options:</h3></mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-global-cv
+            *ngIf="vbHelper !== undefined && vbHelperPipeInfo !== undefined"
+            [vbHelper]="vbHelper"
+            [vbHelperPipeInfo]="vbHelperPipeInfo"
+        ></app-global-cv>
+    </mat-expansion-panel>
 
-<ng-container>
-  <mat-card>
-    <h3>Project pipelines:</h3>
-    <app-analytical-models *ngIf="vbHelper !== undefined && pipelineInfo !== undefined"
-      [vbHelper]="vbHelper"
-      [pipelineInfo]="pipelineInfo" (pipelineCreated)="pipelineCreated($event)"></app-analytical-models>
-  </mat-card>
-</ng-container>
+    <mat-card>
+        <h3>Project pipelines:</h3>
+        <app-analytical-models
+            *ngIf="vbHelper !== undefined && pipelineInfo !== undefined"
+            [vbHelper]="vbHelper"
+            [pipelineInfo]="pipelineInfo"
+            (pipelineCreated)="pipelineCreated($event)"
+        ></app-analytical-models>
+    </mat-card>
 
-<ng-container *ngIf="!creatingPipeline">
-  <button mat-flat-button color="primary" type="button" mat-button (click)="createPipeline()">Create pipeline</button>
-</ng-container>
+    <div *ngIf="!creatingPipeline">
+        <button mat-flat-button color="primary" type="button" mat-button (click)="createPipeline()">
+            Create pipeline
+        </button>
+    </div>
 
-<ng-container *ngIf="creatingPipeline">
-  <app-create-pipeline *ngIf="vbHelper !== undefined && pipelineInfo !== undefined"
-    [vbHelper]="vbHelper"
-    [pipelineInfo]="pipelineInfo"
-    (pipelineCreated)="pipelineCreated($event)"
-    (pipelineCancelled)="pipelineCancelled()"></app-create-pipeline>
-</ng-container>
+    <div *ngIf="creatingPipeline">
+        <app-create-pipeline
+            *ngIf="vbHelper !== undefined && pipelineInfo !== undefined"
+            [vbHelper]="vbHelper"
+            [pipelineInfo]="pipelineInfo"
+            (pipelineCreated)="pipelineCreated($event)"
+            (pipelineCancelled)="pipelineCancelled()"
+        ></app-create-pipeline>
+    </div>
+</div>

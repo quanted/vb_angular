@@ -16,7 +16,7 @@ export class ProjectComponent implements OnInit {
     pipelines = [];
     locationName = "No location selected";
     datasetName = "No data selected";
-    pipelineNames = "No pipelines selected";
+    pipelineNames = ["No pipelines selected"];
 
     canExecute = false;
 
@@ -79,9 +79,9 @@ export class ProjectComponent implements OnInit {
         for (let pipeline of pipelines) {
             typeList.push(pipeline.type);
         }
-        this.pipelineNames = typeList.join(", ");
+        this.pipelineNames = typeList;
         if (this.pipelines.length < 1) {
-            this.pipelineNames = "No pipelines selected";
+            this.pipelineNames = ["No pipelines selected"];
         }
         this.canExecute = this.projectService.isExecutionReady();
         // console.log("project.setPipelines() ", this.pipelines);

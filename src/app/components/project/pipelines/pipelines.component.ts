@@ -16,6 +16,8 @@ export class PipelinesComponent implements OnInit {
     vbHelper: any;
     @Output() setPipelines: EventEmitter<any> = new EventEmitter<any>();
 
+    globalCVOpenState = false;
+
     constructor(private pipelineService: PipelineService) {}
 
     ngOnInit(): void {

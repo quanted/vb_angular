@@ -1,29 +1,20 @@
-<h3>Project Cross Validation Options:</h3>
 <!-- Dynamically handle hyper params based on selection change -->
 <form *ngIf="outer" [formGroup]="cvFormGroup">
-  <div class="wrapper">
-    <ng-container formArrayName="formControls">
-      <div *ngFor="let _ of hyperParams.controls; let i = index">
-        <mat-form-field [formGroupName]="i">
-          <mat-label>{{
-            vbHelperPipeInfo["hyper-parameters"][i].name
-          }}</mat-label>
-          <mat-select
-            [formControlName]="vbHelperPipeInfo['hyper-parameters'][i].name"
-          >
-            <mat-option
-              *ngFor="
-                let option of getHyperParamOptions(
-                  vbHelperPipeInfo['hyper-parameters'][i].options
-                )
-              "
-              [value]="option"
-            >
-              {{ option }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </ng-container>
-  </div>
+    <div class="wrapper">
+        <ng-container formArrayName="formControls">
+            <div *ngFor="let _ of hyperParams.controls; let i = index">
+                <mat-form-field [formGroupName]="i">
+                    <mat-label>{{ vbHelperPipeInfo["hyper-parameters"][i].name }}</mat-label>
+                    <mat-select [formControlName]="vbHelperPipeInfo['hyper-parameters'][i].name">
+                        <mat-option
+                            *ngFor="let option of getHyperParamOptions(vbHelperPipeInfo['hyper-parameters'][i].options)"
+                            [value]="option"
+                        >
+                            {{ option }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </ng-container>
+    </div>
 </form>

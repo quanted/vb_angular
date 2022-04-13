@@ -35,7 +35,9 @@
                 <!-- Pipelines -->
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Model: {{ pipelineNames }}</mat-panel-title>
+                        <mat-panel-title
+                            >Model<span *ngIf="pipelineNames.length != 1">s</span>: {{ pipelineNames.join(", ") }}
+                        </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-pipelines [project]="project" (setPipelines)="setPipelines($event)"></app-pipelines>
                 </mat-expansion-panel>
