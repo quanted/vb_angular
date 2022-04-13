@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { PipelineService } from "src/app/services/pipeline.service";
+import { ActivatedRoute } from "@angular/router";
 
 import { ProjectService } from "src/app/services/project.service";
 
@@ -12,28 +11,24 @@ import { ProjectService } from "src/app/services/project.service";
 export class ProjectComponent implements OnInit {
     panelOpenState = false;
 
-    canExecute = false;
-
+    projectID = null;
     project = null;
     pipelines = [];
     locationName = "No location selected";
     datasetName = "No data selected";
     pipelineNames = "No pipelines selected";
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private projectService: ProjectService,
-        private pipelineService: PipelineService
-    ) {}
+    canExecute = false;
+
+    constructor(private route: ActivatedRoute, private projectService: ProjectService) {}
 
     ngOnInit(): void {
         if (this.route.paramMap) {
-            const projectID = this.route.snapshot.paramMap.get("id");
-            this.projectService.loadProject(projectID);
+            this.projectID = this.route.snapshot.paramMap.get("id");
         }
-        this.projectService.monitorProject().subscribe((project) => {
+        this.projectService.getProject(this.projectID).subscribe((project) => {
             this.project = project;
+            this.canExecute = this.projectService.isExecutionReady();
         });
     }
 
@@ -53,7 +48,7 @@ export class ProjectComponent implements OnInit {
         update.metadata = JSON.stringify(this.project.metadata);
         this.projectService.updateProject(update).subscribe((project) => {
             // needs error handling
-            this.checkReady();
+            this.canExecute = this.projectService.isExecutionReady();
         });
     }
 
@@ -74,7 +69,7 @@ export class ProjectComponent implements OnInit {
         }
         this.projectService.updateProject(update).subscribe((project) => {
             // needs error handling
-            this.checkReady();
+            this.canExecute = this.projectService.isExecutionReady();
         });
     }
 
@@ -88,15 +83,13 @@ export class ProjectComponent implements OnInit {
         if (this.pipelines.length < 1) {
             this.pipelineNames = "No pipelines selected";
         }
-        this.checkReady();
+        this.canExecute = this.projectService.isExecutionReady();
         // console.log("project.setPipelines() ", this.pipelines);
     }
 
-    checkReady(): void {
-        this.canExecute = this.project.location && this.project.dataset && this.pipelines.length > 0;
-    }
-
     executeProject(): void {
-        this.projectService.executeProject(this.project);
+        this.projectService.executeProject(this.project).subscribe((response) => {
+            console.log("execute response: ", response);
+        });
     }
 }

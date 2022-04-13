@@ -25,7 +25,7 @@
                     </mat-expansion-panel-header>
                     <app-location
                         [locationID]="project.location"
-                        [projectID]="project.id"
+                        [project]="project"
                         (setLocation)="setLocation($event)"
                     ></app-location>
                 </mat-expansion-panel>
@@ -41,10 +41,10 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title>Model: {{ pipelineNames }}</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <app-pipelines [projectID]="project.id" (setPipelines)="setPipelines($event)"></app-pipelines>
+                    <app-pipelines [project]="project" (setPipelines)="setPipelines($event)"></app-pipelines>
                 </mat-expansion-panel>
                 <!-- project execution -->
-                <ng-container *ngIf="isExecutionReady()">
+                <ng-container *ngIf="canExecute">
                     <div id="execute">
                         <button type="button" mat-flat-button color="warn" (click)="executeProject()">
                             Execute project

@@ -2,8 +2,8 @@ import { Injectable, OnDestroy } from "@angular/core";
 
 import { HttpClient } from "@angular/common/http";
 
-import { BehaviorSubject, Observable, of, Subject } from "rxjs";
-import { catchError, takeUntil, tap } from "rxjs/operators";
+import { BehaviorSubject, EMPTY, forkJoin, Observable, of, Subject, throwError } from "rxjs";
+import { catchError, switchMap, takeUntil, tap } from "rxjs/operators";
 
 import { environment } from "../../environments/environment";
 import { deepCopy } from "../utils/deepCopy";
@@ -19,16 +19,11 @@ export class ProjectService implements OnDestroy {
     private ngUnsubscribe = new Subject();
     private projectSubject: BehaviorSubject<any>;
 
-    private projects;
-    private selectedProjectID;
+    private projects: any[] = [];
     private project;
 
     constructor(private http: HttpClient, private pipelineService: PipelineService) {
-        this.projectSubject = new BehaviorSubject(this.project);
-        this.getProjects().subscribe((projects) => {
-            this.projects = projects;
-            this.loadProject(this.selectedProjectID);
-        });
+        this.getProjects().subscribe();
     }
 
     ngOnDestroy() {
@@ -42,7 +37,11 @@ export class ProjectService implements OnDestroy {
 
     getProjects(): Observable<any> {
         return this.http.get(environment.apiURL + "project/").pipe(
-            tap((projects) => {
+            tap((projects: any) => {
+                if (projects.error) {
+                    throwError({ error: projects.error });
+                    return;
+                }
                 this.projects = projects;
             }),
             takeUntil(this.ngUnsubscribe),
@@ -53,15 +52,17 @@ export class ProjectService implements OnDestroy {
         );
     }
 
-    loadProject(projectID): void {
-        this.selectedProjectID = projectID;
-        if (this.projects) {
-            const project = this.projects.find((project) => {
-                return project.id == projectID;
-            });
-            this.project = project;
-            this.projectSubject.next(this.project);
-        }
+    getProject(id): Observable<any> {
+        return this.getProjects().pipe(
+            switchMap((projects) => {
+                for (let project of projects) {
+                    if (project.id == id) {
+                        return of(project);
+                    }
+                }
+                return EMPTY;
+            })
+        );
     }
 
     createProject(project): Observable<any> {
@@ -69,7 +70,6 @@ export class ProjectService implements OnDestroy {
             tap((project) => {
                 this.project = project;
                 this.projects.push(project);
-                this.projectSubject.next(this.project);
             }),
             takeUntil(this.ngUnsubscribe),
             catchError((err) => {
@@ -106,13 +106,15 @@ export class ProjectService implements OnDestroy {
     }
 
     executeProject(project): Observable<any> {
-        for (let pipeline of project.pipelines) {
-            console.log(`project ${project.id} executing ${pipeline.name} pipeline on dataset ${project.dataset}`);
-            this.pipelineService.executePipeline(project, pipeline.id).subscribe((response) => {
-                console.log("execute: ", response);
-            });
+        if (this.isExecutionReady()) {
+            const pipelineExecutionObserveables: any[] = [];
+            for (let pipeline of project.pipelines) {
+                console.log(`project ${project.id} executing ${pipeline.name} pipeline on dataset ${project.dataset}`);
+                pipelineExecutionObserveables.push(this.pipelineService.executePipeline(project, pipeline.id));
+            }
+            return forkJoin(pipelineExecutionObserveables);
         }
-        return;
+        return throwError({ error: "simulation not ready for execution" });
     }
 
     deleteProject(id): Observable<any> {
@@ -123,5 +125,9 @@ export class ProjectService implements OnDestroy {
                 return of({ error: `Failed to delete project!` });
             })
         );
+    }
+
+    isExecutionReady(): boolean {
+        return this.project ? this.project.dataset && this.project.location && this.project.pipelines : null;
     }
 }

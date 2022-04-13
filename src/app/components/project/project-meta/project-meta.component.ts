@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
@@ -18,6 +18,7 @@ export class ProjectMetaComponent implements OnInit {
     constructor(private fb: FormBuilder) {}
 
     ngOnInit(): void {
+        console.log("meta project: ", this.project);
         this.projectMetadataForm = this.fb.group({
             name: [null, Validators.required],
             description: [null, Validators.required],

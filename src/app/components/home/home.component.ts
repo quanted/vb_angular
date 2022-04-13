@@ -21,7 +21,8 @@ export class HomeComponent implements OnInit {
                 if (projects.length < 1) {
                     this.statusMessage = "You have no stored projects";
                 } else {
-                    this.projects = [...projects];
+                    this.projects = projects;
+                    console.log("projects: ", this.projects);
                 }
             } else {
                 console.log(projects.error);
@@ -35,7 +36,7 @@ export class HomeComponent implements OnInit {
 
     projectDeleted(): void {
         this.projectService.getProjects().subscribe((projects) => {
-            this.projects = [...projects];
+            this.projects = projects;
         });
     }
 }

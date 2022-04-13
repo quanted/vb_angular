@@ -8,7 +8,7 @@ import { PipelineInfoModel } from "../../../models/pipeline-info.model";
     styleUrls: ["./pipelines.component.css"],
 })
 export class PipelinesComponent implements OnInit {
-    @Input() projectID;
+    @Input() project;
     creatingPipeline = false;
     pipelines = [];
     pipelineInfo: PipelineInfoModel[];
@@ -83,7 +83,7 @@ export class PipelinesComponent implements OnInit {
      * makes call to create a new vbhelper pipeline.
      */
     getVBHelperPipeline(): void {
-        this.pipelineService.getProjectPipelines(this.projectID).subscribe((pipelines) => {
+        this.pipelineService.getProjectPipelines(this.project.id).subscribe((pipelines) => {
             this.vbHelper = pipelines[0];
             // No pipelines returned, create a new one.
             if (this.vbHelper === undefined) {
@@ -100,7 +100,7 @@ export class PipelinesComponent implements OnInit {
     createVBHelper() {
         // Populate default info and parameters with vbHelperPipeInfo
         this.vbHelper = {
-            project: this.projectID,
+            project: this.project.id,
             description: this.vbHelperPipeInfo.description,
             type: this.vbHelperPipeInfo.ptype,
             name: this.vbHelperPipeInfo.name,
