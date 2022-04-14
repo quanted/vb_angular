@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit {
                     this.statusMessage = "You have no stored projects";
                 } else {
                     this.projects = projects;
-                    console.log("projects: ", this.projects);
                 }
             } else {
                 console.log(projects.error);

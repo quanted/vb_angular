@@ -74,17 +74,18 @@ export class ProjectComponent implements OnInit {
     }
 
     setPipelines(pipelines): void {
-        this.pipelines = [...pipelines];
-        const typeList = [];
-        for (let pipeline of pipelines) {
-            typeList.push(pipeline.name);
-        }
-        this.pipelineNames = typeList;
-        if (this.pipelines.length < 1) {
-            this.pipelineNames = ["No pipelines selected"];
+        if (pipelines) {
+            this.pipelines = pipelines;
+            const typeList = [];
+            for (let pipeline of pipelines) {
+                typeList.push(pipeline.name);
+            }
+            this.pipelineNames = typeList;
+            if (this.pipelines.length < 1) {
+                this.pipelineNames = ["No pipelines selected"];
+            }
         }
         this.canExecute = this.projectService.isExecutionReady();
-        // console.log("project.setPipelines() ", this.pipelines);
     }
 
     executeProject(): void {

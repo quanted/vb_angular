@@ -34,13 +34,14 @@ export class PipelineService implements OnDestroy {
     getGlobalOptionValues(id): Observable<any> {
         return this.http.get(`${environment.apiURL}pipeline/?project=${id}`).pipe(
             switchMap((pipelines) => {
+                const projectPipelines = pipelines;
                 return of({
                     globalOptionValues: JSON.parse(pipelines[0].metadata.parameters.replaceAll("'", '"')),
                 });
             }),
             takeUntil(this.ngUnsubscribe),
             catchError(() => {
-                return of({ error: `Failed to fetch project pipelines!` });
+                return of({ error: `Failed to fetch project.globalOptionValues!` });
             })
         );
     }

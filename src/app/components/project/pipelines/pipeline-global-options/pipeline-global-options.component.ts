@@ -48,7 +48,16 @@ export class PipelineGlobalOptionsComponent implements OnInit {
             this.buildOptionsForm();
 
             this.pipelineService.getGlobalOptionValues(this.project.id).subscribe((globalValues) => {
-                this.globalOptionsValues = globalValues.globalOptionValues;
+                // this will be an error if the project doesn't have any pipelines
+                if (globalValues.error) {
+                    const globalOptionsDefaults = [];
+                    for (let option of this.pipelinesGlobalOptions) {
+                        globalOptionsDefaults[option.name] = option.value;
+                    }
+                    this.globalOptionsValues = globalOptionsDefaults;
+                } else {
+                    this.globalOptionsValues = globalValues.globalOptionValues;
+                }
                 this.setOptionFormValues();
             });
         });
@@ -65,45 +74,4 @@ export class PipelineGlobalOptionsComponent implements OnInit {
     setOptionFormValues(): void {
         this.globalOptionsForm.setValue(this.globalOptionsValues);
     }
-
-    getHyperParamOptions(options: string): string[] {
-        let result: string[] = [];
-
-        // Check for range of integer values.
-        if (options.includes(":") && !options.includes(".")) {
-            // Allocate array of value range.
-            const splits = options.split(":", 2);
-            const min = Number(splits[0]);
-            const max = splits[1] === "inf" ? 100 : Number(splits[1]) + 1;
-            for (let i = min; i < max; i++) {
-                result.push(i.toString());
-            }
-        } else if (options.includes(":") && options.includes(".")) {
-            // Allocate range of float values
-            const splits = options.split(":", 2);
-            const min = Number.parseFloat(splits[0]);
-            const max = Number.parseFloat(splits[1]);
-            for (let i = min; i < max; i += 0.1) {
-                result.push(i.toPrecision(1).toString());
-            }
-        } else if (options.includes(",") && options.includes(".")) {
-            // Allocate range of float values
-            const splits = options.split(",", 2);
-            const min = Number.parseFloat(splits[0]);
-            const max = Number.parseFloat(splits[1]);
-            for (let i = min; i < max; i += 0.1) {
-                result.push(i.toPrecision(1).toString());
-            }
-        } else {
-            // Allocate string parameters options
-            options = options.replace(/[\[\]']+/g, "");
-            options = options.replace("'", " ");
-            result = options.split(/\s*,\s*/);
-        }
-        return result;
-    }
-
-    updateOuterCV() {}
-
-    updateCVPipe() {}
 }
