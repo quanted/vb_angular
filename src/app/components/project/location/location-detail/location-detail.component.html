@@ -1,16 +1,17 @@
 <mat-card id="location-detail" *ngIf="location">
-  <div class="parent">
-    <div>
-      <h3>
-        Location: {{ location.name || "no location name" }}
-      </h3>
-      <p>
-        Description: {{ location.description || "no location description" }}
-      </p>
+    <div class="parent">
+        <div>
+            <h3>Location: {{ location.name || "no location name" }}</h3>
+            <p>Description: {{ location.description || "no location description" }}</p>
+        </div>
+        <div id="mini-map" class="parent2">
+            <div></div>
+            <app-mini-map [location]="location"></app-mini-map>
+        </div>
     </div>
-    <div id="mini-map" class="parent2">
-      <div></div>
-      <app-mini-map [location]="location"></app-mini-map>
+    <div class="remove-button">
+        <button mat-flat-button (click)="remove()" class="trash">
+            Remove from project<mat-icon>delete_forever</mat-icon>
+        </button>
     </div>
-  </div>
 </mat-card>

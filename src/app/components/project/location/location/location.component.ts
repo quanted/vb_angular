@@ -8,11 +8,12 @@ import { LocationService } from "src/app/services/location.service";
     styleUrls: ["./location.component.css"],
 })
 export class LocationComponent implements OnInit {
+    @Input() project;
+    @Output() setLocation: EventEmitter<any> = new EventEmitter<any>();
+
     constructor(private router: Router, private locationService: LocationService) {}
 
-    @Input() project;
     location;
-    @Output() setLocation: EventEmitter<any> = new EventEmitter<any>();
     locations = [];
 
     ngOnInit(): void {
