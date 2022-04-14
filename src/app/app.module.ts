@@ -50,8 +50,6 @@ import { DataComponent } from "./components/project/data/data.component";
 import { DataStatisticsComponent } from "./components/project/data/data-statistics/data-statistics.component";
 import { DataDetailComponent } from "./components/project/data/data-detail/data-detail.component";
 import { PipelinesComponent } from "./components/project/pipelines/pipelines.component";
-import { AnalyticalModelsComponent } from "./components/project/pipelines/analytical-models/analytical-models.component";
-import { CreatePipelineComponent } from "./components/project/pipelines/create-pipeline/create-pipeline.component";
 import { PipelineGlobalOptionsComponent } from "./components/project/pipelines/pipeline-global-options/pipeline-global-options.component";
 import { ModelSelectionComponent } from "./components/dashboards/model-selection/model-selection.component";
 import { ModelSelectionModelTableComponent } from "./components/dashboards/model-selection/model-selection-model-table/model-selection-model-table.component";
@@ -95,8 +93,8 @@ import { PipelineCreateComponent } from "./components/project/pipelines/pipeline
         DataStatisticsComponent,
         DataDetailComponent,
         PipelinesComponent,
-        AnalyticalModelsComponent,
-        CreatePipelineComponent,
+        PipelineDetailComponent,
+        PipelineCreateComponent,
         PipelineGlobalOptionsComponent,
         ModelSelectionComponent,
         ModelSelectionModelTableComponent,
@@ -111,8 +109,6 @@ import { PipelineCreateComponent } from "./components/project/pipelines/pipeline
         PipelineStatusComponent,
         ProjectMetaComponent,
         ProjectMetaEditComponent,
-        PipelineDetailComponent,
-        PipelineCreateComponent,
     ],
     imports: [
         BrowserModule,
