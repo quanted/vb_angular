@@ -1,24 +1,24 @@
-.wrapper {
-  display: flex;
-  flex-wrap: wrap;
+.global-options {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .mat-form-field {
-  margin: 16px;
+    margin: 16px;
 }
 
 .lock {
-  transform: scale(1.1);
-  color: gray;
-  cursor: pointer;
+    transform: scale(1.1);
+    color: gray;
+    cursor: pointer;
 }
 .btns {
-  display: flex;
-  width: 6rem;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    width: 6rem;
+    align-items: center;
+    justify-content: space-between;
 }
 
 mat-slide-toggle {
-  float: right;
+    float: right;
 }

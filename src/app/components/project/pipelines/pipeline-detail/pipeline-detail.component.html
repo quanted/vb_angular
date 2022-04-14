@@ -1,19 +1,33 @@
-<mat-expansion-panel (opened)="pipelineOptionOpenState = true" (closed)="pipelineOptionOpenState = false">
+<mat-expansion-panel (opened)="pipelineOptionsOpenState = true" (closed)="pipelineOptionsOpenState = false">
     <mat-expansion-panel-header>
         <mat-panel-title>{{ pipeline.name }}</mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="pipeline-options" [formGroup]="pipelineOptionForm">
-        <div *ngFor="let parameter of pipeline.hyperParameters">
-            <div>{{ pipeline | json }}</div>
-            <mat-form-field>
-                <mat-label>{{ parameter.name }}</mat-label>
-                <mat-select formControlName="parameter.name">
-                    <mat-option *ngFor="let option of parameter.options" [value]="option">
-                        {{ option }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
+    <div class="pipeline-options" *ngIf="pipelineOptions" [formGroup]="pipelineOptionsForm">
+        <mat-form-field *ngFor="let option of pipelineOptions">
+            <mat-label>{{ option.name }}</mat-label>
+            <mat-select *ngIf="option.vtype == 'str' || option.vtype == 'bool'" formControlName="{{ option.name }}">
+                <mat-option *ngFor="let value of option.options" [value]="value">
+                    {{ value }}
+                </mat-option>
+            </mat-select>
+            <input
+                matInput
+                *ngIf="option.vtype == 'int'"
+                type="number"
+                min="{{ option.min }}"
+                max="{{ option.max }}"
+                formControlName="{{ option.name }}"
+            />
+            <input
+                matInput
+                *ngIf="option.vtype == 'float'"
+                type="number"
+                min="{{ option.min }}"
+                max="{{ option.max }}"
+                step="0.01"
+                formControlName="{{ option.name }}"
+            />
+        </mat-form-field>
         <button type="button" mat-flat-button color="primary" (click)="updatePipelineOptions()">
             Update Pipeline Options
         </button>

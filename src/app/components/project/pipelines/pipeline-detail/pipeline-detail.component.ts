@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PipelineService } from "src/app/services/pipeline.service";
 import { ProjectService } from "src/app/services/project.service";
 
@@ -9,30 +9,60 @@ import { ProjectService } from "src/app/services/project.service";
     styleUrls: ["./pipeline-detail.component.css"],
 })
 export class PipelineDetailComponent implements OnInit {
-    // a pipeline object
-    @Input() pipeline = null;
-    // the metadata for the input pipeline type
-    pipelineMetadata = null;
-    // available pipelines and their metadata
-    @Input() pipelineInfo = null;
+    @Input() project;
+    @Input() pipeline;
 
-    pipelineOptionOpenState = false;
+    pipelineOptions = null;
 
-    pipelineOptionForm: FormGroup;
+    // ui flag
+    pipelineOptionsOpenState = false;
 
-    constructor(
-        private fb: FormBuilder,
-        private pipelineService: PipelineService,
-        private projectService: ProjectService
-    ) {}
+    pipelineOptionsForm: FormGroup;
+
+    constructor(private fb: FormBuilder, private pipelineService: PipelineService) {}
 
     ngOnInit(): void {
-        console.log("pipeline: ", this.pipeline);
-        console.log("pipelineInfo: ", this.pipelineInfo);
-        this.pipelineOptionForm = this.fb.group(null);
+        this.pipelineOptionsForm = this.fb.group({});
+        this.pipelineService.getPipelinesMetadata().subscribe((pipelinesMetadata) => {
+            const parameters = pipelinesMetadata.find((pipeline) => {
+                return this.pipeline.type === pipeline.ptype;
+            })["hyper-parameters"];
+            // map the each option's range/values to something that the forms can use
+            for (let parameter of parameters) {
+                let values = [];
+                switch (parameter.vtype) {
+                    case "bool":
+                        parameter.options = ["True", "False"];
+                        break;
+                    case "int":
+                        values = parameter.options.split(":");
+                        parameter["min"] = values[0];
+                        parameter["max"] = values[1];
+                        break;
+                    case "float":
+                        values = parameter.options.split(",");
+                        parameter["min"] = values[0];
+                        parameter["max"] = values[1].trim();
+                        break;
+                    case "str":
+                        parameter.options = JSON.parse(parameter.options.replaceAll("'", '"'));
+                        break;
+                }
+            }
+            this.pipelineOptions = parameters;
+            this.buildPipelineOptionsForm();
+        });
+    }
+
+    buildPipelineOptionsForm(): void {
+        const fields = {};
+        for (let option of this.pipelineOptions) {
+            fields[option.name] = ["", Validators.required];
+        }
+        this.pipelineOptionsForm = this.fb.group(fields);
     }
 
     updatePipelineOptions(): void {
-        this.pipelineService.updatePipeline(this.pipelineOptionForm.value);
+        console.log("updateOptions: ", this.pipelineOptionsForm.value);
     }
 }

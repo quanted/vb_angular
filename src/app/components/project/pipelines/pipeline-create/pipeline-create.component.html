@@ -1,1 +1,19 @@
-<p>pipeline-create works!</p>
+<div class="pipeline-form" *ngIf="pipelinesMetadata" [formGroup]="pipelineForm">
+    <mat-form-field>
+        <mat-label>Estimator</mat-label>
+        <mat-select formControlName="estimator" (selectionChange)="selectEstimator()">
+            <mat-option *ngFor="let estimator of pipelinesMetadata" value="{{ estimator.name }}">{{
+                estimator.name
+            }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div *ngIf="selectedEstimator">
+        <div>{{ selectedEstimator.description }}</div>
+    </div>
+</div>
+
+<div class="controls">
+    <button mat-flat-button color="primary" type="button" (click)="addPipeline()">Create pipeline</button>
+    <button mat-flat-button color="warn" type="button" (click)="cancelPipeline()">Cancel</button>
+</div>

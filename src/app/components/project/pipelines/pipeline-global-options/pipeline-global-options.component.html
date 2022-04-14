@@ -1,20 +1,27 @@
-<!-- Dynamically handle hyper params based on selection change -->
-<form *ngIf="outer" [formGroup]="cvFormGroup">
-    <div class="wrapper">
-        <ng-container formArrayName="formControls">
-            <div *ngFor="let _ of hyperParams.controls; let i = index">
-                <mat-form-field [formGroupName]="i">
-                    <mat-label>{{ vbHelperPipeInfo["hyper-parameters"][i].name }}</mat-label>
-                    <mat-select [formControlName]="vbHelperPipeInfo['hyper-parameters'][i].name">
-                        <mat-option
-                            *ngFor="let option of getHyperParamOptions(vbHelperPipeInfo['hyper-parameters'][i].options)"
-                            [value]="option"
-                        >
-                            {{ option }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </ng-container>
-    </div>
-</form>
+<div class="global-options" *ngIf="pipelinesGlobalOptions" [formGroup]="globalOptionsForm">
+    <mat-form-field *ngFor="let option of pipelinesGlobalOptions">
+        <mat-label>{{ option.name }}</mat-label>
+        <mat-select *ngIf="option.vtype == 'string' || option.vtype == 'bool'" formControlName="{{ option.name }}">
+            <mat-option *ngFor="let value of option.options" [value]="value">
+                {{ value }}
+            </mat-option>
+        </mat-select>
+        <input
+            matInput
+            *ngIf="option.vtype == 'int'"
+            type="number"
+            min="{{ option.min }}"
+            max="{{ option.max }}"
+            formControlName="{{ option.name }}"
+        />
+        <input
+            matInput
+            *ngIf="option.vtype == 'float'"
+            type="number"
+            min="{{ option.min }}"
+            max="{{ option.max }}"
+            step="0.01"
+            formControlName="{{ option.name }}"
+        />
+    </mat-form-field>
+</div>

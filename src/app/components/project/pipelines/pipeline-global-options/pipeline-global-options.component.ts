@@ -1,74 +1,71 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
-import { PipelineService } from "../../../../services/pipeline.service";
+import { Component, Input, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { PipelineService } from "src/app/services/pipeline.service";
 
 @Component({
     selector: "app-pipeline-global-options",
     templateUrl: "./pipeline-global-options.component.html",
     styleUrls: ["./pipeline-global-options.component.css"],
 })
-export class PipelineGlobalOptionsComponent implements OnInit, OnChanges {
-    @Input() vbHelper: any;
-    @Input() vbHelperPipeInfo: any;
-    cvFormGroup: FormGroup;
-    disabled = true;
-    outer = false;
+export class PipelineGlobalOptionsComponent implements OnInit {
+    @Input() project: any;
+    pipelinesGlobalOptions: any;
 
-    constructor(private formBuilder: FormBuilder, private pipelineService: PipelineService) {}
+    globalOptionsForm: FormGroup;
+    globalOptionsValues;
+
+    constructor(private fb: FormBuilder, private pipelineService: PipelineService) {}
 
     ngOnInit(): void {
-        this.cvFormGroup = this.formBuilder.group({
-            formControls: new FormArray([]),
-        });
-        this.outer = this.vbHelper.metadata.outer_cv === "True";
-        this.setFormControls();
-        this.cvFormGroup.disable();
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.hasOwnProperty("vbHelper") || changes.hasOwnProperty("vbHelperPipeInfo")) {
-            this.cvFormGroup = this.formBuilder.group({
-                formControls: new FormArray([]),
-            });
-            this.outer = this.vbHelper.metadata.outer_cv === "True";
-            this.setFormControls();
-            this.cvFormGroup.disable();
-        }
-    }
-
-    /**
-     *
-     */
-    setFormControls() {
-        // Create controls as formArray
-        const control = this.cvFormGroup?.controls.formControls as FormArray;
-
-        // Parse vbhelper parameters
-        if (typeof this.vbHelper.metadata.parameters === "string") {
-            this.vbHelper.metadata.parameters = JSON.parse(this.vbHelper.metadata.parameters.replace(/'/g, '"'));
-        }
-
-        // Iterate over key/value pairs of vbHelper params
-        for (const key in this.vbHelper.metadata.parameters) {
-            if (this.vbHelper.metadata.parameters.hasOwnProperty(key)) {
-                const newGroup = this.formBuilder.group({
-                    [key]: [this.vbHelper.metadata.parameters[key]],
-                });
-                control.push(newGroup);
+        this.globalOptionsForm = this.fb.group({});
+        this.pipelineService.getPipelinesMetadata().subscribe((pipelinesMetadata) => {
+            const parameters = pipelinesMetadata.find((pipeline) => {
+                return pipeline.ptype === "vbhelper";
+            })["hyper-parameters"];
+            // map the each option's range/values to something that the forms can use
+            for (let parameter of parameters) {
+                let values = [];
+                switch (parameter.vtype) {
+                    case "bool":
+                        parameter.options = ["True", "False"];
+                        break;
+                    case "int":
+                        values = parameter.options.split(":");
+                        parameter["min"] = values[0];
+                        parameter["max"] = values[1];
+                        break;
+                    case "float":
+                        values = parameter.options.split(",");
+                        parameter["min"] = values[0];
+                        parameter["max"] = values[1].trim();
+                        break;
+                    case "string":
+                        parameter.options = JSON.parse(parameter.options.replaceAll("'", '"'));
+                        break;
+                }
             }
+            this.pipelinesGlobalOptions = parameters;
+            this.buildOptionsForm();
+
+            this.pipelineService.getGlobalOptionValues(this.project.id).subscribe((globalValues) => {
+                this.globalOptionsValues = globalValues.globalOptionValues;
+                this.setOptionFormValues();
+            });
+        });
+    }
+
+    buildOptionsForm(): void {
+        const fields = {};
+        for (let option of this.pipelinesGlobalOptions) {
+            fields[option.name] = ["", Validators.required];
         }
+        this.globalOptionsForm = this.fb.group(fields);
     }
 
-    /**
-     * Getter used in HTML for generating the forms.
-     */
-    get hyperParams(): FormArray {
-        return this.cvFormGroup.get("formControls") as FormArray;
+    setOptionFormValues(): void {
+        this.globalOptionsForm.setValue(this.globalOptionsValues);
     }
 
-    /**
-     *
-     */
     getHyperParamOptions(options: string): string[] {
         let result: string[] = [];
 
@@ -106,56 +103,7 @@ export class PipelineGlobalOptionsComponent implements OnInit, OnChanges {
         return result;
     }
 
-    /**
-     *
-     */
-    toggleCV() {
-        if (this.disabled) {
-            this.cvFormGroup.enable();
-        } else {
-            this.updateCVPipe();
-            this.cvFormGroup.disable();
-        }
-        this.disabled = !this.disabled;
-    }
+    updateOuterCV() {}
 
-    updateOuterCV() {
-        // Stringify and update
-        if (this.outer) {
-            this.vbHelper.metadata.outer_cv = "True";
-        } else {
-            this.vbHelper.metadata.outer_cv = "False";
-        }
-        this.vbHelper.metadata = JSON.stringify(this.vbHelper.metadata);
-        this.pipelineService.updatePipeline(this.vbHelper).subscribe();
-        // Unstringify
-        this.vbHelper.metadata = JSON.parse(this.vbHelper.metadata);
-    }
-
-    updateCVPipe() {
-        // Get hyperparams from cvFormGroup
-        const hyperParams = this.cvFormGroup.controls.formControls as FormArray;
-        if (hyperParams.controls.length > 0) {
-            // Get each formgroup in the hyperparams formarray and add values to object..
-            const hyperParamsObj = {};
-            for (const control of hyperParams.controls) {
-                const key = Object.entries(control.value)?.toString().split(",");
-                hyperParamsObj[`${key[0]}`] = key[1];
-            }
-
-            // Assign value to vbhelper parameters
-            this.vbHelper.metadata.parameters = hyperParamsObj;
-
-            // Parse vbhelper estimators before stringifying
-            if (typeof this.vbHelper.metadata.estimators === "string") {
-                this.vbHelper.metadata.estimators = JSON.parse(this.vbHelper.metadata.estimators.replace(/'/g, '"'));
-            }
-
-            // Stringify and update
-            this.vbHelper.metadata = JSON.stringify(this.vbHelper.metadata);
-            this.pipelineService.updatePipeline(this.vbHelper).subscribe();
-            // Unstringify
-            this.vbHelper.metadata = JSON.parse(this.vbHelper.metadata);
-        }
-    }
+    updateCVPipe() {}
 }
