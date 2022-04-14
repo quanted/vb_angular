@@ -41,7 +41,7 @@ import { ResetPasswordComponent } from "./components/auth/reset-password/reset-p
 import { ProjectCreateComponent } from "./components/project/project-create/project-create.component";
 import { ProjectDetailComponent } from "./components/project/project-detail/project-detail.component";
 import { LocationComponent } from "./components/project/location/location/location.component";
-import { CreateLocationComponent } from "./components/project/location/create-location/create-location.component";
+import { LocationCreateComponent } from "./components/project/location/location-create/location-create.component";
 import { LocationDetailComponent } from "./components/project/location/location-detail/location-detail.component";
 import { LocationFormComponent } from "./components/project/location/location-form/location-form.component";
 import { MapComponent } from "./components/project/location/map/map.component";
@@ -84,7 +84,7 @@ import { PipelineCreateComponent } from "./components/project/pipelines/pipeline
         ProjectCreateComponent,
         ProjectDetailComponent,
         LocationComponent,
-        CreateLocationComponent,
+        LocationCreateComponent,
         LocationDetailComponent,
         LocationFormComponent,
         MapComponent,

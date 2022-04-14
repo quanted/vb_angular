@@ -6,7 +6,7 @@ import { RouteGuardService as RouteGuard } from "./services/auth/route-guard.ser
 import { LoginComponent } from "./components/auth/login/login.component";
 import { HomeComponent } from "./components/home/home.component";
 import { ProjectComponent } from "./components/project/project.component";
-import { CreateLocationComponent } from "./components/project/location/create-location/create-location.component";
+import { LocationCreateComponent } from "./components/project/location/location-create/location-create.component";
 import { DashboardComponent } from "./components/dashboards/dashboard/dashboard.component";
 
 const routes: Routes = [
@@ -24,7 +24,7 @@ const routes: Routes = [
     },
     {
         path: "create-location/:id",
-        component: CreateLocationComponent,
+        component: LocationCreateComponent,
         canActivate: [RouteGuard],
     },
     {
