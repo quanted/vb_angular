@@ -3,7 +3,7 @@ import { Injectable, OnDestroy } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
 import { BehaviorSubject, EMPTY, forkJoin, Observable, of, Subject, throwError } from "rxjs";
-import { catchError, switchMap, takeUntil, tap } from "rxjs/operators";
+import { catchError, concatMap, mergeMap, switchMap, takeUntil, tap } from "rxjs/operators";
 
 import { environment } from "../../environments/environment";
 import { deepCopy } from "../utils/deepCopy";
@@ -79,11 +79,42 @@ export class ProjectService implements OnDestroy {
         );
     }
 
-    cloneProject(project): Observable<any> {
-        const newProject = deepCopy.Copy(project);
-        newProject.name = project.name + " - Copy";
-        // need to clone pipelines too i.e. recreate them with the clone's project id
-        return this.createProject(newProject);
+    cloneProject(oldProject): Observable<any> {
+        let newProject = deepCopy.Copy(oldProject);
+        newProject.name = oldProject.name + " - Copy";
+        return this.createProject(newProject).pipe(
+            // after getting the newProject update the local reference
+            // and get the old project's pipelines to copy
+            concatMap((project) => {
+                newProject = project;
+                return this.pipelineService.getProjectPipelines(oldProject.id);
+            }),
+            // now update the pipelines with the newProject's id,
+            // remove the pipeline id field as the endpoint doesn't want it,
+            // fix the metadata json string,
+            // join all those requests together into one observable
+            concatMap((pipelines) => {
+                const newPipelines = [];
+                for (let pipeline of pipelines) {
+                    pipeline.project = newProject.id;
+                    delete pipeline.id;
+                    // TODO: this is because of backend inconsistencies
+                    // changing metadata: parameters: "{'do_prep': 'True',...
+                    // to metadata: parameters: "{"do_prep": "True",...
+                    // to metadata: parameters: {do_prep: 'True',...
+                    pipeline.metadata.parameters = JSON.parse(pipeline.metadata.parameters.replaceAll("'", '"'));
+                    // to metadata: "{\"parameters\":{\"do_prep\":\"True\",...
+                    pipeline.metadata = JSON.stringify(pipeline.metadata.parameters);
+                    newPipelines.push(this.pipelineService.addPipeline(pipeline));
+                }
+                return forkJoin(newPipelines);
+            }),
+            // now that the project's pipelines are ready
+            // return the new project
+            switchMap((response) => {
+                return of({ ...newProject });
+            })
+        );
     }
 
     updateProjectMetadata(metadata: Metadata): Observable<any> {
@@ -105,12 +136,12 @@ export class ProjectService implements OnDestroy {
 
     executeProject(project): Observable<any> {
         if (this.isExecutionReady()) {
-            const pipelineExecutionObserveables: any[] = [];
+            const pipelineExecutionObservables: any[] = [];
             for (let pipeline of project.pipelines) {
                 console.log(`project ${project.id} executing ${pipeline.name} pipeline on dataset ${project.dataset}`);
-                pipelineExecutionObserveables.push(this.pipelineService.executePipeline(project, pipeline.id));
+                pipelineExecutionObservables.push(this.pipelineService.executePipeline(project, pipeline.id));
             }
-            return forkJoin(pipelineExecutionObserveables);
+            return forkJoin(pipelineExecutionObservables);
         }
         return throwError({ error: "simulation not ready for execution" });
     }

@@ -63,7 +63,10 @@ export class PipelineDetailComponent implements OnInit {
     }
 
     updatePipelineOptions(): void {
-        const values = JSON.parse(this.pipeline.metadata.parameters.replaceAll("'", '"'));
-        this.pipelineOptionsForm.setValue(values);
+        // TODO: this is because of backend inconsistencies
+        if (this.pipeline.metadata.parameters) {
+            this.pipeline.metadata = JSON.parse(this.pipeline.metadata.parameters.replaceAll("'", '"'));
+        }
+        this.pipelineOptionsForm.setValue(this.pipeline.metadata);
     }
 }

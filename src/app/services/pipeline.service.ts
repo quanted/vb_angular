@@ -85,6 +85,7 @@ export class PipelineService implements OnDestroy {
     }
 
     addPipeline(pipeline: any): Observable<any> {
+        console.log("addPipeline: ", pipeline);
         return this.http.post(environment.apiURL + "pipeline/", pipeline).pipe(
             takeUntil(this.ngUnsubscribe),
             catchError((error) => {
