@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { PipelineService } from "src/app/services/pipeline.service";
-import { PipelineInfoModel } from "../../../models/pipeline-info.model";
 
 @Component({
     selector: "app-pipelines",

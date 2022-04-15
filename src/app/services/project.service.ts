@@ -3,7 +3,7 @@ import { Injectable, OnDestroy } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
 import { BehaviorSubject, EMPTY, forkJoin, Observable, of, Subject, throwError } from "rxjs";
-import { catchError, concatMap, mergeMap, switchMap, takeUntil, tap } from "rxjs/operators";
+import { catchError, concatMap, switchMap, takeUntil, tap } from "rxjs/operators";
 
 import { environment } from "../../environments/environment";
 import { deepCopy } from "../utils/deepCopy";

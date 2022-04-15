@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PipelineService } from "src/app/services/pipeline.service";
-import { ProjectService } from "src/app/services/project.service";
 
 @Component({
     selector: "app-pipeline-detail",
