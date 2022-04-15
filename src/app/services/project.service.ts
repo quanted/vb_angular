@@ -82,6 +82,7 @@ export class ProjectService implements OnDestroy {
     cloneProject(project): Observable<any> {
         const newProject = deepCopy.Copy(project);
         newProject.name = project.name + " - Copy";
+        // need to clone pipelines too i.e. recreate them with the clone's project id
         return this.createProject(newProject);
     }
 
