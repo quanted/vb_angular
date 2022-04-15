@@ -22,7 +22,6 @@ export class PipelineDetailComponent implements OnInit {
     constructor(private fb: FormBuilder, private pipelineService: PipelineService) {}
 
     ngOnInit(): void {
-        this.pipelineOptionsForm = this.fb.group({});
         this.pipelineService.getPipelinesMetadata().subscribe((pipelinesMetadata) => {
             const parameters = pipelinesMetadata.find((pipeline) => {
                 return this.pipeline.type === pipeline.ptype;
@@ -60,9 +59,13 @@ export class PipelineDetailComponent implements OnInit {
             fields[option.name] = ["", Validators.required];
         }
         this.pipelineOptionsForm = this.fb.group(fields);
+        this.updatePipelineOptions();
     }
 
     updatePipelineOptions(): void {
         console.log("updateOptions: ", this.pipelineOptionsForm.value);
+        console.log("this.pipeline: ", JSON.parse(this.pipeline.metadata.parameters.replaceAll("'", '"')));
+        const values = JSON.parse(this.pipeline.metadata.parameters.replaceAll("'", '"'));
+        this.pipelineOptionsForm.setValue(values);
     }
 }

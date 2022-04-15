@@ -13,37 +13,88 @@ export class PipelineCreateComponent implements OnInit {
     @Output() pipelineCancelled = new EventEmitter();
 
     pipelinesMetadata;
-    pipelineForm: FormGroup;
+    estimatorSelectForm: FormGroup;
+    estimatorOptionsForm: FormGroup;
 
     selectedEstimator = null;
+    estimatorOptions = null;
 
     constructor(private fb: FormBuilder, private pipelineService: PipelineService) {}
 
     ngOnInit(): void {
-        this.pipelineForm = this.fb.group({});
         this.pipelineService.getPipelinesMetadata().subscribe((pipelinesMetadata) => {
             this.pipelinesMetadata = pipelinesMetadata.filter((pipeline) => {
                 return pipeline.ptype != "vbhelper";
             });
-            this.buildPipelineCreateForm();
+            this.buildEstimatorSelectForm();
         });
     }
 
-    buildPipelineCreateForm(): void {
-        this.pipelineForm = this.fb.group({
+    buildEstimatorSelectForm(): void {
+        this.estimatorSelectForm = this.fb.group({
             estimator: ["", Validators.required],
         });
-        console.log("pipelinesMetadata: ", this.pipelinesMetadata);
     }
 
     selectEstimator(): void {
         this.selectedEstimator = this.pipelinesMetadata.find((estimator) => {
-            return estimator.name == this.pipelineForm.get("estimator").value;
+            return estimator.name == this.estimatorSelectForm.get("estimator").value;
         });
-        console.log("selected estimator: ", this.selectedEstimator);
+        this.buildEstimatorOptionsForm();
     }
 
-    addPipeline(): void {}
+    buildEstimatorOptionsForm(): void {
+        const parameters = this.selectedEstimator["hyper-parameters"];
+        // map the each option's range/values to something that the forms can use
+        for (let parameter of parameters) {
+            let values = [];
+            switch (parameter.vtype) {
+                case "bool":
+                    parameter.options = ["True", "False"];
+                    break;
+                case "int":
+                    values = parameter.options.split(":");
+                    parameter["min"] = values[0];
+                    parameter["max"] = values[1];
+                    break;
+                case "float":
+                    values = parameter.options.split(",");
+                    parameter["min"] = values[0];
+                    parameter["max"] = values[1].trim();
+                    break;
+                case "str":
+                    parameter.options = JSON.parse(parameter.options.replaceAll("'", '"'));
+                    break;
+            }
+        }
+        this.estimatorOptions = parameters;
+
+        const fields = {};
+        for (let option of this.estimatorOptions) {
+            fields[option.name] = ["", Validators.required];
+        }
+        this.estimatorOptionsForm = this.fb.group(fields);
+
+        const optionsDefaults = [];
+        for (let option of this.estimatorOptions) {
+            optionsDefaults[option.name] = option.value;
+        }
+        this.estimatorOptionsForm.setValue(optionsDefaults);
+    }
+
+    addPipeline(): void {
+        const pipeline = {
+            project: this.project.id,
+            name: this.selectedEstimator.name,
+            description: this.selectedEstimator.description,
+            type: this.selectedEstimator.ptype,
+            metadata: JSON.stringify({ parameters: this.estimatorOptionsForm.value }),
+        };
+
+        this.pipelineService.addPipeline(pipeline).subscribe((response) => {
+            this.pipelineCreated.emit();
+        });
+    }
 
     cancelPipeline(): void {
         this.pipelineCancelled.emit();

@@ -17,7 +17,6 @@ export class PipelineGlobalOptionsComponent implements OnInit {
     constructor(private fb: FormBuilder, private pipelineService: PipelineService) {}
 
     ngOnInit(): void {
-        this.globalOptionsForm = this.fb.group({});
         this.pipelineService.getPipelinesMetadata().subscribe((pipelinesMetadata) => {
             const parameters = pipelinesMetadata.find((pipeline) => {
                 return pipeline.ptype === "vbhelper";
@@ -47,7 +46,7 @@ export class PipelineGlobalOptionsComponent implements OnInit {
             this.pipelinesGlobalOptions = parameters;
             this.buildOptionsForm();
 
-            this.pipelineService.getGlobalOptionValues(this.project.id).subscribe((globalValues) => {
+            this.pipelineService.getGlobalOptionsValues(this.project.id).subscribe((globalValues) => {
                 // this will be an error if the project doesn't have any pipelines
                 if (globalValues.error) {
                     const globalOptionsDefaults = [];

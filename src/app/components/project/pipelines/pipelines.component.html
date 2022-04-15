@@ -22,7 +22,7 @@
     <div *ngIf="creatingPipeline">
         <app-pipeline-create
             [project]="project"
-            (pipelineCreated)="pipelineCreated($event)"
+            (pipelineCreated)="pipelineCreated()"
             (pipelineCancelled)="pipelineCreationCancelled()"
         ></app-pipeline-create>
     </div>

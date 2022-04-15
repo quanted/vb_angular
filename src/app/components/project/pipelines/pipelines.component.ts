@@ -21,8 +21,12 @@ export class PipelinesComponent implements OnInit {
     constructor(private pipelineService: PipelineService) {}
 
     ngOnInit(): void {
-        this.pipelineService.getProjectPipelines(this.project.id).subscribe((project) => {
-            this.pipelines = project.pipelines;
+        this.getProjectPipelines();
+    }
+
+    getProjectPipelines(): void {
+        this.pipelineService.getProjectPipelines(this.project.id).subscribe((pipelines) => {
+            this.pipelines = pipelines;
             this.setPipelines.emit(this.pipelines);
         });
     }
@@ -31,7 +35,10 @@ export class PipelinesComponent implements OnInit {
         this.creatingPipeline = true;
     }
 
-    pipelineCreated(event): void {}
+    pipelineCreated(): void {
+        this.creatingPipeline = false;
+        this.getProjectPipelines();
+    }
 
     deletePipeline(pipeline): void {}
 

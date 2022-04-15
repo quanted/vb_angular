@@ -17,41 +17,87 @@ export class PipelineService implements OnDestroy {
         this.ngUnsubscribe.complete();
     }
 
-    getProjectPipelines(id): Observable<any> {
-        return this.http.get(`${environment.apiURL}pipeline/?project=${id}`).pipe(
-            switchMap((pipelines) => {
-                return of({
-                    pipelines: JSON.parse(pipelines[0].metadata.estimators.replaceAll("'", '"')),
-                });
-            }),
-            takeUntil(this.ngUnsubscribe),
-            catchError(() => {
-                return of({ error: `Failed to fetch project pipelines!` });
-            })
-        );
-    }
-
-    getGlobalOptionValues(id): Observable<any> {
-        return this.http.get(`${environment.apiURL}pipeline/?project=${id}`).pipe(
-            switchMap((pipelines) => {
-                const projectPipelines = pipelines;
-                return of({
-                    globalOptionValues: JSON.parse(pipelines[0].metadata.parameters.replaceAll("'", '"')),
-                });
-            }),
-            takeUntil(this.ngUnsubscribe),
-            catchError(() => {
-                return of({ error: `Failed to fetch project.globalOptionValues!` });
-            })
-        );
-    }
-
     // returns [] of available pipelines and corresponding metadata
     getPipelinesMetadata(): Observable<any> {
         return this.http.get(`${environment.infoURL}info/pipelines`).pipe(
             takeUntil(this.ngUnsubscribe),
-            catchError(() => {
-                return of({ error: `Failed to fetch pipelines metadata!` });
+            catchError((error) => {
+                return of({ error: `Failed to fetch pipelines metadata! ${error}` });
+            })
+        );
+    }
+
+    getGlobalOptionsMetadata(): Observable<any> {
+        return this.getPipelinesMetadata().pipe(
+            switchMap((pipelines) => {
+                return of({});
+            })
+        );
+    }
+
+    getProjectPipelines(id): Observable<any> {
+        return this.http.get(`${environment.apiURL}pipeline/?project=${id}`).pipe(
+            takeUntil(this.ngUnsubscribe),
+            catchError((error) => {
+                return of({ error: `Failed to fetch project pipelines! ${error}` });
+            })
+        );
+    }
+
+    getGlobalOptionsValues(id): Observable<any> {
+        return this.getProjectPipelines(id).pipe(
+            switchMap((pipelines) => {
+                let vbhelper = null;
+                for (let pipeline of pipelines) {
+                    if (pipeline.ptype == "vbhelper") {
+                        vbhelper = pipeline;
+                    }
+                }
+                if (!vbhelper) {
+                    return of({
+                        error: "this project has no vbhelper!",
+                    });
+                }
+                return of({ vbhelper });
+            }),
+            takeUntil(this.ngUnsubscribe),
+            catchError((error) => {
+                return of({ error: `Failed to fetch project.globalOptionValues! ${error}` });
+            })
+        );
+    }
+
+    // returns [] of a project's estimators options values
+    getEstimatorsOptionsValues(id): Observable<any> {
+        return this.getProjectPipelines(id).pipe(
+            switchMap((estimators) => {
+                estimators = estimators.filter((pipeline) => {
+                    return pipeline.ptype != "vbhelper";
+                });
+
+                return of(estimators);
+            }),
+            takeUntil(this.ngUnsubscribe),
+            catchError((error) => {
+                return of({ error: `Failed to fetch project.globalOptionValues! ${error}` });
+            })
+        );
+    }
+
+    addPipeline(pipeline: any): Observable<any> {
+        return this.http.post(environment.apiURL + "pipeline/", pipeline).pipe(
+            takeUntil(this.ngUnsubscribe),
+            catchError((error) => {
+                return of({ error: `Failed to add pipeline! ${error}` });
+            })
+        );
+    }
+
+    updatePipeline(updatedPipeline: any): Observable<any> {
+        return this.http.put(environment.apiURL + `pipeline/${updatedPipeline.id}/`, updatedPipeline).pipe(
+            takeUntil(this.ngUnsubscribe),
+            catchError((error) => {
+                return of({ error: `Failed to update pipeline! ${error}` });
             })
         );
     }
@@ -65,8 +111,8 @@ export class PipelineService implements OnDestroy {
             })
             .pipe(
                 takeUntil(this.ngUnsubscribe),
-                catchError(() => {
-                    return of({ error: `Failed to execute pipeline!` });
+                catchError((error) => {
+                    return of({ error: `Failed to execute pipeline! ${error}` });
                 })
             );
     }
@@ -76,35 +122,17 @@ export class PipelineService implements OnDestroy {
             .get(`${environment.apiURL}pipeline/status/?project_id=${projectID}&pipeline_id=${pipelineID}`)
             .pipe(
                 takeUntil(this.ngUnsubscribe),
-                catchError(() => {
-                    return of({ error: `Failed to fetch pipeline status!` });
+                catchError((error) => {
+                    return of({ error: `Failed to fetch pipeline status! ${error}` });
                 })
             );
-    }
-
-    addPipeline(pipeline: any): Observable<any> {
-        return this.http.post(environment.apiURL + "pipeline/", pipeline).pipe(
-            takeUntil(this.ngUnsubscribe),
-            catchError(() => {
-                return of({ error: `Failed to add pipeline!` });
-            })
-        );
-    }
-
-    updatePipeline(updatedPipeline: any): Observable<any> {
-        return this.http.put(environment.apiURL + `pipeline/${updatedPipeline.id}/`, updatedPipeline).pipe(
-            takeUntil(this.ngUnsubscribe),
-            catchError(() => {
-                return of({ error: `Failed to update pipeline!` });
-            })
-        );
     }
 
     deletePipeline(id): Observable<any> {
         return this.http.delete(environment.apiURL + `pipeline/${id}/`).pipe(
             takeUntil(this.ngUnsubscribe),
-            catchError(() => {
-                return of({ error: `Failed to delete pipeline!` });
+            catchError((error) => {
+                return of({ error: `Failed to delete pipeline! ${error}` });
             })
         );
     }

@@ -1,4 +1,4 @@
-<div class="pipeline-form" *ngIf="pipelinesMetadata" [formGroup]="pipelineForm">
+<div class="pipeline-form" *ngIf="pipelinesMetadata" [formGroup]="estimatorSelectForm">
     <mat-form-field>
         <mat-label>Estimator</mat-label>
         <mat-select formControlName="estimator" (selectionChange)="selectEstimator()">
@@ -10,6 +10,33 @@
 
     <div *ngIf="selectedEstimator">
         <div>{{ selectedEstimator.description }}</div>
+        <div *ngIf="estimatorOptions" [formGroup]="estimatorOptionsForm">
+            <mat-form-field *ngFor="let option of estimatorOptions">
+                <mat-label>{{ option.name }}</mat-label>
+                <mat-select *ngIf="option.vtype == 'str' || option.vtype == 'bool'" formControlName="{{ option.name }}">
+                    <mat-option *ngFor="let value of option.options" [value]="value">
+                        {{ value }}
+                    </mat-option>
+                </mat-select>
+                <input
+                    matInput
+                    *ngIf="option.vtype == 'int'"
+                    type="number"
+                    min="{{ option.min }}"
+                    max="{{ option.max }}"
+                    formControlName="{{ option.name }}"
+                />
+                <input
+                    matInput
+                    *ngIf="option.vtype == 'float'"
+                    type="number"
+                    min="{{ option.min }}"
+                    max="{{ option.max }}"
+                    step="0.01"
+                    formControlName="{{ option.name }}"
+                />
+            </mat-form-field>
+        </div>
     </div>
 </div>
 
