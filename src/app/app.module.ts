@@ -68,6 +68,7 @@ import { ProjectMetaComponent } from "./components/project/project-meta/project-
 import { ProjectMetaEditComponent } from "./components/project/project-meta/project-meta-edit/project-meta-edit.component";
 import { PipelineDetailComponent } from "./components/project/pipelines/pipeline-detail/pipeline-detail.component";
 import { PipelineCreateComponent } from "./components/project/pipelines/pipeline-create/pipeline-create.component";
+import { DataCreateComponent } from './components/project/data/data-create/data-create.component';
 
 @NgModule({
     declarations: [
@@ -109,6 +110,7 @@ import { PipelineCreateComponent } from "./components/project/pipelines/pipeline
         PipelineStatusComponent,
         ProjectMetaComponent,
         ProjectMetaEditComponent,
+        DataCreateComponent,
     ],
     imports: [
         BrowserModule,

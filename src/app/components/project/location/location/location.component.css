@@ -15,12 +15,7 @@ button {
     padding: auto 0 auto 0;
     display: flex;
     place-items: center;
-    margin-left: .5rem;
-
-}
-
-.remove-button {
-    text-align: right;
+    margin-left: 0.5rem;
 }
 
 .trash {

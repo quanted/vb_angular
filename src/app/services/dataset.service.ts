@@ -1,8 +1,10 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
-import { Observable, of, Subject } from "rxjs";
+import { Observable, Observer, of, Subject } from "rxjs";
 import { catchError, takeUntil } from "rxjs/operators";
+
+import * as XLSX from "xlsx";
 
 import { environment } from "../../environments/environment";
 
@@ -67,5 +69,33 @@ export class DatasetService implements OnDestroy {
                 return of({ error: `Failed to delete dataset!` });
             })
         );
+    }
+
+    loadDatasetFromFile(target): Observable<any> {
+        const reader: FileReader = new FileReader();
+        reader.readAsBinaryString(target.files[0]);
+        return new Observable((observer: Observer<any>) => {
+            reader.onload = (e: any) => {
+                const bstr: string = e.target.result;
+                const wb: XLSX.WorkBook = XLSX.read(bstr, { type: "binary" });
+                const wsname: string = wb.SheetNames[0];
+                const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+                observer.next({
+                    fileName: target.files[0].name,
+                    dataArray: XLSX.utils.sheet_to_json(ws, { header: 1 }),
+                    dataCSV: XLSX.utils.sheet_to_csv(ws),
+                });
+                observer.complete();
+            };
+            reader.onerror = (err) => {
+                console.log("FileReader.error: ", err);
+                reader.abort();
+                observer.next({
+                    error: "failed to read input file",
+                });
+                observer.complete();
+            };
+        });
     }
 }
