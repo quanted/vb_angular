@@ -9,7 +9,7 @@
     </mat-form-field>
 
     <div *ngIf="selectedEstimator">
-        <div>{{ selectedEstimator.description }}</div>
+        <div class="description">{{ selectedEstimator.description }}</div>
         <div *ngIf="estimatorOptions" [formGroup]="estimatorOptionsForm">
             <mat-form-field *ngFor="let option of estimatorOptions">
                 <mat-label>{{ option.name }}</mat-label>

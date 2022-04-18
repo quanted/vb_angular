@@ -1,3 +1,7 @@
+.description {
+    user-select: none;
+}
+
 .controls {
     display: grid;
     grid-template-columns: auto auto 1fr;
