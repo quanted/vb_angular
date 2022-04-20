@@ -25,7 +25,8 @@ export class PipelineDetailComponent implements OnInit {
             const parameters = pipelinesMetadata.find((pipeline) => {
                 return this.pipeline.type === pipeline.ptype;
             })["hyper-parameters"];
-            // map the each option's range/values to something that the forms can use
+            // this should happen in a util
+            // map each option's range/values to something that the forms can use
             for (let parameter of parameters) {
                 let values = [];
                 switch (parameter.vtype) {
@@ -62,7 +63,7 @@ export class PipelineDetailComponent implements OnInit {
     }
 
     updatePipelineOptionsForm(): void {
-        // TODO: this is because of backend inconsistencies
+        // TODO: either refactor the parse into a util or have it done in the backend
         if (this.pipeline.metadata.parameters) {
             this.pipeline.metadata = JSON.parse(this.pipeline.metadata.parameters.replaceAll("'", '"'));
         }

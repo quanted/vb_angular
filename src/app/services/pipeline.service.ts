@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of, Subject } from "rxjs";
-import { catchError, switchMap, takeUntil, tap } from "rxjs/operators";
+import { catchError, switchMap, takeUntil } from "rxjs/operators";
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -44,6 +44,7 @@ export class PipelineService implements OnDestroy {
         );
     }
 
+    // this returns all a project's pipelines except the vbhelper one
     getProjectPipelines(id): Observable<any> {
         return this.getAllPipelines(id).pipe(
             switchMap((pipelines: any[]) => {
@@ -60,6 +61,8 @@ export class PipelineService implements OnDestroy {
         );
     }
 
+    // this returns a projects vbhelper pipeline only
+    // and will create one for a project if it doesn't have one already
     getGlobalOptionsValues(id, defaults): Observable<any> {
         return this.getAllPipelines(id).pipe(
             switchMap((pipelines: any[]) => {
@@ -71,26 +74,8 @@ export class PipelineService implements OnDestroy {
                 }
                 if (!vbhelper) {
                     return this.createVBHelper(id, defaults);
-                    // return of({ error: "no vbhelper!" });
                 }
                 return of(vbhelper);
-            }),
-            takeUntil(this.ngUnsubscribe),
-            catchError((error) => {
-                return of({ error: `Failed to fetch project.globalOptionValues! ${error}` });
-            })
-        );
-    }
-
-    // returns [] of a project's estimators options values
-    getEstimatorsOptionsValues(id): Observable<any> {
-        return this.getProjectPipelines(id).pipe(
-            switchMap((estimators) => {
-                estimators = estimators.filter((pipeline) => {
-                    return pipeline.ptype != "vbhelper";
-                });
-
-                return of(estimators);
             }),
             takeUntil(this.ngUnsubscribe),
             catchError((error) => {
