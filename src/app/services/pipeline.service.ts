@@ -63,10 +63,8 @@ export class PipelineService implements OnDestroy {
     getGlobalOptionsValues(id, defaults): Observable<any> {
         return this.getAllPipelines(id).pipe(
             switchMap((pipelines: any[]) => {
-                console.log("getGlobalOptionsValues.getAllPipelines: ", pipelines);
                 let vbhelper = null;
                 for (let pipeline of pipelines) {
-                    console.log("pipeline.type: ", pipeline.type);
                     if (pipeline.type == "vbhelper") {
                         vbhelper = pipeline;
                     }
@@ -109,12 +107,7 @@ export class PipelineService implements OnDestroy {
             description: "Parent pipeline class, containing global CV",
             metadata: JSON.stringify({ parameters: defaults }),
         };
-        console.log("createVBHelper...");
-        return this.addPipeline(pipeline).pipe(
-            tap((response) => {
-                console.log("createVBHelper.addPipeline: ", response);
-            })
-        );
+        return this.addPipeline(pipeline);
     }
 
     addPipeline(pipeline: any): Observable<any> {

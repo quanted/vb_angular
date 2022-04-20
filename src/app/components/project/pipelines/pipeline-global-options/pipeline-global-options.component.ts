@@ -57,7 +57,6 @@ export class PipelineGlobalOptionsComponent implements OnInit {
             this.pipelineService
                 .getGlobalOptionsValues(this.project.id, globalOptionsDefaults)
                 .subscribe((vbHelper) => {
-                    console.log("component.globalValues: ", vbHelper);
                     // this will be an error if the project doesn't have any pipelines
                     if (vbHelper.error) {
                         this.globalOptionsValues = globalOptionsDefaults;
@@ -83,12 +82,9 @@ export class PipelineGlobalOptionsComponent implements OnInit {
     }
 
     updateGlobalOptions(): void {
-        console.log("vbHelper: ", this.vbHelper);
-        console.log("global form: ", this.globalOptionsForm.value);
         this.vbHelper.metadata.parameters = JSON.stringify(this.globalOptionsForm.value);
-        console.log("after: ", this.vbHelper);
         this.pipelineService.updatePipeline(this.vbHelper).subscribe((response) => {
-            console.log("vbhelper: ", response);
+            console.log("updateGlobalOptions: ", response);
         });
     }
 }

@@ -58,14 +58,23 @@ export class PipelineDetailComponent implements OnInit {
             fields[option.name] = ["", Validators.required];
         }
         this.pipelineOptionsForm = this.fb.group(fields);
-        this.updatePipelineOptions();
+        this.updatePipelineOptionsForm();
     }
 
-    updatePipelineOptions(): void {
+    updatePipelineOptionsForm(): void {
         // TODO: this is because of backend inconsistencies
         if (this.pipeline.metadata.parameters) {
             this.pipeline.metadata = JSON.parse(this.pipeline.metadata.parameters.replaceAll("'", '"'));
         }
         this.pipelineOptionsForm.setValue(this.pipeline.metadata);
+    }
+
+    updatePipelineOptions(): void {
+        const pipeline = { ...this.pipeline };
+        pipeline.metadata = {};
+        pipeline.metadata["parameters"] = JSON.stringify(this.pipelineOptionsForm.value);
+        this.pipelineService.updatePipeline(pipeline).subscribe((response) => {
+            console.log("updatePipelineOptions: ", response);
+        });
     }
 }
