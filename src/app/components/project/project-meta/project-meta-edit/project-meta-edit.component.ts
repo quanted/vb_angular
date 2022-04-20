@@ -23,7 +23,7 @@ export class ProjectMetaEditComponent implements OnInit {
 
     updateMetadata(metadata: Metadata): void {
         this.editor.statusMessage = "updating...";
-        this.projectService.updateProjectMetadata(metadata).subscribe((response) => {
+        this.projectService.updateProjectMetadata(this.project, metadata).subscribe((response) => {
             console.log("update: ", response);
             if (response.error) {
                 this.editor.statusMessage = "error updating!";
