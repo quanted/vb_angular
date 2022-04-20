@@ -56,13 +56,14 @@ export class PipelineGlobalOptionsComponent implements OnInit {
 
             this.pipelineService
                 .getGlobalOptionsValues(this.project.id, globalOptionsDefaults)
-                .subscribe((globalValues) => {
-                    console.log("component.globalValues: ", globalValues);
+                .subscribe((vbHelper) => {
+                    console.log("component.globalValues: ", vbHelper);
                     // this will be an error if the project doesn't have any pipelines
-                    if (globalValues.error) {
+                    if (vbHelper.error) {
                         this.globalOptionsValues = globalOptionsDefaults;
                     } else {
-                        this.globalOptionsValues = JSON.parse(globalValues.metadata.parameters.replaceAll("'", '"'));
+                        this.vbHelper = vbHelper;
+                        this.globalOptionsValues = JSON.parse(vbHelper.metadata.parameters.replaceAll("'", '"'));
                     }
                     this.setOptionFormValues();
                 });
@@ -83,11 +84,11 @@ export class PipelineGlobalOptionsComponent implements OnInit {
 
     updateGlobalOptions(): void {
         console.log("vbHelper: ", this.vbHelper);
-        console.log("outerPipelineOptions: ", this.outerPipelineOptions);
-        console.log("global form: ", this.globalOptionsForm);
-        // need to merge this.outerPipeline & form.values
-        // this.pipelineService.updateGlobalOptions(this.globalOptionsForm.value).subscribe((response) => {
-        //     console.log("updateGlobal: ", response);
-        // });
+        console.log("global form: ", this.globalOptionsForm.value);
+        this.vbHelper.metadata.parameters = JSON.stringify(this.globalOptionsForm.value);
+        console.log("after: ", this.vbHelper);
+        this.pipelineService.updatePipeline(this.vbHelper).subscribe((response) => {
+            console.log("vbhelper: ", response);
+        });
     }
 }
