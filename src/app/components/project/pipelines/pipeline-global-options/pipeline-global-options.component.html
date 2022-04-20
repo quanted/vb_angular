@@ -1,5 +1,5 @@
-<div class="global-options" *ngIf="pipelinesGlobalOptions" [formGroup]="globalOptionsForm">
-    <mat-form-field *ngFor="let option of pipelinesGlobalOptions">
+<div class="global-options" *ngIf="outerPipelineOptions" [formGroup]="globalOptionsForm">
+    <mat-form-field *ngFor="let option of outerPipelineOptions">
         <mat-label>{{ option.name }}</mat-label>
         <mat-select *ngIf="option.vtype == 'string' || option.vtype == 'bool'" formControlName="{{ option.name }}">
             <mat-option *ngFor="let value of option.options" [value]="value">
@@ -24,4 +24,7 @@
             formControlName="{{ option.name }}"
         />
     </mat-form-field>
+    <button type="button" mat-flat-button color="primary" (click)="updateGlobalOptions()">
+        Update Cross Validation Options
+    </button>
 </div>

@@ -22,7 +22,6 @@ export class ProjectCreateComponent implements OnInit {
         // the object emitted by button click from project-meta-component
         // will either be a project - proceed
         // or null                  - cancel
-        console.log("project: ", project);
         if (project) {
             this.editor.statusMessage = "creating project";
             this.projectService.createProject(project).subscribe((project) => {

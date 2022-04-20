@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of, Subject } from "rxjs";
-import { catchError, switchMap, takeUntil } from "rxjs/operators";
+import { catchError, switchMap, takeUntil, tap } from "rxjs/operators";
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -35,7 +35,7 @@ export class PipelineService implements OnDestroy {
         );
     }
 
-    getProjectPipelines(id): Observable<any> {
+    getAllPipelines(id): Observable<any> {
         return this.http.get(`${environment.apiURL}pipeline/?project=${id}`).pipe(
             takeUntil(this.ngUnsubscribe),
             catchError((error) => {
@@ -44,21 +44,38 @@ export class PipelineService implements OnDestroy {
         );
     }
 
-    getGlobalOptionsValues(id): Observable<any> {
-        return this.getProjectPipelines(id).pipe(
-            switchMap((pipelines) => {
+    getProjectPipelines(id): Observable<any> {
+        return this.getAllPipelines(id).pipe(
+            switchMap((pipelines: any[]) => {
+                pipelines = pipelines.filter((pipeline) => {
+                    return pipeline.type != "vbhelper";
+                });
+
+                return of(pipelines);
+            }),
+            takeUntil(this.ngUnsubscribe),
+            catchError((error) => {
+                return of({ error: `Failed to fetch project pipelines! ${error}` });
+            })
+        );
+    }
+
+    getGlobalOptionsValues(id, defaults): Observable<any> {
+        return this.getAllPipelines(id).pipe(
+            switchMap((pipelines: any[]) => {
+                console.log("getGlobalOptionsValues.getAllPipelines: ", pipelines);
                 let vbhelper = null;
                 for (let pipeline of pipelines) {
-                    if (pipeline.ptype == "vbhelper") {
+                    console.log("pipeline.type: ", pipeline.type);
+                    if (pipeline.type == "vbhelper") {
                         vbhelper = pipeline;
                     }
                 }
                 if (!vbhelper) {
-                    return of({
-                        error: "this project has no vbhelper!",
-                    });
+                    return this.createVBHelper(id, defaults);
+                    // return of({ error: "no vbhelper!" });
                 }
-                return of({ vbhelper });
+                return of(vbhelper);
             }),
             takeUntil(this.ngUnsubscribe),
             catchError((error) => {
@@ -80,6 +97,22 @@ export class PipelineService implements OnDestroy {
             takeUntil(this.ngUnsubscribe),
             catchError((error) => {
                 return of({ error: `Failed to fetch project.globalOptionValues! ${error}` });
+            })
+        );
+    }
+
+    createVBHelper(id, defaults) {
+        const pipeline = {
+            project: id,
+            name: "VB Helper",
+            type: "vbhelper",
+            description: "Parent pipeline class, containing global CV",
+            metadata: JSON.stringify({ parameters: defaults }),
+        };
+        console.log("createVBHelper...");
+        return this.addPipeline(pipeline).pipe(
+            tap((response) => {
+                console.log("createVBHelper.addPipeline: ", response);
             })
         );
     }

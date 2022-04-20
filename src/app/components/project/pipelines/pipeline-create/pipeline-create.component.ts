@@ -22,6 +22,7 @@ export class PipelineCreateComponent implements OnInit {
     constructor(private fb: FormBuilder, private pipelineService: PipelineService) {}
 
     ngOnInit(): void {
+        console.log("initPipelineCreation");
         this.pipelineService.getPipelinesMetadata().subscribe((pipelinesMetadata) => {
             this.pipelinesMetadata = pipelinesMetadata.filter((pipeline) => {
                 return pipeline.ptype != "vbhelper";
@@ -90,7 +91,7 @@ export class PipelineCreateComponent implements OnInit {
             type: this.selectedEstimator.ptype,
             metadata: JSON.stringify({ parameters: this.estimatorOptionsForm.value }),
         };
-
+        console.log("addPipeline: ", pipeline);
         this.pipelineService.addPipeline(pipeline).subscribe((response) => {
             this.pipelineCreated.emit();
         });

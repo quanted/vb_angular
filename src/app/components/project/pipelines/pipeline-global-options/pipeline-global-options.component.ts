@@ -9,7 +9,9 @@ import { PipelineService } from "src/app/services/pipeline.service";
 })
 export class PipelineGlobalOptionsComponent implements OnInit {
     @Input() project: any;
-    pipelinesGlobalOptions: any;
+    outerPipelineOptions: any;
+
+    vbHelper;
 
     globalOptionsForm: FormGroup;
     globalOptionsValues;
@@ -18,11 +20,12 @@ export class PipelineGlobalOptionsComponent implements OnInit {
 
     ngOnInit(): void {
         this.pipelineService.getPipelinesMetadata().subscribe((pipelinesMetadata) => {
-            const parameters = pipelinesMetadata.find((pipeline) => {
+            this.vbHelper = pipelinesMetadata.find((pipeline) => {
                 return pipeline.ptype === "vbhelper";
-            })["hyper-parameters"];
+            });
+            const vbHelperOptions = this.vbHelper["hyper-parameters"];
             // map the each option's range/values to something that the forms can use
-            for (let parameter of parameters) {
+            for (let parameter of vbHelperOptions) {
                 let values = [];
                 switch (parameter.vtype) {
                     case "bool":
@@ -43,28 +46,32 @@ export class PipelineGlobalOptionsComponent implements OnInit {
                         break;
                 }
             }
-            this.pipelinesGlobalOptions = parameters;
+            this.outerPipelineOptions = vbHelperOptions;
             this.buildOptionsForm();
 
-            this.pipelineService.getGlobalOptionsValues(this.project.id).subscribe((globalValues) => {
-                // this will be an error if the project doesn't have any pipelines
-                if (globalValues.error) {
-                    const globalOptionsDefaults = [];
-                    for (let option of this.pipelinesGlobalOptions) {
-                        globalOptionsDefaults[option.name] = option.value;
+            const globalOptionsDefaults = {};
+            for (let option of this.outerPipelineOptions) {
+                globalOptionsDefaults[option.name] = option.value;
+            }
+
+            this.pipelineService
+                .getGlobalOptionsValues(this.project.id, globalOptionsDefaults)
+                .subscribe((globalValues) => {
+                    console.log("component.globalValues: ", globalValues);
+                    // this will be an error if the project doesn't have any pipelines
+                    if (globalValues.error) {
+                        this.globalOptionsValues = globalOptionsDefaults;
+                    } else {
+                        this.globalOptionsValues = JSON.parse(globalValues.metadata.parameters.replaceAll("'", '"'));
                     }
-                    this.globalOptionsValues = globalOptionsDefaults;
-                } else {
-                    this.globalOptionsValues = globalValues.globalOptionValues;
-                }
-                this.setOptionFormValues();
-            });
+                    this.setOptionFormValues();
+                });
         });
     }
 
     buildOptionsForm(): void {
         const fields = {};
-        for (let option of this.pipelinesGlobalOptions) {
+        for (let option of this.outerPipelineOptions) {
             fields[option.name] = ["", Validators.required];
         }
         this.globalOptionsForm = this.fb.group(fields);
@@ -72,5 +79,15 @@ export class PipelineGlobalOptionsComponent implements OnInit {
 
     setOptionFormValues(): void {
         this.globalOptionsForm.setValue(this.globalOptionsValues);
+    }
+
+    updateGlobalOptions(): void {
+        console.log("vbHelper: ", this.vbHelper);
+        console.log("outerPipelineOptions: ", this.outerPipelineOptions);
+        console.log("global form: ", this.globalOptionsForm);
+        // need to merge this.outerPipeline & form.values
+        // this.pipelineService.updateGlobalOptions(this.globalOptionsForm.value).subscribe((response) => {
+        //     console.log("updateGlobal: ", response);
+        // });
     }
 }
