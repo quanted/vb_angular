@@ -118,17 +118,10 @@ export class ProjectService implements OnDestroy {
     }
 
     updateProjectMetadata(project, metadata: Metadata): Observable<any> {
-        console.log("metadata: ", metadata);
         const updatedProject = deepCopy.Copy(project);
-        console.log("updatedProject: ", updatedProject);
-        console.log("this.project: ", this.project);
         updatedProject.name = metadata.name;
         updatedProject.description = metadata.description;
-        return this.updateProject(updatedProject).pipe(
-            tap((response) => {
-                console.log("response: ", response);
-            })
-        );
+        return this.updateProject(updatedProject);
     }
 
     updateProject(update): Observable<any> {

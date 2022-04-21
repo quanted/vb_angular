@@ -63,7 +63,6 @@ export class PipelineDetailComponent implements OnInit {
     }
 
     updatePipelineOptionsForm(): void {
-        // TODO: either refactor the parse into a util or have it done in the backend
         if (this.pipeline.metadata.parameters) {
             this.pipeline.metadata = JSON.parse(this.pipeline.metadata.parameters.replaceAll("'", '"'));
         }
@@ -71,11 +70,8 @@ export class PipelineDetailComponent implements OnInit {
     }
 
     updatePipelineOptions(): void {
-        const pipeline = { ...this.pipeline };
-        pipeline.metadata = {};
-        pipeline.metadata["parameters"] = JSON.stringify(this.pipelineOptionsForm.value);
-        this.pipelineService.updatePipeline(pipeline).subscribe((response) => {
-            console.log("updatePipelineOptions: ", response);
+        this.pipelineService.updatePipeline(this.pipeline, this.pipelineOptionsForm.value).subscribe((response) => {
+            console.log("updatePipelineOptions.return: ", response);
         });
     }
 }

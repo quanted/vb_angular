@@ -104,8 +104,9 @@ export class PipelineService implements OnDestroy {
         );
     }
 
-    updatePipeline(updatedPipeline: any): Observable<any> {
-        return this.http.put(environment.apiURL + `pipeline/${updatedPipeline.id}/`, updatedPipeline).pipe(
+    updatePipeline(pipeline: any, parameterValues): Observable<any> {
+        pipeline.metadata = JSON.stringify({ parameters: parameterValues });
+        return this.http.put(environment.apiURL + `pipeline/${pipeline.id}/`, pipeline).pipe(
             takeUntil(this.ngUnsubscribe),
             catchError((error) => {
                 return of({ error: `Failed to update pipeline! ${error}` });

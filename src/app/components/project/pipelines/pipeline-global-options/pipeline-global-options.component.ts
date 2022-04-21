@@ -82,9 +82,8 @@ export class PipelineGlobalOptionsComponent implements OnInit {
     }
 
     updateGlobalOptions(): void {
-        this.vbHelper.metadata.parameters = JSON.stringify(this.globalOptionsForm.value);
-        this.pipelineService.updatePipeline(this.vbHelper).subscribe((response) => {
-            console.log("updateGlobalOptions: ", response);
+        this.pipelineService.updatePipeline(this.vbHelper, this.globalOptionsForm.value).subscribe((response) => {
+            console.log("updateGlobalOptions.response: ", response);
         });
     }
 }
