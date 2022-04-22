@@ -35,24 +35,17 @@ export class ProjectComponent implements OnInit {
     // js is weird
     // console.log(+[++[[]][+[]]+[[][[]]+[]][+[]][++[++[++[[]][+[]]][+[]]][+[]]]+[++[[]][+[]]]+[+[]]+[+[]]+[+[]]][+[]]); ?
 
-    setLocation(location): void {
+    setLocationHeader(location): void {
         if (location) {
-            this.locationName = location.name + ", " + location.description;
-            this.project.location = location.id;
+            this.locationName = `${location.name}, ${location.description}`;
         } else {
-            this.locationName = "No location selected";
-            this.project.location = null;
+            this.locationName = "";
         }
-
-        const update = { ...this.project };
-        update.metadata = JSON.stringify(this.project.metadata);
-        this.projectService.updateProject(update).subscribe((project) => {
-            // needs error handling
-            this.canExecute = this.projectService.isExecutionReady();
-        });
+        this.canExecute = this.projectService.isExecutionReady();
     }
 
     setDataset(dataset): void {
+        console.log("setDataset!");
         if (dataset) {
             this.datasetName = dataset.name;
             this.project.dataset = dataset.id;

@@ -124,6 +124,24 @@ export class ProjectService implements OnDestroy {
         return this.updateProject(updatedProject);
     }
 
+    selectLocation(project, location): Observable<any> {
+        if (location) {
+            project.location = location.id;
+        } else {
+            project.location = null;
+        }
+        return this.updateProject(project);
+    }
+
+    selectDataset(project, dataset): Observable<any> {
+        if (dataset) {
+            project.dataset = dataset.id;
+        } else {
+            project.dataset = null;
+        }
+        return this.updateProject(project);
+    }
+
     updateProject(update): Observable<any> {
         return this.http.put(`${environment.apiURL}project/${update.id}/`, update).pipe(
             takeUntil(this.ngUnsubscribe),

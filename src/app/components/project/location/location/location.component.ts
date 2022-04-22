@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Router } from "@angular/router";
 import { LocationService } from "src/app/services/location.service";
+import { ProjectService } from "src/app/services/project.service";
 
 @Component({
     selector: "app-location",
@@ -9,9 +10,13 @@ import { LocationService } from "src/app/services/location.service";
 })
 export class LocationComponent implements OnInit {
     @Input() project;
-    @Output() setLocation: EventEmitter<any> = new EventEmitter<any>();
+    @Output() setLocationHeader: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor(private router: Router, private locationService: LocationService) {}
+    constructor(
+        private router: Router,
+        private locationService: LocationService,
+        private projectService: ProjectService
+    ) {}
 
     location;
     locations = [];
@@ -22,7 +27,8 @@ export class LocationComponent implements OnInit {
             if (this.project.location) {
                 for (let location of locations) {
                     if (location.id === this.project.location) {
-                        this.selectLocation(location);
+                        this.location = location;
+                        this.setLocationHeader.emit(location);
                     }
                 }
             }
@@ -30,13 +36,17 @@ export class LocationComponent implements OnInit {
     }
 
     selectLocation(location) {
-        this.location = location;
-        this.setLocation.emit(location);
+        console.log("setLocation!");
+        this.projectService.selectLocation(this.project, location).subscribe((project) => {
+            this.project = project;
+            this.location = location;
+            this.setLocationHeader.emit(location);
+        });
     }
 
     removeLocation(): void {
         this.location = null;
-        this.setLocation.emit(null);
+        this.setLocationHeader.emit(null);
     }
 
     createLocation() {
