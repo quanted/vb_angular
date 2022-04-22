@@ -2,13 +2,11 @@ import { Injectable, OnDestroy } from "@angular/core";
 
 import { HttpClient } from "@angular/common/http";
 
-import { BehaviorSubject, EMPTY, forkJoin, Observable, of, Subject, throwError } from "rxjs";
+import { EMPTY, forkJoin, Observable, of, Subject, throwError } from "rxjs";
 import { catchError, concatMap, switchMap, takeUntil, tap } from "rxjs/operators";
 
 import { environment } from "../../environments/environment";
 import { deepCopy } from "../utils/deepCopy";
-
-import { Metadata } from "../models/metadata.model";
 
 import { PipelineService } from "./pipeline.service";
 
@@ -17,10 +15,6 @@ import { PipelineService } from "./pipeline.service";
 })
 export class ProjectService implements OnDestroy {
     private ngUnsubscribe = new Subject();
-    private projectSubject: BehaviorSubject<any>;
-
-    private projects: any[] = [];
-    private project;
 
     constructor(private http: HttpClient, private pipelineService: PipelineService) {
         this.getProjects().subscribe();
@@ -31,10 +25,6 @@ export class ProjectService implements OnDestroy {
         this.ngUnsubscribe.complete();
     }
 
-    monitorProject(): BehaviorSubject<any> {
-        return this.projectSubject;
-    }
-
     getProjects(): Observable<any> {
         return this.http.get(environment.apiURL + "project/").pipe(
             tap((projects: any) => {
@@ -42,7 +32,6 @@ export class ProjectService implements OnDestroy {
                     throwError({ error: projects.error });
                     return;
                 }
-                this.projects = projects;
             }),
             takeUntil(this.ngUnsubscribe),
             catchError((err) => {
@@ -67,10 +56,6 @@ export class ProjectService implements OnDestroy {
 
     createProject(project): Observable<any> {
         return this.http.post(environment.apiURL + "project/", project).pipe(
-            tap((project) => {
-                this.project = project;
-                this.projects.push(project);
-            }),
             takeUntil(this.ngUnsubscribe),
             catchError((err) => {
                 console.log(err);
@@ -117,7 +102,7 @@ export class ProjectService implements OnDestroy {
         );
     }
 
-    updateProjectMetadata(project, metadata: Metadata): Observable<any> {
+    updateProjectMetadata(project, metadata): Observable<any> {
         const updatedProject = deepCopy.Copy(project);
         updatedProject.name = metadata.name;
         updatedProject.description = metadata.description;
@@ -144,8 +129,8 @@ export class ProjectService implements OnDestroy {
         return this.updateProject(project);
     }
 
-    updateProject(update): Observable<any> {
-        return this.http.put(`${environment.apiURL}project/${update.id}/`, update).pipe(
+    updateProject(project): Observable<any> {
+        return this.http.put(`${environment.apiURL}project/${project.id}/`, project).pipe(
             takeUntil(this.ngUnsubscribe),
             catchError((err) => {
                 console.log(err);
@@ -155,15 +140,29 @@ export class ProjectService implements OnDestroy {
     }
 
     executeProject(project): Observable<any> {
-        if (this.isExecutionReady()) {
-            const pipelineExecutionObservables: any[] = [];
-            for (let pipeline of project.pipelines) {
-                console.log(`project ${project.id} executing ${pipeline.name} pipeline on dataset ${project.dataset}`);
-                pipelineExecutionObservables.push(this.pipelineService.executePipeline(project, pipeline.id));
-            }
-            return forkJoin(pipelineExecutionObservables);
-        }
-        return throwError({ error: "simulation not ready for execution" });
+        return this.pipelineService.getProjectPipelines(project.id).pipe(
+            concatMap((pipelines) => {
+                const pipelineExecutionObservables: any[] = [];
+                for (let pipeline of pipelines) {
+                    console.log(
+                        `project ${project.id} executing ${pipeline.name} pipeline on dataset ${project.dataset}`
+                    );
+                    pipelineExecutionObservables.push(this.pipelineService.executePipeline(project, pipeline.id));
+                }
+                return forkJoin(pipelineExecutionObservables);
+            })
+        );
+    }
+
+    isExecutionReady(project): Observable<boolean> {
+        return this.pipelineService.getProjectPipelines(project.id).pipe(
+            switchMap((pipelines) => {
+                if (project && project.location && project.dataset && pipelines.length > 0) {
+                    return of(true);
+                }
+                return of(false);
+            })
+        );
     }
 
     deleteProject(id): Observable<any> {
@@ -174,9 +173,5 @@ export class ProjectService implements OnDestroy {
                 return of({ error: `Failed to delete project!` });
             })
         );
-    }
-
-    isExecutionReady(): boolean {
-        return this.project ? this.project.dataset && this.project.location && this.project.pipelines : null;
     }
 }

@@ -28,7 +28,7 @@ export class ProjectComponent implements OnInit {
         }
         this.projectService.getProject(this.projectID).subscribe((project) => {
             this.project = project;
-            this.canExecute = this.projectService.isExecutionReady();
+            this.checkExecutionReady();
         });
     }
 
@@ -41,7 +41,7 @@ export class ProjectComponent implements OnInit {
         } else {
             this.locationName = "No location selected";
         }
-        this.canExecute = this.projectService.isExecutionReady();
+        this.checkExecutionReady();
     }
 
     setDatasetHeader(dataset): void {
@@ -50,7 +50,7 @@ export class ProjectComponent implements OnInit {
         } else {
             this.datasetName = "No dataset selected";
         }
-        this.canExecute = this.projectService.isExecutionReady();
+        this.checkExecutionReady();
     }
 
     setPipelinesHeader(pipelines): void {
@@ -65,7 +65,13 @@ export class ProjectComponent implements OnInit {
                 this.pipelineNames = ["No pipelines selected"];
             }
         }
-        this.canExecute = this.projectService.isExecutionReady();
+        this.checkExecutionReady();
+    }
+
+    checkExecutionReady(): void {
+        this.projectService.isExecutionReady(this.project).subscribe((isReady) => {
+            this.canExecute = isReady;
+        });
     }
 
     executeProject(): void {
