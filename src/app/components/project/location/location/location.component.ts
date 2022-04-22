@@ -36,9 +36,7 @@ export class LocationComponent implements OnInit {
     }
 
     selectLocation(location) {
-        console.log("setLocation!");
         this.projectService.selectLocation(this.project, location).subscribe((project) => {
-            this.project = project;
             this.location = location;
             this.setLocationHeader.emit(location);
         });
@@ -46,7 +44,7 @@ export class LocationComponent implements OnInit {
 
     removeLocation(): void {
         this.location = null;
-        this.setLocationHeader.emit(null);
+        this.selectLocation(null);
     }
 
     createLocation() {

@@ -39,34 +39,21 @@ export class ProjectComponent implements OnInit {
         if (location) {
             this.locationName = `${location.name}, ${location.description}`;
         } else {
-            this.locationName = "";
+            this.locationName = "No location selected";
         }
         this.canExecute = this.projectService.isExecutionReady();
     }
 
-    setDataset(dataset): void {
-        console.log("setDataset!");
+    setDatasetHeader(dataset): void {
         if (dataset) {
             this.datasetName = dataset.name;
-            this.project.dataset = dataset.id;
-            this.project["metadata"] = { ...dataset.metadata };
         } else {
-            this.datasetName = "No data selected";
-            this.project.dataset = null;
-            this.project["metadata"] = null;
+            this.datasetName = "No dataset selected";
         }
-
-        const update = { ...this.project };
-        if (update["metadata"]) {
-            update["metadata"] = JSON.stringify({ ...dataset.metadata });
-        }
-        this.projectService.updateProject(update).subscribe((project) => {
-            // needs error handling
-            this.canExecute = this.projectService.isExecutionReady();
-        });
+        this.canExecute = this.projectService.isExecutionReady();
     }
 
-    setPipelines(pipelines): void {
+    setPipelinesHeader(pipelines): void {
         if (pipelines) {
             this.pipelines = pipelines;
             const typeList = [];

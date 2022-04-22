@@ -136,8 +136,10 @@ export class ProjectService implements OnDestroy {
     selectDataset(project, dataset): Observable<any> {
         if (dataset) {
             project.dataset = dataset.id;
+            project["metadata"] = JSON.stringify({ ...dataset.metadata });
         } else {
             project.dataset = null;
+            project["metadata"] = null;
         }
         return this.updateProject(project);
     }

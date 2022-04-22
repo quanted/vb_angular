@@ -8,7 +8,7 @@ import { PipelineService } from "src/app/services/pipeline.service";
 })
 export class PipelinesComponent implements OnInit {
     @Input() project;
-    @Output() setPipelines: EventEmitter<any> = new EventEmitter<any>();
+    @Output() setPipelinesHeader: EventEmitter<any> = new EventEmitter<any>();
 
     pipelines: any[] = [];
 
@@ -26,7 +26,7 @@ export class PipelinesComponent implements OnInit {
     getProjectPipelines(): void {
         this.pipelineService.getProjectPipelines(this.project.id).subscribe((pipelines) => {
             this.pipelines = pipelines;
-            this.setPipelines.emit(this.pipelines);
+            this.setPipelinesHeader.emit(this.pipelines);
         });
     }
 

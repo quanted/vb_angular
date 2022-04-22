@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
 import { DatasetService } from "src/app/services/dataset.service";
+import { ProjectService } from "src/app/services/project.service";
 
 @Component({
     selector: "app-data",
@@ -8,39 +9,43 @@ import { DatasetService } from "src/app/services/dataset.service";
     styleUrls: ["./data.component.css"],
 })
 export class DataComponent implements OnInit {
-    @Input() datasetID;
-    @Output() setDataset: EventEmitter<any> = new EventEmitter<any>();
+    @Input() project;
+    @Output() setDatasetHeader: EventEmitter<any> = new EventEmitter<any>();
 
     datasets = [];
     rawData;
     dataset;
+    datasetID;
 
     creatingDataset = false;
 
-    constructor(private dataService: DatasetService) {}
+    constructor(private dataService: DatasetService, private projectService: ProjectService) {}
 
     ngOnInit() {
+        this.datasetID = this.project.dataset;
         this.dataService.getDatasets().subscribe((datasets) => {
             this.datasets = datasets;
             if (this.datasetID) {
-                this.dataset = this.datasets.find((dataset) => {
-                    return dataset.id == this.datasetID;
-                });
-                if (this.dataset) {
-                    this.setDataset.emit(this.dataset);
+                for (let dataset of datasets) {
+                    if (dataset.id == this.datasetID) {
+                        this.dataset = dataset;
+                        this.setDatasetHeader.emit(this.dataset);
+                    }
                 }
             }
         });
     }
 
     selectDataset(dataset) {
-        this.dataset = dataset;
-        this.setDataset.emit(dataset);
+        this.projectService.selectDataset(this.project, dataset).subscribe((project) => {
+            this.dataset = dataset;
+            this.setDatasetHeader.emit(dataset);
+        });
     }
 
     removeDataset(): void {
         this.dataset = null;
-        this.setDataset.emit(null);
+        this.selectDataset(null);
     }
 
     deleteDataset(dataset): void {
@@ -77,6 +82,6 @@ export class DataComponent implements OnInit {
     datasetCreated(dataset): void {
         this.creatingDataset = false;
         this.dataset = dataset;
-        this.setDataset.emit(dataset);
+        this.setDatasetHeader.emit(dataset);
     }
 }
