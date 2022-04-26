@@ -16,6 +16,9 @@ export class PipelineGlobalOptionsComponent implements OnInit {
     globalOptionsForm: FormGroup;
     globalOptionsValues;
 
+    // ui flag
+    globalOptionsOpenState = false;
+
     constructor(private fb: FormBuilder, private pipelineService: PipelineService) {}
 
     ngOnInit(): void {

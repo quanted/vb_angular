@@ -12,10 +12,8 @@ export class PipelinesComponent implements OnInit {
 
     pipelines: any[] = [];
 
-    // ui flags
+    // ui flag
     creatingPipeline = false;
-    globalOptionsOpenState = false;
-    projectPipelinesOpenState = false;
 
     constructor(private pipelineService: PipelineService) {}
 

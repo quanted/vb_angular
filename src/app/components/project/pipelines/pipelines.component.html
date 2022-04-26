@@ -1,10 +1,5 @@
 <div class="pipelines">
-    <mat-expansion-panel (opened)="globalOptionsOpenState = true" (closed)="globalOptionsOpenState = false">
-        <mat-expansion-panel-header>
-            <mat-panel-title>Project Cross Validation Options</mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-pipeline-global-options [project]="project"></app-pipeline-global-options>
-    </mat-expansion-panel>
+    <app-pipeline-global-options [project]="project"></app-pipeline-global-options>
 
     <h3>Project Models</h3>
     <app-pipeline-detail
