@@ -104,8 +104,17 @@ export class PipelineService implements OnDestroy {
         );
     }
 
-    updatePipeline(pipeline: any, parameterValues): Observable<any> {
-        pipeline.metadata = JSON.stringify({ parameters: parameterValues });
+    updatePipeline(pipeline: any, metadata): Observable<any> {
+        console.log("pipeline: ", pipeline);
+        console.log("metadata: ", metadata);
+        if (metadata.properties) {
+            pipeline.metadata.properties = JSON.stringify(metadata.properties);
+            pipeline.metadata["estimators"] = JSON.stringify(metadata.estimators);
+            pipeline.metadata["outer_cv"] = metadata.outer_cv;
+            pipeline.metadata["drop_features"] = metadata.drop_features;
+        } else {
+            pipeline.metadata.properties = JSON.stringify(metadata);
+        }
         return this.http.put(environment.apiURL + `pipeline/${pipeline.id}/`, pipeline).pipe(
             takeUntil(this.ngUnsubscribe),
             catchError((error) => {
@@ -114,12 +123,12 @@ export class PipelineService implements OnDestroy {
         );
     }
 
-    executePipeline(project, pipelineID): Observable<any> {
+    executePipeline(project, pipeline_id): Observable<any> {
         return this.http
             .post(`${environment.apiURL}pipeline/execute/`, {
                 project_id: project.id,
                 dataset_id: project.dataset,
-                pipeline_id: pipelineID,
+                pipeline_id: pipeline_id,
             })
             .pipe(
                 takeUntil(this.ngUnsubscribe),

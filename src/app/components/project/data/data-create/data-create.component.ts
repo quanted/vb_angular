@@ -53,7 +53,6 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
     }
 
     parseRawData(): void {
-        console.log("rawData: ", this.rawData);
         this.dataArray = this.rawData.dataArray;
         this.dataCSV = this.rawData.dataCSV;
 

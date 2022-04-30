@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
 import { Observable, Observer, of, Subject } from "rxjs";
-import { catchError, takeUntil } from "rxjs/operators";
+import { catchError, takeUntil, tap } from "rxjs/operators";
 
 import * as XLSX from "xlsx";
 
@@ -42,7 +42,11 @@ export class DatasetService implements OnDestroy {
     }
 
     createDataset(newDataset): Observable<any> {
+        console.log("newDataset: ", newDataset);
         return this.http.post(environment.apiURL + "dataset/", newDataset).pipe(
+            tap((response) => {
+                console.log("createdDataset: ", response);
+            }),
             takeUntil(this.ngUnsubscribe),
             catchError((err) => {
                 console.log(err);

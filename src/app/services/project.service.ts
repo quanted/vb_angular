@@ -9,6 +9,7 @@ import { environment } from "../../environments/environment";
 import { deepCopy } from "../utils/deepCopy";
 
 import { PipelineService } from "./pipeline.service";
+import { DatasetService } from "src/app/services/dataset.service";
 
 @Injectable({
     providedIn: "root",
@@ -16,7 +17,11 @@ import { PipelineService } from "./pipeline.service";
 export class ProjectService implements OnDestroy {
     private ngUnsubscribe = new Subject();
 
-    constructor(private http: HttpClient, private pipelineService: PipelineService) {
+    constructor(
+        private http: HttpClient,
+        private pipelineService: PipelineService,
+        private dataService: DatasetService
+    ) {
         this.getProjects().subscribe();
     }
 
@@ -140,16 +145,33 @@ export class ProjectService implements OnDestroy {
     }
 
     executeProject(project): Observable<any> {
-        return this.pipelineService.getProjectPipelines(project.id).pipe(
+        return this.pipelineService.getAllPipelines(project.id).pipe(
             concatMap((pipelines) => {
-                const pipelineExecutionObservables: any[] = [];
+                let vbHelper = null;
+                let estimators = [];
                 for (let pipeline of pipelines) {
-                    console.log(
-                        `project ${project.id} executing ${pipeline.name} pipeline on dataset ${project.dataset}`
-                    );
-                    pipelineExecutionObservables.push(this.pipelineService.executePipeline(project, pipeline.id));
+                    if (pipeline.type == "vbhelper") {
+                        vbHelper = pipeline;
+                    } else {
+                        let estimator = {
+                            type: pipeline.type,
+                            parameters: pipeline.metadata.parameters,
+                        };
+                        estimators.push(estimator);
+                    }
                 }
-                return forkJoin(pipelineExecutionObservables);
+                let parameters = vbHelper.metadata.parameters;
+
+                const metadata = {
+                    parameters: JSON.stringify(parameters),
+                    estimators: JSON.stringify(estimators),
+                    outer_cv: "True",
+                    drop_features: [],
+                };
+                return this.pipelineService.updatePipeline(vbHelper, metadata);
+            }),
+            concatMap((vbHelper) => {
+                return this.pipelineService.executePipeline(project, vbHelper.id);
             })
         );
     }

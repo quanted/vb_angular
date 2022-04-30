@@ -71,7 +71,6 @@ export class DataComponent implements OnInit {
                 console.log("error: ", data.error);
                 return;
             }
-            console.log("well?: ", data);
             if (data) {
                 this.rawData = data;
                 this.creatingDataset = true;
