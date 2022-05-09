@@ -42,11 +42,7 @@ export class DatasetService implements OnDestroy {
     }
 
     createDataset(newDataset): Observable<any> {
-        console.log("newDataset: ", newDataset);
         return this.http.post(environment.apiURL + "dataset/", newDataset).pipe(
-            tap((response) => {
-                console.log("createdDataset: ", response);
-            }),
             takeUntil(this.ngUnsubscribe),
             catchError((err) => {
                 console.log(err);

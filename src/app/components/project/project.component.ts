@@ -14,9 +14,9 @@ export class ProjectComponent implements OnInit {
     projectID = null;
     project = null;
     pipelines = [];
-    locationName = "No location selected";
-    datasetName = "No data selected";
-    pipelineNames = ["No pipelines selected"];
+    locationHeaderText = "No location selected";
+    datasetHeaderText = "No data selected";
+    pipelineHeaderText = "No pipelines selected";
 
     canExecute = false;
 
@@ -37,18 +37,18 @@ export class ProjectComponent implements OnInit {
 
     setLocationHeader(location): void {
         if (location) {
-            this.locationName = `${location.name}, ${location.description}`;
+            this.locationHeaderText = `${location.name}, ${location.description}`;
         } else {
-            this.locationName = "No location selected";
+            this.locationHeaderText = "No location selected";
         }
         this.checkExecutionReady();
     }
 
     setDatasetHeader(dataset): void {
         if (dataset) {
-            this.datasetName = dataset.name;
+            this.datasetHeaderText = `${dataset.name}, ${dataset.description}`;
         } else {
-            this.datasetName = "No dataset selected";
+            this.datasetHeaderText = "No dataset selected";
         }
         this.checkExecutionReady();
     }
@@ -59,10 +59,10 @@ export class ProjectComponent implements OnInit {
             const typeList = [];
             for (let pipeline of pipelines) {
                 typeList.push(pipeline.name);
+                this.pipelineHeaderText = typeList.join(", ");
             }
-            this.pipelineNames = typeList;
             if (this.pipelines.length < 1) {
-                this.pipelineNames = ["No pipelines selected"];
+                this.pipelineHeaderText = "No pipelines selected";
             }
         }
         this.checkExecutionReady();

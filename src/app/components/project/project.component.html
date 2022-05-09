@@ -21,14 +21,14 @@
                 <!-- Location -->
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Location: {{ locationName }}</mat-panel-title>
+                        <mat-panel-title>Location: {{ locationHeaderText }}</mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-location [project]="project" (setLocationHeader)="setLocationHeader($event)"></app-location>
                 </mat-expansion-panel>
                 <!-- Data -->
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Data: {{ datasetName }}</mat-panel-title>
+                        <mat-panel-title>Dataset: {{ datasetHeaderText }}</mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-data [project]="project" (setDatasetHeader)="setDatasetHeader($event)"></app-data>
                 </mat-expansion-panel>
@@ -36,7 +36,7 @@
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
                         <mat-panel-title
-                            >Model<span *ngIf="pipelineNames.length != 1">s</span>: {{ pipelineNames.join(", ") }}
+                            >Model(s)<span *ngIf="pipelineHeaderText.length != 1">s</span>: {{ pipelineHeaderText }}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <app-pipelines
