@@ -17,7 +17,11 @@
         <input id="file-upload" type="file" accept=".csv, .xls, .xlsx" name="files[]" (change)="onFileChange($event)" />
     </ng-container>
     <ng-container *ngIf="creatingDataset">
-        <app-data-create [rawData]="rawData" (datasetCreated)="datasetCreated($event)"></app-data-create>
+        <app-data-create
+            [project]="project"
+            [rawData]="rawData"
+            (datasetCreated)="datasetCreated($event)"
+        ></app-data-create>
     </ng-container>
 </ng-container>
 <ng-container *ngIf="dataset">

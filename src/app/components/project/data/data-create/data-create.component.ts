@@ -1,8 +1,11 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+
 import { DatasetService } from "src/app/services/dataset.service";
+import { ProjectService } from "src/app/services/project.service";
 
 @Component({
     selector: "app-data-create",
@@ -10,6 +13,7 @@ import { DatasetService } from "src/app/services/dataset.service";
     styleUrls: ["./data-create.component.css"],
 })
 export class DataCreateComponent implements OnInit, AfterViewInit {
+    @Input() project;
     @Input() rawData;
     @Output() datasetCreated: EventEmitter<any> = new EventEmitter<any>();
 
@@ -28,7 +32,11 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     dataSource = new MatTableDataSource();
-    constructor(private fb: FormBuilder, private datasetService: DatasetService) {}
+    constructor(
+        private fb: FormBuilder,
+        private datasetService: DatasetService,
+        private projectService: ProjectService
+    ) {}
 
     ngOnInit(): void {
         this.datasetForm = this.fb.group({
@@ -139,8 +147,11 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
                     endRow: formValues.endRow,
                 });
             }
+            // TODO: both of these observables could probably use some error handling
             this.datasetService.createDataset(newDataset).subscribe((dataset) => {
-                this.datasetCreated.emit(dataset);
+                this.projectService.selectDataset(this.project, dataset).subscribe(() => {
+                    this.datasetCreated.emit(dataset);
+                });
             });
         } else {
             this.statusMessage = "Form invalid!";
