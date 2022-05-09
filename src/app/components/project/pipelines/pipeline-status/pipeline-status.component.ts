@@ -8,17 +8,19 @@ import { PipelineService } from "src/app/services/pipeline.service";
 })
 export class PipelineStatusComponent implements OnInit, OnDestroy {
     @Input() project;
-    pipelines = [];
 
-    panelOpenState = false;
-
-    pipelinesStatusMessage = "";
+    pipelineName = "";
+    pipelineStage = "";
+    pipelineStatus = "";
+    pipelineMessage = "";
+    processStatusMessage = "";
 
     pipelineUpdateTimer: ReturnType<typeof setInterval>;
 
     constructor(private pipelineService: PipelineService) {}
 
     ngOnInit(): void {
+        console.log("project: ", this.project);
         // FOR TESTING
         this.project["executed"] = false;
         this.project["completed"] = false;
@@ -32,42 +34,32 @@ export class PipelineStatusComponent implements OnInit, OnDestroy {
     }
 
     updatePipelines() {
-        this.pipelinesStatusMessage = "Updating status...";
-        this.pipelineService.getProjectPipelines(this.project.id).subscribe((pipelines) => {
+        this.processStatusMessage = "Updating status...";
+        this.pipelineService.getAllPipelines(this.project.id).subscribe((pipelines) => {
+            let executionCompleted = false;
             if (pipelines.length > 0) {
-                // console.log("pipelines: ", pipelines);
-                this.pipelines = [...pipelines];
-
-                let pipelinesCompleted = true;
-
-                for (let pipeline of this.pipelines) {
-                    const pipelineStatus = pipeline.metadata.status;
-                    if (pipelineStatus) {
-                        this.pipelinesStatusMessage = "Pipelines executing...";
-
-                        if (pipelineStatus !== "Completed and model saved") {
-                            pipelinesCompleted = false;
+                for (let pipeline of pipelines) {
+                    if (pipeline.type === "vbhelper") {
+                        this.pipelineName = pipeline.name;
+                        // vbhelper will only have a pipeline.metadata.status once it has been executed
+                        if (pipeline.metadata.status) {
+                            this.pipelineMessage = pipeline.metadata.message;
+                            this.pipelineStage = pipeline.metadata.stage;
+                            this.pipelineStatus = pipeline.metadata.status;
                         } else {
-                            pipeline["completed"] = true;
+                            this.processStatusMessage = "Pipeline(s) unexecuted";
                         }
-                    } else {
-                        this.pipelinesStatusMessage = "Pipeline(s) unexecuted";
-                        pipelinesCompleted = false;
                     }
                 }
-
-                if (pipelinesCompleted) {
-                    this.pipelinesStatusMessage = "Pipeline execution complete";
-                    clearInterval(this.pipelineUpdateTimer);
-                }
             } else {
-                this.pipelinesStatusMessage = "No pipelines";
+                this.processStatusMessage = "No Project pipelines";
+            }
+
+            if (executionCompleted) {
+                this.processStatusMessage = "Pipeline execution complete";
+                clearInterval(this.pipelineUpdateTimer);
             }
         });
-    }
-
-    cancelPipeline(): void {
-        console.log("cancel pipeline not implemented");
     }
 
     ngOnDestroy() {
