@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+
 import { MapService } from "src/app/services/map.service";
 import { LocationService } from "src/app/services/location.service";
+import { ProjectService } from "src/app/services/project.service";
 
 @Component({
     selector: "app-location-form",
@@ -12,13 +14,18 @@ export class LocationFormComponent implements OnInit {
     locationForm: FormGroup;
     markers = [];
 
-    @Input() projectID;
+    @Input() project;
     @Output() closeCreate: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor(private fb: FormBuilder, private mapService: MapService, private locationService: LocationService) {}
+    constructor(
+        private fb: FormBuilder,
+        private mapService: MapService,
+        private locationService: LocationService,
+        private projectService: ProjectService
+    ) {}
 
     ngOnInit() {
-        console.log("form:projectID: ", this.projectID);
+        console.log("form:project: ", this.project);
         this.locationForm = this.fb.group({
             name: [null, Validators.required],
             type: ["beach", Validators.required],
@@ -55,8 +62,11 @@ export class LocationFormComponent implements OnInit {
                     lng3: data.o_longitude,
                 }),
             };
-            this.locationService.addLocation(location).subscribe(() => {
-                this.returnToProject();
+            // TODO: both of these observables could probably use some error handling
+            this.locationService.addLocation(location).subscribe((locationResponse) => {
+                this.projectService.selectLocation(this.project, locationResponse).subscribe(() => {
+                    this.returnToProject();
+                });
             });
         } else {
             console.log("form invalid!");

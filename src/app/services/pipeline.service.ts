@@ -105,14 +105,14 @@ export class PipelineService implements OnDestroy {
     }
 
     updatePipeline(pipeline: any, metadata): Observable<any> {
-        console.log("pipeline: ", pipeline);
-        console.log("metadata: ", metadata);
+        // metadata will have a "properties" key if it is from a vbhelper execution
         if (metadata.properties) {
             pipeline.metadata.properties = JSON.stringify(metadata.properties);
             pipeline.metadata["estimators"] = JSON.stringify(metadata.estimators);
             pipeline.metadata["outer_cv"] = metadata.outer_cv;
             pipeline.metadata["drop_features"] = metadata.drop_features;
         } else {
+            // or will just be a dictionary of pipeline option values if not
             pipeline.metadata.properties = JSON.stringify(metadata);
         }
         return this.http.put(environment.apiURL + `pipeline/${pipeline.id}/`, pipeline).pipe(

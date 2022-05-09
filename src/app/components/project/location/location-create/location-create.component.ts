@@ -1,23 +1,29 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
+import { ProjectService } from "src/app/services/project.service";
+
 @Component({
     selector: "app-location-create",
     templateUrl: "./location-create.component.html",
     styleUrls: ["./location-create.component.css"],
 })
 export class LocationCreateComponent implements OnInit {
-    private projectID;
+    project;
 
-    constructor(private route: ActivatedRoute, private router: Router) {}
+    constructor(private route: ActivatedRoute, private router: Router, private projectService: ProjectService) {}
 
     ngOnInit(): void {
         if (this.route.paramMap) {
-            this.projectID = this.route.snapshot.paramMap.get("id");
+            const id = this.route.snapshot.paramMap.get("id");
+            this.projectService.getProject(id).subscribe((project) => {
+                console.log(`getProject ${id}: `, project);
+                this.project = project;
+            });
         }
     }
 
     closeCreate(): void {
-        this.router.navigateByUrl(`project/${this.projectID}`);
+        this.router.navigateByUrl(`project/${this.project.id}`);
     }
 }

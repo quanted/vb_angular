@@ -163,8 +163,8 @@ export class ProjectService implements OnDestroy {
                 let parameters = vbHelper.metadata.parameters;
 
                 const metadata = {
-                    parameters: JSON.stringify(parameters),
-                    estimators: JSON.stringify(estimators),
+                    parameters,
+                    estimators,
                     outer_cv: "True",
                     drop_features: [],
                 };
