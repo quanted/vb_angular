@@ -58,7 +58,7 @@ export class PipelineGlobalOptionsComponent implements OnInit {
             }
 
             this.pipelineService
-                .getGlobalOptionsValues(this.project.id, globalOptionsDefaults)
+                .getProjectVBHelperPipeline(this.project.id, globalOptionsDefaults)
                 .subscribe((vbHelper) => {
                     // this will be an error if the project doesn't have any pipelines
                     if (vbHelper.error) {

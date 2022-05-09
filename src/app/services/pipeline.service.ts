@@ -63,7 +63,7 @@ export class PipelineService implements OnDestroy {
 
     // this returns a projects vbhelper pipeline only
     // and will create one for a project if it doesn't have one already
-    getGlobalOptionsValues(id, defaults): Observable<any> {
+    getProjectVBHelperPipeline(id, defaults): Observable<any> {
         return this.getAllPipelines(id).pipe(
             switchMap((pipelines: any[]) => {
                 let vbhelper = null;
