@@ -9,7 +9,6 @@ import { environment } from "../../environments/environment";
 import { deepCopy } from "../utils/deepCopy";
 
 import { PipelineService } from "./pipeline.service";
-import { DatasetService } from "src/app/services/dataset.service";
 
 @Injectable({
     providedIn: "root",
@@ -17,11 +16,7 @@ import { DatasetService } from "src/app/services/dataset.service";
 export class ProjectService implements OnDestroy {
     private ngUnsubscribe = new Subject();
 
-    constructor(
-        private http: HttpClient,
-        private pipelineService: PipelineService,
-        private dataService: DatasetService
-    ) {
+    constructor(private http: HttpClient, private pipelineService: PipelineService) {
         this.getProjects().subscribe();
     }
 
@@ -187,12 +182,12 @@ export class ProjectService implements OnDestroy {
         );
     }
 
-    deleteProject(id): Observable<any> {
-        return this.http.delete(environment.apiURL + "project/" + id + "/").pipe(
+    deleteProject(project): Observable<any> {
+        return this.http.delete(environment.apiURL + "project/" + project.id + "/").pipe(
             takeUntil(this.ngUnsubscribe),
             catchError((err) => {
                 console.log(err);
-                return of({ error: `Failed to delete project!` });
+                return of({ error: `Failed to delete project ${project.name}!` });
             })
         );
     }

@@ -1,9 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Router } from "@angular/router";
+
 import { DatasetService } from "src/app/services/dataset.service";
 import { LocationService } from "src/app/services/location.service";
-
 import { ProjectService } from "src/app/services/project.service";
+
+import { MatDialog } from "@angular/material/dialog";
+import { DeleteConfirmationDialogComponent } from "src/app/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component";
 
 @Component({
     selector: "app-project-detail",
@@ -22,7 +25,8 @@ export class ProjectDetailComponent implements OnInit {
         private router: Router,
         private projectService: ProjectService,
         private locationService: LocationService,
-        private datasetService: DatasetService
+        private datasetService: DatasetService,
+        private deleteDialog: MatDialog
     ) {}
 
     ngOnInit(): void {
@@ -59,8 +63,16 @@ export class ProjectDetailComponent implements OnInit {
     }
 
     deleteProject(project): void {
-        this.projectService.deleteProject(project.id).subscribe(() => {
-            this.projectDeleted.emit();
+        const dialogRef = this.deleteDialog.open(DeleteConfirmationDialogComponent, {
+            data: { type: `Project ${project.name}` },
+        });
+
+        dialogRef.afterClosed().subscribe((confirmDelete) => {
+            if (confirmDelete) {
+                this.projectService.deleteProject(project).subscribe(() => {
+                    this.projectDeleted.emit();
+                });
+            }
         });
     }
 }

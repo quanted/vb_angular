@@ -24,7 +24,8 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatSortModule } from "@angular/material/sort";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./components/header/header.component";
@@ -68,7 +69,9 @@ import { ProjectMetaComponent } from "./components/project/project-meta/project-
 import { ProjectMetaEditComponent } from "./components/project/project-meta/project-meta-edit/project-meta-edit.component";
 import { PipelineDetailComponent } from "./components/project/pipelines/pipeline-detail/pipeline-detail.component";
 import { PipelineCreateComponent } from "./components/project/pipelines/pipeline-create/pipeline-create.component";
-import { DataCreateComponent } from './components/project/data/data-create/data-create.component';
+import { DataCreateComponent } from "./components/project/data/data-create/data-create.component";
+
+import { DeleteConfirmationDialogComponent } from "./dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component";
 
 @NgModule({
     declarations: [
@@ -111,6 +114,7 @@ import { DataCreateComponent } from './components/project/data/data-create/data-
         ProjectMetaComponent,
         ProjectMetaEditComponent,
         DataCreateComponent,
+        DeleteConfirmationDialogComponent,
     ],
     imports: [
         BrowserModule,
@@ -132,7 +136,8 @@ import { DataCreateComponent } from './components/project/data/data-create/data-
         MatStepperModule,
         MatCheckboxModule,
         MatSortModule,
-        MatSlideToggleModule,
+        MatDialogModule,
+        MatTooltipModule,
     ],
     providers: [
         CookieService,

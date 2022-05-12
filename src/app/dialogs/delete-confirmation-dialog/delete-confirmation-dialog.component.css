@@ -1,0 +1,12 @@
+body {
+    display: grid;
+}
+
+h1 {
+    text-align: center;
+}
+
+.dialog-controls {
+    display: flex;
+    place-content: center;
+}
