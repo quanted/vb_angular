@@ -9,7 +9,6 @@ import { PipelineService } from "src/app/services/pipeline.service";
 export class PipelineStatusComponent implements OnInit, OnDestroy {
     @Input() project;
 
-    pipelineName = "";
     pipelineStage = "";
     pipelineStatus = "";
     pipelineMessage = "";
@@ -40,7 +39,6 @@ export class PipelineStatusComponent implements OnInit, OnDestroy {
             if (pipelines.length > 0) {
                 for (let pipeline of pipelines) {
                     if (pipeline.type === "vbhelper") {
-                        this.pipelineName = pipeline.name;
                         // vbhelper will only have a pipeline.metadata.status once it has been executed
                         if (pipeline.metadata.status) {
                             this.pipelineMessage = pipeline.metadata.message;
