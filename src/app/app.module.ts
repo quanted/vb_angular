@@ -8,6 +8,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthInterceptor } from "./interceptors/auth.interceptor";
 import { ErrorInterceptor } from "./interceptors/error.interceptor";
+import { LoadingInterceptor } from "./interceptors/loading.interceptor";
 
 import { CookieService } from "ngx-cookie-service";
 
@@ -151,6 +152,11 @@ import { LoadingIndicatorComponent } from "./ui/loading-indicator/loading-indica
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorInterceptor,
+            multi: true,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: LoadingInterceptor,
             multi: true,
         },
     ],

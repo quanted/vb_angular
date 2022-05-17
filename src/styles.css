@@ -20,7 +20,19 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.loadingIndicator {
+.loading-indicator-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.loading-indicator {
     border: 16px solid #f3f3f3; /* Light grey */
     border-top: 16px solid #3498db; /* Blue */
     border-radius: 50%;

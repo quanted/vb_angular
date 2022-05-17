@@ -5,7 +5,7 @@ import { finalize, delay } from "rxjs/operators";
 import { LoadingIndicatorService } from "../services/loading-indicator.service";
 
 @Injectable()
-export class LoaderInterceptor implements HttpInterceptor {
+export class LoadingInterceptor implements HttpInterceptor {
     constructor(private injector: Injector) {}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const loaderService = this.injector.get(LoadingIndicatorService);
