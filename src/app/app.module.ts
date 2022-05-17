@@ -71,7 +71,8 @@ import { PipelineDetailComponent } from "./components/project/pipelines/pipeline
 import { PipelineCreateComponent } from "./components/project/pipelines/pipeline-create/pipeline-create.component";
 import { DataCreateComponent } from "./components/project/data/data-create/data-create.component";
 
-import { DeleteConfirmationDialogComponent } from "./dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component";
+import { DeleteConfirmationDialogComponent } from "./ui/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component";
+import { LoadingIndicatorComponent } from "./ui/loading-indicator/loading-indicator.component";
 
 @NgModule({
     declarations: [
@@ -115,6 +116,7 @@ import { DeleteConfirmationDialogComponent } from "./dialogs/delete-confirmation
         ProjectMetaEditComponent,
         DataCreateComponent,
         DeleteConfirmationDialogComponent,
+        LoadingIndicatorComponent,
     ],
     imports: [
         BrowserModule,
