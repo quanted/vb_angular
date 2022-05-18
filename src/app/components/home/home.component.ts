@@ -29,10 +29,6 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    createProject(): void {
-        this.router.navigateByUrl("project");
-    }
-
     projectDeleted(): void {
         this.projectService.getProjects().subscribe((projects) => {
             this.projects = projects;

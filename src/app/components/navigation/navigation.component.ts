@@ -4,24 +4,28 @@ import { AuthService } from "src/app/services/auth/auth.service";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: "app-navigation",
-  templateUrl: "./navigation.component.html",
-  styleUrls: ["./navigation.component.css"],
+    selector: "app-navigation",
+    templateUrl: "./navigation.component.html",
+    styleUrls: ["./navigation.component.css"],
 })
 export class NavigationComponent implements OnInit {
-  username: string;
+    username: string;
 
-  constructor(private auth: AuthService, private router: Router) {}
+    constructor(private auth: AuthService, private router: Router) {}
 
-  ngOnInit() {
-    this.username = this.auth.getUsername();
-  }
+    ngOnInit() {
+        this.username = this.auth.getUsername();
+    }
 
-  gotoHome(): void {
-    this.router.navigateByUrl("home");
-  }
+    gotoHome(): void {
+        this.router.navigateByUrl("home");
+    }
 
-  logout(): void {
-    this.auth.logout();
-  }
+    createProject(): void {
+        this.router.navigateByUrl("project");
+    }
+
+    logout(): void {
+        this.auth.logout();
+    }
 }
