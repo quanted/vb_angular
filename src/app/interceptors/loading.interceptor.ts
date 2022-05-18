@@ -1,7 +1,7 @@
 import { Injectable, Injector } from "@angular/core";
 import { HttpEvent, HttpRequest, HttpHandler, HttpInterceptor } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { finalize, delay } from "rxjs/operators";
+import { finalize } from "rxjs/operators";
 import { LoadingIndicatorService } from "../services/loading-indicator.service";
 
 @Injectable()
