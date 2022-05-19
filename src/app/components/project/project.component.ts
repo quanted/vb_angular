@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 import { ProjectService } from "src/app/services/project.service";
 
@@ -20,7 +20,7 @@ export class ProjectComponent implements OnInit {
 
     canExecute = false;
 
-    constructor(private route: ActivatedRoute, private projectService: ProjectService) {}
+    constructor(private route: ActivatedRoute, private router: Router, private projectService: ProjectService) {}
 
     ngOnInit(): void {
         if (this.route.paramMap) {
@@ -77,6 +77,8 @@ export class ProjectComponent implements OnInit {
     executeProject(): void {
         this.projectService.executeProject(this.project).subscribe((response) => {
             console.log("execute response: ", response);
+            // TODO: needs error handling
+            this.router.navigateByUrl("home");
         });
     }
 }
