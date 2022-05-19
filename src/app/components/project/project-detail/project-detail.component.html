@@ -21,7 +21,15 @@
     </div>
 
     <div id="buttons">
-        <button mat-flat-button color="primary" type="button" (click)="editProject(project)">Project setup</button>
+        <button
+            mat-flat-button
+            color="primary"
+            type="button"
+            (click)="editProject(project)"
+            matTooltip="Go to project setup"
+        >
+            Project setup
+        </button>
         <ng-container *ngIf="true">
             <button
                 *ngIf="project.completed"
@@ -33,7 +41,23 @@
                 Project dashboard
             </button>
         </ng-container>
-        <button mat-flat-button color="primary" type="button" (click)="cloneProject(project)">Clone Project</button>
-        <button mat-flat-button color="primary" type="button" (click)="deleteProject(project)">Delete Project</button>
+        <button
+            mat-flat-button
+            color="primary"
+            type="button"
+            (click)="cloneProject(project)"
+            matTooltip="Clone this project"
+        >
+            Clone Project
+        </button>
+        <button
+            mat-flat-button
+            color="primary"
+            type="button"
+            (click)="deleteProject(project)"
+            matTooltip="Permanently delete this project"
+        >
+            Delete Project
+        </button>
     </div>
 </div>

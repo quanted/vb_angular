@@ -1,13 +1,22 @@
 <div id="navigation">
     <div class="buttons-left">
-        <button mat-flat-button color="primary" (click)="gotoHome()" title="home"><mat-icon>home</mat-icon></button>
+        <button mat-flat-button color="primary" (click)="gotoHome()" matTooltip="Home">
+            <mat-icon>home</mat-icon>
+        </button>
     </div>
     <div id="greeting">
         Welcome to Virtual Beach <span id="user-name">{{ username }}</span>
     </div>
     <div class="buttons-right">
-        <button mat-flat-button color="primary" (click)="createProject()">Create New Project</button>
-        <button mat-flat-button color="primary" (click)="logout()" title="logout">
+        <button
+            mat-flat-button
+            color="primary"
+            (click)="createProject()"
+            matTooltip="Create a new Virtual Beach project"
+        >
+            Create New Project
+        </button>
+        <button mat-flat-button color="primary" (click)="logout()" matTooltip="Log Out">
             <mat-icon>exit_to_app</mat-icon>
         </button>
     </div>
