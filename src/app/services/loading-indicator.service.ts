@@ -1,18 +1,19 @@
 import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
     providedIn: "root",
 })
 export class LoadingIndicatorService {
-    showLoader = false;
+    showLoader = new BehaviorSubject(null);
 
     constructor() {}
 
     show() {
-        this.showLoader = true;
+        this.showLoader.next(true);
     }
 
     hide() {
-        this.showLoader = false;
+        this.showLoader.next(false);
     }
 }

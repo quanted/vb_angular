@@ -2,7 +2,7 @@
     <app-header></app-header>
     <main [fluidHeight]><router-outlet></router-outlet></main>
     <app-footer></app-footer>
-    <div *ngIf="loadingIndicator.showLoader" class="loading-indicator-overlay">
-        <div class="loading-indicator"></div>
+    <div [class.loading-indicator-overlay]="showLoader">
+        <div [class.loading-indicator]="showLoader"></div>
     </div>
 </body>
