@@ -6,12 +6,22 @@ import { LoadingIndicatorService } from "../services/loading-indicator.service";
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
+    requestCount = 0;
+
     constructor(private injector: Injector) {}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        this.requestCount++;
         const loaderService = this.injector.get(LoadingIndicatorService);
 
         loaderService.show();
 
-        return next.handle(req).pipe(finalize(() => loaderService.hide()));
+        return next.handle(req).pipe(
+            finalize(() => {
+                this.requestCount--;
+                if (this.requestCount === 0) {
+                    loaderService.hide();
+                }
+            })
+        );
     }
 }
