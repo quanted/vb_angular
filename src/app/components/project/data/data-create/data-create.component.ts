@@ -20,13 +20,16 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
     datasetForm: FormGroup;
     dv = [];
 
-    generateAO = false;
-
     dataCSV = "";
     dataArray = [];
 
     columnData = [];
     columnNames = [];
+
+    // selectedRows = [[range1_start, range1_end], [range2_start, range2_end], ...]
+    selectedRows = [];
+
+    generateAO = false;
 
     statusMessage = "";
 
@@ -50,8 +53,6 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
             features: [null, Validators.required],
             bearing: [null],
             magnitude: [null],
-            regVal: [null],
-            split: [null],
         });
         this.parseRawData();
     }
@@ -84,34 +85,39 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
     selectAllRows(): void {
         this.datasetForm.get("startRow").setValue(0);
         this.datasetForm.get("endRow").setValue(this.columnData.length - 1);
-        this.datasetForm.get("totalRows").setValue(this.columnData.length);
-        this.setSelectedRows();
+        this.selectRows();
     }
 
     selectRows(): void {
         if (this.datasetForm.get("startRow").valid && this.datasetForm.get("endRow").valid) {
+            const start = this.datasetForm.get("startRow").value;
+            const end = this.datasetForm.get("endRow").value;
+            if (this.selectedRows.length === 0) {
+                this.selectedRows.push([start, end]);
+            } else {
+                let newRange = [start, end];
+                this.selectedRows.push(newRange);
+            }
             this.setSelectedRows();
         }
     }
 
     clearSelectedRows(): void {
-        this.datasetForm.get("startRow").setValue(null);
-        this.datasetForm.get("endRow").setValue(null);
-        this.datasetForm.get("totalRows").setValue(null);
+        this.selectedRows = [];
         this.setSelectedRows();
     }
 
     setSelectedRows() {
-        const start = this.datasetForm.get("startRow").value;
-        const end = this.datasetForm.get("endRow").value;
-        if (start != null && start >= 0 && end != null && end < this.columnData.length) {
-            this.datasetForm.get("selectedRows").setValue("[" + start + ", " + end + "]");
-            this.datasetForm
-                .get("totalRows")
-                .setValue(this.datasetForm.get("endRow").value - this.datasetForm.get("startRow").value + 1);
-        } else {
-            this.datasetForm.get("selectedRows").setValue(null);
+        let totalRows = 0;
+        let selectedRowsString = "";
+        if (this.selectedRows.length > 0) {
+            for (let range of this.selectedRows) {
+                selectedRowsString += `[${range[0]}, ${range[1]}] `;
+                totalRows += range[1] - range[0];
+            }
         }
+        this.datasetForm.get("selectedRows").setValue(selectedRowsString);
+        this.datasetForm.get("totalRows").setValue(totalRows);
     }
 
     createDataset(): void {
@@ -134,7 +140,6 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
                             bearing: formValues.bearing,
                             magnitude: formValues.magnitude,
                         },
-                        regVal: formValues.regVal,
                     });
                 } else {
                     this.statusMessage = "Bearing and magnitude required";
