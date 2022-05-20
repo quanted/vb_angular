@@ -268,6 +268,6 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
     }
 
     cancel(): void {
-        console.log("cancel");
+        this.datasetCreated.emit(null);
     }
 }
