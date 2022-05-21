@@ -83,8 +83,9 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
     }
 
     selectAllRows(): void {
-        this.datasetForm.get("startRow").setValue(0);
-        this.datasetForm.get("endRow").setValue(this.columnData.length - 1);
+        this.selectedRows = [];
+        this.datasetForm.get("startRow").setValue(1);
+        this.datasetForm.get("endRow").setValue(this.columnData.length);
         this.selectRows();
     }
 
@@ -92,6 +93,9 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
         if (this.datasetForm.get("startRow").valid && this.datasetForm.get("endRow").valid) {
             const start = this.datasetForm.get("startRow").value;
             const end = this.datasetForm.get("endRow").value;
+            // TODO: add a modal for these situations
+            if (end <= start || start < 1 || end > this.columnData.length) return;
+
             if (this.selectedRows.length === 0) {
                 this.selectedRows.push([start, end]);
             } else {
@@ -111,9 +115,13 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
         let totalRows = 0;
         let selectedRowsString = "";
         if (this.selectedRows.length > 0) {
-            for (let range of this.selectedRows) {
+            for (let i = 0; i < this.selectedRows.length; i++) {
+                let range = this.selectedRows[i];
                 selectedRowsString += `[${range[0]}, ${range[1]}] `;
-                totalRows += range[1] - range[0];
+                if (i < this.selectedRows.length - 1) {
+                    selectedRowsString += ", ";
+                }
+                totalRows += range[1] - range[0] + 1;
             }
         }
         this.datasetForm.get("selectedRows").setValue(selectedRowsString);
