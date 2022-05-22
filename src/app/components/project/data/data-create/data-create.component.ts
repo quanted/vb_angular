@@ -26,8 +26,10 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
     columnData = [];
     columnNames = [];
 
-    // selectedRows = [[range1_start, range1_end], [range2_start, range2_end], ...]
+    // selected rows are pairs of indices in ascending order
+    // selectedRows = [[10, 20], [30, 40], ...]
     selectedRows = [];
+    selectedRowsString = "";
 
     generateAO = false;
 
@@ -100,7 +102,20 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
                 this.selectedRows.push([start, end]);
             } else {
                 let newRange = [start, end];
-                this.selectedRows.push(newRange);
+                // see if this new range overlaps any or all other ranges
+                // is it's end index less that the first range's start index?
+                // if so put the new range at the start of the list
+                if (newRange[1] < this.selectedRows[0][0]) {
+                    this.selectedRows.splice(0, 0, newRange);
+                }
+                // is it's start index more than the last range's end index?
+                // if so put the new range at the end of the list
+                else if (newRange[0] > this.selectedRows[this.selectedRows.length - 1][1]) {
+                    this.selectedRows.splice(this.selectedRows.length, 0, newRange);
+                } else {
+                    // figure out if there's any over lap and create new ranges if so, or insert
+                    // the new range in to the appropriate place in the list
+                }
             }
             this.setSelectedRows();
         }
@@ -113,18 +128,18 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
 
     setSelectedRows() {
         let totalRows = 0;
-        let selectedRowsString = "";
+        this.selectedRowsString = "";
         if (this.selectedRows.length > 0) {
             for (let i = 0; i < this.selectedRows.length; i++) {
                 let range = this.selectedRows[i];
-                selectedRowsString += `[${range[0]}, ${range[1]}] `;
+                this.selectedRowsString += `[${range[0]}, ${range[1]}]`;
                 if (i < this.selectedRows.length - 1) {
-                    selectedRowsString += ", ";
+                    this.selectedRowsString += ", ";
                 }
                 totalRows += range[1] - range[0] + 1;
             }
         }
-        this.datasetForm.get("selectedRows").setValue(selectedRowsString);
+        this.datasetForm.get("selectedRows").setValue(this.selectedRowsString);
         this.datasetForm.get("totalRows").setValue(totalRows);
     }
 
