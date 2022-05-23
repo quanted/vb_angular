@@ -68,13 +68,12 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
         this.dataCSV = this.rawData.dataCSV;
 
         this.columnNames = this.dataArray[0];
-        this.columnNames = ["row", ...this.columnNames];
         const columnValues = this.dataArray.slice(1);
         for (let i = 0; i < columnValues.length; i++) {
             const record = {};
             const values = columnValues[i];
             for (let j = 0; j < this.columnNames.length; j++) {
-                record[this.columnNames[j]] = j == 0 ? i : values[j - 1];
+                record[this.columnNames[j]] = values[j];
             }
             this.columnData.push(record);
         }
@@ -82,6 +81,10 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
         this.dataSource.data = this.columnData;
         this.dataSource.paginator = this.paginator;
         this.datasetForm.get("name").setValue(this.rawData.fileName);
+    }
+
+    rowClicked(): void {
+        console.log("row clicked!");
     }
 
     selectAllRows(): void {
