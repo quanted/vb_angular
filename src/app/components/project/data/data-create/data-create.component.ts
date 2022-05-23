@@ -104,12 +104,12 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
             // find where the new range belongs or if ranges need to be merged
             else {
                 let newRange = [start, end];
-                // is it's end index less that the first range's start index?
+                // is it's end index less that the first range's start index - 1?
                 // if so put the new range at the start of the list
                 if (newRange[1] < this.selectedRows[0][0] - 1) {
                     this.selectedRows.splice(0, 0, newRange);
                 }
-                // is it's start index more than the last range's end index?
+                // is it's start index more than the last range's end index + 1?
                 // if so put the new range at the end of the list
                 else if (newRange[0] > this.selectedRows[this.selectedRows.length - 1][1] + 1) {
                     this.selectedRows.splice(this.selectedRows.length, 0, newRange);
@@ -123,7 +123,7 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
                         if (newRange[0] > this.selectedRows[i][1] + 1) continue;
                         // if new range ends before this range continue
                         if (newRange[1] < this.selectedRows[i][0] - 1) continue;
-                        // otherwise this range is at least partially contained by this range
+                        // otherwise new range is at least partially contained by this range
                         // so add it's index so we can update the list after loop
                         includedRanges.push(i);
                         // if new range begins inside this range
