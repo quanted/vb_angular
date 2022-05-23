@@ -106,12 +106,12 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
                 let newRange = [start, end];
                 // is it's end index less that the first range's start index?
                 // if so put the new range at the start of the list
-                if (newRange[1] < this.selectedRows[0][0]) {
+                if (newRange[1] < this.selectedRows[0][0] - 1) {
                     this.selectedRows.splice(0, 0, newRange);
                 }
                 // is it's start index more than the last range's end index?
                 // if so put the new range at the end of the list
-                else if (newRange[0] > this.selectedRows[this.selectedRows.length - 1][1]) {
+                else if (newRange[0] > this.selectedRows[this.selectedRows.length - 1][1] + 1) {
                     this.selectedRows.splice(this.selectedRows.length, 0, newRange);
                 }
                 // figure out if there's any over lap and create new ranges if so, or insert
@@ -137,6 +137,7 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
                             newRange[1] = this.selectedRows[i][1];
                         }
                     }
+                    console.log("includedRanges: ", includedRanges);
                     this.selectedRows.splice(includedRanges[0], includedRanges.length, newRange);
                 }
             }
