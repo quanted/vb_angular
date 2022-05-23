@@ -1,6 +1,6 @@
 # Virtual Beach - Webapp
 
-An Angular v11 web application that uses [Leaflet](https://leafletjs.com/) for mapping and [d3](https://d3js.org/) for data visualization
+An Angular v13 web application that uses [Leaflet](https://leafletjs.com/) for mapping and [d3](https://d3js.org/) for data visualization
 
 Virtual Beach is a software package designed for developing site-specific
 statistical models for the prediction of pathogen indicator levels at
