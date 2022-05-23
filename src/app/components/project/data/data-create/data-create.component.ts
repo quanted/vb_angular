@@ -137,7 +137,6 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
                             newRange[1] = this.selectedRows[i][1];
                         }
                     }
-                    console.log("includedRanges: ", includedRanges);
                     this.selectedRows.splice(includedRanges[0], includedRanges.length, newRange);
                 }
             }
