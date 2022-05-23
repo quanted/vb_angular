@@ -100,9 +100,10 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
 
             if (this.selectedRows.length === 0) {
                 this.selectedRows.push([start, end]);
-            } else {
+            }
+            // find where the new range belongs or if ranges need to be merged
+            else {
                 let newRange = [start, end];
-                // see if this new range overlaps any or all other ranges
                 // is it's end index less that the first range's start index?
                 // if so put the new range at the start of the list
                 if (newRange[1] < this.selectedRows[0][0]) {
@@ -112,9 +113,31 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
                 // if so put the new range at the end of the list
                 else if (newRange[0] > this.selectedRows[this.selectedRows.length - 1][1]) {
                     this.selectedRows.splice(this.selectedRows.length, 0, newRange);
-                } else {
-                    // figure out if there's any over lap and create new ranges if so, or insert
-                    // the new range in to the appropriate place in the list
+                }
+                // figure out if there's any over lap and create new ranges if so, or insert
+                // the new range into the appropriate place in the list
+                else {
+                    let includedRanges = [];
+                    for (let i = 0; i < this.selectedRows.length; i++) {
+                        // if new range starts after this range continue
+                        if (newRange[0] > this.selectedRows[i][1] + 1) continue;
+                        // if new range ends before this range continue
+                        if (newRange[1] < this.selectedRows[i][0] - 1) continue;
+                        // otherwise this range is at least partially contained by this range
+                        // so add it's index so we can update the list after loop
+                        includedRanges.push(i);
+                        // if new range begins inside this range
+                        // make new range start at the start of this range
+                        if (newRange[0] > this.selectedRows[i][0]) {
+                            newRange[0] = this.selectedRows[i][0];
+                        }
+                        // if new range ends inside this range
+                        // make new range end at the end of this range
+                        if (newRange[1] < this.selectedRows[i][1]) {
+                            newRange[1] = this.selectedRows[i][1];
+                        }
+                    }
+                    this.selectedRows.splice(includedRanges[0], includedRanges.length, newRange);
                 }
             }
             this.setSelectedRows();
