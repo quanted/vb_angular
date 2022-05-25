@@ -35,6 +35,8 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
 
     statusMessage = "";
 
+    currentDatasetStatistics = null;
+
     @ViewChild(MatPaginator) paginator: MatPaginator;
     dataSource = new MatTableDataSource();
     constructor(
@@ -98,9 +100,10 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
         if (this.datasetForm.get("startRow").valid && this.datasetForm.get("endRow").valid) {
             const start = this.datasetForm.get("startRow").value;
             const end = this.datasetForm.get("endRow").value;
-            // TODO: add a modal for these situations
+            // TODO: add a modals for these 3 situations
             if (end <= start || start < 1 || end > this.columnData.length) return;
 
+            // if there aren't any ranges just add it
             if (this.selectedRows.length === 0) {
                 this.selectedRows.push([start, end]);
             }
@@ -203,6 +206,8 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
             }
             // TODO: both of these observables could probably use some error handling
             this.datasetService.createDataset(newDataset).subscribe((dataset) => {
+                this.currentDatasetStatistics = dataset.statistics;
+                console.log("datasetStats: ", this.currentDatasetStatistics);
                 this.projectService.selectDataset(this.project, dataset).subscribe(() => {
                     this.datasetCreated.emit(dataset);
                 });
