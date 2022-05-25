@@ -9,6 +9,7 @@ import * as d3 from "d3";
 })
 export class BasicBarchartComponent implements OnInit {
     @Input() dataset;
+    @Input() panelType;
 
     private svg;
     private margin = 50;
@@ -27,19 +28,10 @@ export class BasicBarchartComponent implements OnInit {
             .append("g")
             .attr("transform", "translate(" + this.margin + "," + this.margin + ")");
 
-        const testData = [
-            { name: "ONE", two: "10", three: "100", four: "1000" },
-            { name: "TWO", two: "15", three: "500", four: "15000" },
-            { name: "THREE", two: "20", three: "1000", four: "20000" },
-            { name: "FOUR", two: "25", three: "1500", four: "25000" },
-            { name: "FIVE", two: "30", three: "2000", four: "30000" },
-            { name: "SIX", two: "35", three: "2500", four: "35000" },
-        ];
-
         const x = d3
             .scaleBand()
             .range([0, this.width])
-            .domain(testData.map((d) => d.name))
+            .domain(this.dataset.dataset.map((d) => d.Time_Stamp))
             .padding(0.2);
 
         this.svg
@@ -50,7 +42,7 @@ export class BasicBarchartComponent implements OnInit {
             .attr("transform", "translate(-10, 0)rotate(-45)")
             .style("text-anchor", "end");
 
-        const y = d3.scaleLinear().domain([0, 40000]).range([this.height, 0]);
+        const y = d3.scaleLinear().domain([0, 30]).range([this.height, 0]);
 
         this.svg.append("g").call(d3.axisLeft(y));
 
@@ -58,13 +50,13 @@ export class BasicBarchartComponent implements OnInit {
 
         this.svg
             .selectAll("bars")
-            .data(testData)
+            .data(this.dataset.dataset)
             .enter()
             .append("rect")
-            .attr("x", (d) => x(d.name))
-            .attr("y", (d) => y(d.four))
+            .attr("x", (d) => x(d.Time_Stamp))
+            .attr("y", (d) => y(d.AIR_TEMP))
             .attr("width", x.bandwidth())
-            .attr("height", (d) => this.height - y(d.four))
-            .attr("fill", (d) => colorScale(d.four));
+            .attr("height", (d) => this.height - y(d.AIR_TEMP))
+            .attr("fill", (d) => colorScale(d.AIR_TEMP));
     }
 }

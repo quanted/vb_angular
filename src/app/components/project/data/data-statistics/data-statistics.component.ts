@@ -1,14 +1,16 @@
 import { Component, Input, OnInit } from "@angular/core";
 
 @Component({
-  selector: "app-data-statistics",
-  templateUrl: "./data-statistics.component.html",
-  styleUrls: ["./data-statistics.component.css"],
+    selector: "app-data-statistics",
+    templateUrl: "./data-statistics.component.html",
+    styleUrls: ["./data-statistics.component.css"],
 })
 export class DataStatisticsComponent implements OnInit {
-  @Input() dataset;
+    @Input() dataset;
 
-  constructor() {}
+    currentPlots = [{ type: "basic" }];
 
-  ngOnInit(): void {}
+    constructor() {}
+
+    ngOnInit(): void {}
 }

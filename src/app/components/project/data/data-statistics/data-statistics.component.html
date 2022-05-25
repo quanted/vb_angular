@@ -1,3 +1,5 @@
 <p>Statistics for {{ dataset.fileName }}</p>
 
-<app-basic-barchart [dataset]="dataset"></app-basic-barchart>
+<div *ngFor="let plot of currentPlots">
+    <app-plot-container [dataset]="dataset" [plotType]="plot.type"></app-plot-container>
+</div>
