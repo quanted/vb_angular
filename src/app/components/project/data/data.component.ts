@@ -3,6 +3,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { DatasetService } from "src/app/services/dataset.service";
 import { ProjectService } from "src/app/services/project.service";
 
+import { MatDialog } from "@angular/material/dialog";
+import { DeleteConfirmationDialogComponent } from "src/app/ui/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component";
+
 @Component({
     selector: "app-data",
     templateUrl: "./data.component.html",
@@ -19,7 +22,11 @@ export class DataComponent implements OnInit {
 
     creatingDataset = false;
 
-    constructor(private dataService: DatasetService, private projectService: ProjectService) {}
+    constructor(
+        private dataService: DatasetService,
+        private projectService: ProjectService,
+        private deleteDialog: MatDialog
+    ) {}
 
     ngOnInit() {
         this.datasetID = this.project.dataset;
@@ -49,10 +56,18 @@ export class DataComponent implements OnInit {
     }
 
     deleteDataset(dataset): void {
-        this.dataService.deleteDataset(dataset).subscribe(() => {
-            this.dataService.getDatasets().subscribe((datasets) => {
-                this.datasets = datasets;
-            });
+        const dialogRef = this.deleteDialog.open(DeleteConfirmationDialogComponent, {
+            data: { type: `Dataset ${dataset.name}` },
+        });
+
+        dialogRef.afterClosed().subscribe((confirmDelete) => {
+            if (confirmDelete) {
+                this.dataService.deleteDataset(dataset).subscribe(() => {
+                    this.dataService.getDatasets().subscribe((datasets) => {
+                        this.datasets = datasets;
+                    });
+                });
+            }
         });
     }
 
