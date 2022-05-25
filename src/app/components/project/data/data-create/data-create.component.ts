@@ -35,7 +35,11 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
 
     statusMessage = "";
 
-    currentDatasetStatistics = null;
+    currentDataset = {
+        fileName: null,
+        dataset: null,
+        statistics: null,
+    };
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     dataSource = new MatTableDataSource();
@@ -61,6 +65,7 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
         this.parseRawData();
 
         console.log("testStats: ", testStatistics);
+        this.currentDataset.statistics = testStatistics;
     }
 
     ngAfterViewInit() {
@@ -85,6 +90,9 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
         this.dataSource.data = this.columnData;
         this.dataSource.paginator = this.paginator;
         this.datasetForm.get("name").setValue(this.rawData.fileName);
+
+        this.currentDataset.dataset = this.columnData;
+        this.currentDataset.fileName = this.rawData.fileName;
     }
 
     rowClicked(): void {
@@ -208,8 +216,8 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
             }
             // TODO: both of these observables could probably use some error handling
             this.datasetService.createDataset(newDataset).subscribe((dataset) => {
-                this.currentDatasetStatistics = dataset.statistics;
-                console.log("datasetStats: ", this.currentDatasetStatistics);
+                this.currentDataset.statistics = dataset.statistics;
+                console.log("datasetStats: ", this.currentDataset.statistics);
                 this.projectService.selectDataset(this.project, dataset).subscribe(() => {
                     this.datasetCreated.emit(dataset);
                 });
