@@ -32,6 +32,12 @@
     column-gap: 0.5rem;
 }
 
+.form-buttons-row-fixed-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0.5rem;
+}
+
 .variables {
     grid-template-rows: 1fr 1fr auto;
 }
