@@ -64,7 +64,7 @@ import { LinePlotComponent } from "./components/dashboards/model-graphs/line-plo
 import { BoxPlotComponent } from "./components/dashboards/model-graphs/box-plot/box-plot.component";
 import { DashpanelComponent } from "./components/dashboards/dashpanel/dashpanel.component";
 
-import { BasicComponent } from "./components/utility/d3-components/basic/basic.component";
+import { BasicBarchartComponent } from "./components/utility/d3-components/basic/basic-barchart.component";
 
 import { FluidHeightDirective } from "./directives/fluid-height.directive";
 import { PipelineStatusComponent } from "./components/project/pipelines/pipeline-status/pipeline-status.component";
@@ -120,7 +120,7 @@ import { LoadingIndicatorComponent } from "./components/utility/loading-indicato
         DataCreateComponent,
         DeleteConfirmationDialogComponent,
         LoadingIndicatorComponent,
-        BasicComponent,
+        BasicBarchartComponent,
     ],
     imports: [
         BrowserModule,
