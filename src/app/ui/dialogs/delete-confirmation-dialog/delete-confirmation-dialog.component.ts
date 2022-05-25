@@ -10,7 +10,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 export class DeleteConfirmationDialogComponent {
     constructor(public dialogRef: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 
-    onNoClick(): void {
+    cancel(): void {
         this.dialogRef.close(false);
     }
 
