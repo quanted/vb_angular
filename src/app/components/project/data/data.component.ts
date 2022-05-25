@@ -4,7 +4,7 @@ import { DatasetService } from "src/app/services/dataset.service";
 import { ProjectService } from "src/app/services/project.service";
 
 import { MatDialog } from "@angular/material/dialog";
-import { DeleteConfirmationDialogComponent } from "src/app/ui/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component";
+import { DeleteConfirmationDialogComponent } from "src/app/components/utility/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component";
 
 @Component({
     selector: "app-data",
