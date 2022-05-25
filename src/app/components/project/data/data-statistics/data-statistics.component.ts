@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from "@angular/core";
 export class DataStatisticsComponent implements OnInit {
     @Input() dataset;
 
-    currentPlots = [{ type: "basic" }];
+    currentPlots = [{ type: "basic" }, { type: "line" }];
 
     constructor() {}
 

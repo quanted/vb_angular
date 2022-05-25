@@ -3,13 +3,12 @@ import { Component, Input, OnInit } from "@angular/core";
 import * as d3 from "d3";
 
 @Component({
-    selector: "app-basic-barchart",
-    templateUrl: "./basic-barchart.component.html",
-    styleUrls: ["./basic-barchart.component.css"],
+    selector: "app-bar-chart",
+    templateUrl: "./bar-chart.component.html",
+    styleUrls: ["./bar-chart.component.css"],
 })
-export class BasicBarchartComponent implements OnInit {
+export class BarChartComponent implements OnInit {
     @Input() dataset;
-    @Input() panelType;
 
     private svg;
     private margin = 50;

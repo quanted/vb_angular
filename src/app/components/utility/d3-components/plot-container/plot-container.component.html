@@ -1,1 +1,2 @@
-<app-basic-barchart *ngIf="plotType === 'basic'" [dataset]="dataset"></app-basic-barchart>
+<app-bar-chart *ngIf="plotType === 'basic'" [dataset]="dataset"></app-bar-chart>
+<app-line-chart *ngIf="plotType === 'line'" [dataset]="dataset"></app-line-chart>
