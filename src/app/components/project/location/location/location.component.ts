@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Router } from "@angular/router";
+
 import { LocationService } from "src/app/services/location.service";
 import { ProjectService } from "src/app/services/project.service";
+
+import { MatDialog } from "@angular/material/dialog";
+import { DeleteConfirmationDialogComponent } from "src/app/ui/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component";
 
 @Component({
     selector: "app-location",
@@ -15,7 +19,8 @@ export class LocationComponent implements OnInit {
     constructor(
         private router: Router,
         private locationService: LocationService,
-        private projectService: ProjectService
+        private projectService: ProjectService,
+        private deleteDialog: MatDialog
     ) {}
 
     location;
@@ -53,10 +58,18 @@ export class LocationComponent implements OnInit {
     }
 
     deleteLocation(location) {
-        this.locationService.deleteLocation(location.id).subscribe(() => {
-            this.locationService.getLocations().subscribe((locations) => {
-                this.locations = [...locations];
-            });
+        const dialogRef = this.deleteDialog.open(DeleteConfirmationDialogComponent, {
+            data: { type: `Location ${location.name}` },
+        });
+
+        dialogRef.afterClosed().subscribe((confirmDelete) => {
+            if (confirmDelete) {
+                this.locationService.deleteLocation(location.id).subscribe(() => {
+                    this.locationService.getLocations().subscribe((locations) => {
+                        this.locations = [...locations];
+                    });
+                });
+            }
         });
     }
 }
