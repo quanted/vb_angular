@@ -16,7 +16,7 @@ export class DataComponent implements OnInit {
     @Output() setDatasetHeader: EventEmitter<any> = new EventEmitter<any>();
 
     datasets = [];
-    rawData;
+    projectData;
     dataset;
     datasetID;
 
@@ -81,13 +81,13 @@ export class DataComponent implements OnInit {
             console.log("XLSX can only load one file at a time");
             return;
         }
-        this.dataService.loadDatasetFromFile(target).subscribe((data) => {
-            if (data.error) {
-                console.log("error: ", data.error);
+        this.dataService.loadDatasetFromFile(target).subscribe((projectData) => {
+            if (projectData.error) {
+                console.log("error: ", projectData.error);
                 return;
             }
-            if (data) {
-                this.rawData = data;
+            if (projectData) {
+                this.projectData = projectData;
                 this.creatingDataset = true;
             }
         });

@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from "@angular/core";
     styleUrls: ["./data-statistics.component.css"],
 })
 export class DataStatisticsComponent implements OnInit {
-    @Input() dataset;
+    @Input() projectData;
 
     currentPlots = [{ type: "basic" }, { type: "line" }];
 

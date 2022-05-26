@@ -1,5 +1,5 @@
-<p>Statistics for {{ dataset.fileName }}</p>
+<p>Statistics for {{ projectData.fileName }}</p>
 
-<div *ngFor="let plot of currentPlots">
-    <app-plot-container [dataset]="dataset" [plotType]="plot.type"></app-plot-container>
+<div *ngFor="let plot of currentPlots" class="plots">
+    <app-plot-container [projectData]="projectData" [plotType]="plot.type"></app-plot-container>
 </div>

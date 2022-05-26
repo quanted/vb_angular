@@ -19,7 +19,7 @@
     <ng-container *ngIf="creatingDataset">
         <app-data-create
             [project]="project"
-            [rawData]="rawData"
+            [projectData]="projectData"
             (datasetCreated)="datasetCreated($event)"
         ></app-data-create>
     </ng-container>

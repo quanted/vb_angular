@@ -64,7 +64,9 @@ import { LinePlotComponent } from "./components/dashboards/model-graphs/line-plo
 import { BoxPlotComponent } from "./components/dashboards/model-graphs/box-plot/box-plot.component";
 import { DashpanelComponent } from "./components/dashboards/dashpanel/dashpanel.component";
 
-import { BarChartComponent } from "./components/utility/d3-components/basic/bar-chart.component";
+import { PlotContainerComponent } from "./components/utility/d3-components/plot-container/plot-container.component";
+import { BarChartComponent } from "./components/utility/d3-components/bar-chart/bar-chart.component";
+import { LineChartComponent } from "./components/utility/d3-components/line-chart/line-chart.component";
 
 import { FluidHeightDirective } from "./directives/fluid-height.directive";
 import { PipelineStatusComponent } from "./components/project/pipelines/pipeline-status/pipeline-status.component";
@@ -76,8 +78,6 @@ import { DataCreateComponent } from "./components/project/data/data-create/data-
 
 import { DeleteConfirmationDialogComponent } from "./components/utility/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component";
 import { LoadingIndicatorComponent } from "./components/utility/loading-indicator/loading-indicator.component";
-import { PlotContainerComponent } from "./components/utility/d3-components/plot-container/plot-container.component";
-import { LineChartComponent } from "./components/utility/d3-components/line-chart/line-chart.component";
 
 @NgModule({
     declarations: [
