@@ -8,19 +8,20 @@ import * as d3 from "d3";
     styleUrls: ["./bar-chart.component.css"],
 })
 export class BarChartComponent implements OnInit {
-    @Input() dataset;
+    @Input() projectData;
+    @Input() selectedGroup;
 
     private svg;
     private margin = 50;
-    private width = 750 - this.margin / 2;
-    private height = 400 - this.margin / 2;
+    private width = 500 - this.margin / 2;
+    private height = 300 - this.margin / 2;
 
     constructor() {}
 
     ngOnInit(): void {
-        console.log("dataset: ", this.dataset);
+        console.log("dataset: ", this.projectData);
         this.svg = d3
-            .select("figure#bar")
+            .select("figure#plot")
             .append("svg")
             .attr("width", this.width + this.margin * 2)
             .attr("height", this.height + this.margin * 2)
@@ -30,7 +31,7 @@ export class BarChartComponent implements OnInit {
         const x = d3
             .scaleBand()
             .range([0, this.width])
-            .domain(this.dataset.dataset.map((d) => d.Time_Stamp))
+            .domain(this.projectData.columnData.map((d) => d.Time_Stamp))
             .padding(0.2);
 
         this.svg
@@ -49,7 +50,7 @@ export class BarChartComponent implements OnInit {
 
         this.svg
             .selectAll("bars")
-            .data(this.dataset.dataset)
+            .data(this.projectData.columnData)
             .enter()
             .append("rect")
             .attr("x", (d) => x(d.Time_Stamp))
