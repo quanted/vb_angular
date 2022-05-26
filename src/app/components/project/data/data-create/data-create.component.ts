@@ -56,6 +56,7 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
             bearing: [null],
             magnitude: [null],
         });
+        this.columnNames = this.projectData.columnNames;
         this.dataSource.data = this.projectData.columnData;
         this.dataSource.paginator = this.paginator;
         this.datasetForm.get("name").setValue(this.projectData.fileName);
