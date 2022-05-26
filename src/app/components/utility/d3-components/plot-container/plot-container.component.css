@@ -1,0 +1,12 @@
+.plot-container {
+    position: relative;
+    background-color: aquamarine;
+    border: 1px solid black;
+}
+
+.select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}

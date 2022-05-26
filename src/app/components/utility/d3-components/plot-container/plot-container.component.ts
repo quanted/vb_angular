@@ -6,10 +6,19 @@ import { Component, Input, OnInit } from "@angular/core";
     styleUrls: ["./plot-container.component.css"],
 })
 export class PlotContainerComponent implements OnInit {
-    @Input() dataset;
+    @Input() projectData;
     @Input() plotType;
+
+    selectedGroup = "AIR_TEMP";
 
     constructor() {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.selectedGroup = this.projectData.columnNames[0];
+    }
+
+    selectGroup(groupName): void {
+        console.log("groupName: ", groupName);
+        this.selectedGroup = groupName;
+    }
 }

@@ -1,2 +1,15 @@
-<app-bar-chart *ngIf="plotType === 'basic'" [dataset]="dataset"></app-bar-chart>
-<app-line-chart *ngIf="plotType === 'line'" [dataset]="dataset"></app-line-chart>
+<div class="plot-container">
+    <select (change)="selectGroup($event.target.value)" class="select">
+        <option *ngFor="let name of projectData.columnNames" value="{{ name }}">{{ name }}</option>
+    </select>
+    <app-bar-chart
+        *ngIf="plotType === 'basic'"
+        [projectData]="projectData"
+        [selectedGroup]="selectedGroup"
+    ></app-bar-chart>
+    <app-line-chart
+        *ngIf="plotType === 'line'"
+        [projectData]="projectData"
+        [selectedGroup]="selectedGroup"
+    ></app-line-chart>
+</div>
