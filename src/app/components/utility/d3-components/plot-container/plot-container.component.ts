@@ -8,13 +8,14 @@ import { Component, Input, OnInit } from "@angular/core";
 export class PlotContainerComponent implements OnInit {
     @Input() projectData;
     @Input() plotType;
+    @Input() id;
 
     selectedGroup = "AIR_TEMP";
 
     constructor() {}
 
     ngOnInit(): void {
-        this.selectedGroup = this.projectData.columnNames[0];
+        this.selectedGroup = this.projectData.columnNames[1];
     }
 
     selectGroup(groupName): void {

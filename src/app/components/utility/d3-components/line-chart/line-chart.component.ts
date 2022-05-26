@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { AfterViewInit, Component, Input, OnInit } from "@angular/core";
 
 import * as d3 from "d3";
 
@@ -7,9 +7,10 @@ import * as d3 from "d3";
     templateUrl: "./line-chart.component.html",
     styleUrls: ["./line-chart.component.css"],
 })
-export class LineChartComponent implements OnInit {
+export class LineChartComponent implements OnInit, AfterViewInit {
+    @Input() id;
     @Input() projectData;
-    @Input() selectedGroup;
+    @Input() selectedGroup = "AIR_TEMP";
 
     private svg;
     private margin = 50;
@@ -23,9 +24,13 @@ export class LineChartComponent implements OnInit {
 
     constructor() {}
 
-    ngOnInit(): void {
+    ngOnInit(): void {}
+
+    ngAfterViewInit(): void {
+        const selector = `figure#${this.id}`;
+        console.log("figure#", selector);
         this.svg = d3
-            .select("figure#line")
+            .select(selector)
             .append("svg")
             .attr("width", this.width + this.margin * 2)
             .attr("height", this.height + this.margin * 2)

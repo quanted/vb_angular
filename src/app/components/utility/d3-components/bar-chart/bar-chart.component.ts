@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { AfterViewInit, Component, Input, OnInit } from "@angular/core";
 
 import * as d3 from "d3";
 
@@ -7,7 +7,8 @@ import * as d3 from "d3";
     templateUrl: "./bar-chart.component.html",
     styleUrls: ["./bar-chart.component.css"],
 })
-export class BarChartComponent implements OnInit {
+export class BarChartComponent implements OnInit, AfterViewInit {
+    @Input() id;
     @Input() projectData;
     @Input() selectedGroup;
 
@@ -18,10 +19,13 @@ export class BarChartComponent implements OnInit {
 
     constructor() {}
 
-    ngOnInit(): void {
+    ngOnInit(): void {}
+
+    ngAfterViewInit(): void {
         console.log("dataset: ", this.projectData);
+        console.log("selectedGroup: ", this.selectedGroup);
         this.svg = d3
-            .select("figure#plot")
+            .select(`figure#${this.id}`)
             .append("svg")
             .attr("width", this.width + this.margin * 2)
             .attr("height", this.height + this.margin * 2)
@@ -48,15 +52,22 @@ export class BarChartComponent implements OnInit {
 
         const colorScale = d3.scaleLinear<string>().domain([0, 40000]).range(["green", "blue"]);
 
+        const dataFilter = this.projectData.columnData.map((d) => {
+            return {
+                time: d.Time_Stamp,
+                value: d[this.selectedGroup],
+            };
+        });
+
         this.svg
             .selectAll("bars")
-            .data(this.projectData.columnData)
+            .data(dataFilter)
             .enter()
             .append("rect")
-            .attr("x", (d) => x(d.Time_Stamp))
-            .attr("y", (d) => y(d.AIR_TEMP))
+            .attr("x", (d) => x(d.time))
+            .attr("y", (d) => y(d.value))
             .attr("width", x.bandwidth())
-            .attr("height", (d) => this.height - y(d.AIR_TEMP))
-            .attr("fill", (d) => colorScale(d.AIR_TEMP));
+            .attr("height", (d) => this.height - y(d.value))
+            .attr("fill", d3.color("red"));
     }
 }

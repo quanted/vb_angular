@@ -3,12 +3,14 @@
         <option *ngFor="let name of projectData.columnNames" value="{{ name }}">{{ name }}</option>
     </select>
     <app-bar-chart
-        *ngIf="plotType === 'basic'"
+        *ngIf="plotType === 'bar'"
+        [id]="id"
         [projectData]="projectData"
         [selectedGroup]="selectedGroup"
     ></app-bar-chart>
     <app-line-chart
         *ngIf="plotType === 'line'"
+        [id]="id"
         [projectData]="projectData"
         [selectedGroup]="selectedGroup"
     ></app-line-chart>

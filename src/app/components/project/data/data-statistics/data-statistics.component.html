@@ -1,5 +1,10 @@
 <p>Statistics for {{ projectData.fileName }}</p>
 
-<div *ngFor="let plot of currentPlots" class="plots">
-    <app-plot-container [projectData]="projectData" [plotType]="plot.type"></app-plot-container>
+<div class="plots">
+    <app-plot-container
+        *ngFor="let plot of currentPlots"
+        [projectData]="projectData"
+        [plotType]="plot.type"
+        [id]="plot.id"
+    ></app-plot-container>
 </div>
