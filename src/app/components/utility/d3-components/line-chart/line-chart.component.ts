@@ -10,67 +10,73 @@ import * as d3 from "d3";
 export class LineChartComponent implements OnInit, AfterViewInit {
     @Input() id;
     @Input() projectData;
-    @Input() selectedGroup = "AIR_TEMP";
+    @Input() set selectedGroup(groupName: string) {
+        this.group = groupName;
+        this.updatePlot();
+    }
+
+    private MARGIN = 50;
+    private WIDTH = 500 - this.MARGIN / 2;
+    private HEIGHT = 300 - this.MARGIN / 2;
 
     private svg;
-    private margin = 50;
-    private width = 500 - this.margin / 2;
-    private height = 300 - this.margin / 2;
+    private plot;
+    private group;
 
-    xAxis = d3.scaleBand();
-    yAxis = d3.scaleLinear();
+    private xScale = d3.scaleBand();
+    private yScale = d3.scaleLinear();
 
-    currentPlot;
+    private xAxis;
+    private yAxis;
 
     constructor() {}
 
     ngOnInit(): void {}
 
     ngAfterViewInit(): void {
-        const selector = `figure#${this.id}`;
-        console.log("figure#", selector);
         this.svg = d3
-            .select(selector)
+            .select(`figure#${this.id}`)
             .append("svg")
-            .attr("width", this.width + this.margin * 2)
-            .attr("height", this.height + this.margin * 2)
+            .attr("width", this.WIDTH + this.MARGIN * 2)
+            .attr("height", this.HEIGHT + this.MARGIN * 2)
             .append("g")
-            .attr("transform", "translate(" + this.margin + "," + this.margin + ")");
+            .attr("transform", "translate(" + this.MARGIN + "," + this.MARGIN + ")");
 
-        this.xAxis
-            .range([0, this.width])
+        this.xScale
+            .range([0, this.WIDTH])
             .domain(this.projectData.columnData.map((d) => d.Time_Stamp))
             .padding(0.2);
 
-        this.svg
-            .append("g")
-            .attr("transform", "translate(0, " + this.height + ")")
-            .call(d3.axisBottom(this.xAxis))
+        this.xAxis = this.svg.append("g").attr("transform", "translate(0, " + this.HEIGHT + ")");
+
+        this.xAxis
+            .call(d3.axisBottom(this.xScale))
             .selectAll("text")
             .attr("transform", "translate(-10, 0)rotate(-45)")
             .style("text-anchor", "end");
 
-        this.yAxis.domain([0, 30]).range([this.height, 0]);
+        this.yScale.domain([0, 30]).range([this.HEIGHT, 0]);
 
-        this.svg.append("g").call(d3.axisLeft(this.yAxis));
+        this.yAxis = this.svg.append("g");
 
-        this.currentPlot = this.svg.append("path");
+        this.yAxis.call(d3.axisLeft(this.yScale));
 
+        this.plot = this.svg.append("path");
         this.updatePlot();
     }
 
     updatePlot(): void {
-        const dataFilter = this.projectData.columnData.map((d) => {
+        if (!this.svg) return;
+
+        const filteredData = this.projectData.columnData.map((d) => {
             return {
                 time: d.Time_Stamp,
-                value: d[this.selectedGroup],
+                value: d[this.group],
             };
         });
 
-        this.currentPlot
-            .datum(dataFilter)
-            .transition()
-            .duration(1000)
+        this.plot
+            .datum(filteredData)
             .attr("fill", "none")
             .attr("stroke", "red")
             .attr("stroke-width", 1.5)
@@ -81,8 +87,8 @@ export class LineChartComponent implements OnInit, AfterViewInit {
                 "d",
                 d3
                     .line()
-                    .x((d) => this.xAxis(d["time"]))
-                    .y((d) => this.yAxis(d["value"]))
+                    .x((d) => this.xScale(d["time"]))
+                    .y((d) => this.yScale(d["value"]))
             );
     }
 }
