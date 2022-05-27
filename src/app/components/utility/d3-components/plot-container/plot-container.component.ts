@@ -19,7 +19,6 @@ export class PlotContainerComponent implements OnInit {
     }
 
     selectGroup(groupName): void {
-        console.log("groupName: ", groupName);
         this.selectedGroup = groupName;
     }
 }
