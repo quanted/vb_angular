@@ -10,7 +10,7 @@ export class PlotContainerComponent implements OnInit {
     @Input() plotType;
     @Input() id;
 
-    selectedGroup = "AIR_TEMP";
+    selectedGroup;
 
     constructor() {}
 

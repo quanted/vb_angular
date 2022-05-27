@@ -1,6 +1,8 @@
 <div class="plot-container">
-    <select (change)="selectGroup($event.target.value)" value="{{ selectedGroup }}" class="select">
-        <option *ngFor="let name of projectData.columnNames" value="{{ name }}">{{ name }}</option>
+    <select (change)="selectGroup($event.target.value)" class="select">
+        <option *ngFor="let name of projectData.columnNames" value="{{ name }}" [selected]="selectedGroup === name">
+            {{ name }}
+        </option>
     </select>
     <app-bar-chart
         *ngIf="plotType === 'bar'"
