@@ -77,25 +77,22 @@ export class BarChartComponent implements OnInit, AfterViewInit {
             };
         });
 
-        let bars = this.svg.selectAll(".bars").data(filteredData, (d) => d.time);
-
-        bars.exit().attr("width", 0).remove();
+        let bars = this.svg.selectAll("rect").data(filteredData);
 
         bars.enter()
             .append("rect")
-            .attr("class", "bars")
             .attr("x", (d) => this.xScale(d.time))
             .attr("y", (d) => this.yScale(d.value))
-            .attr("width", 0)
+            .attr("width", this.xScale.bandwidth())
             .attr("height", (d) => this.HEIGHT - this.yScale(d.value))
-            .attr("fill", d3.color("red"))
             .merge(bars)
             .transition()
             .duration(1000)
             .attr("x", (d) => this.xScale(d.time))
             .attr("y", (d) => this.yScale(d.value))
+            .attr("width", this.xScale.bandwidth())
             .attr("height", (d) => this.HEIGHT - this.yScale(d.value))
-            .attr("width", this.xScale.bandwidth());
+            .attr("fill", d3.color("red"));
     }
 
     selectGroup(groupName: string): void {
