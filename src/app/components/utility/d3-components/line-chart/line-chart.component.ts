@@ -77,6 +77,8 @@ export class LineChartComponent implements OnInit, AfterViewInit {
 
         this.plot
             .datum(filteredData)
+            .transition()
+            .duration(1000)
             .attr("fill", "none")
             .attr("stroke", "red")
             .attr("stroke-width", 1.5)
