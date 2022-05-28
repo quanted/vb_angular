@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from "@angular/core";
+import { AfterViewInit, Component, Input, OnInit, SimpleChanges } from "@angular/core";
 
 import * as d3 from "d3";
 
@@ -10,64 +10,96 @@ import * as d3 from "d3";
 export class BarChartComponent implements OnInit, AfterViewInit {
     @Input() id;
     @Input() projectData;
-    @Input() selectedGroup;
+    @Input() set selectedGroup(groupName: string) {
+        this.selectGroup(groupName);
+    }
+
+    private MARGIN = 50;
+    private WIDTH = 500 - this.MARGIN / 2;
+    private HEIGHT = 300 - this.MARGIN / 2;
 
     private svg;
-    private margin = 50;
-    private width = 500 - this.margin / 2;
-    private height = 300 - this.margin / 2;
+    private group;
+
+    private xScale;
+    private yScale;
+
+    private xAxis;
+    private yAxis;
+
+    private colorScale = d3.scaleLinear<string>().range(["green", "blue"]);
 
     constructor() {}
 
     ngOnInit(): void {}
 
     ngAfterViewInit(): void {
-        console.log("dataset: ", this.projectData);
-        console.log("selectedGroup: ", this.selectedGroup);
         this.svg = d3
             .select(`figure#${this.id}`)
             .append("svg")
-            .attr("width", this.width + this.margin * 2)
-            .attr("height", this.height + this.margin * 2)
+            .attr("width", this.WIDTH + this.MARGIN * 2)
+            .attr("height", this.HEIGHT + this.MARGIN * 2)
             .append("g")
-            .attr("transform", "translate(" + this.margin + "," + this.margin + ")");
+            .attr("transform", "translate(" + this.MARGIN + "," + this.MARGIN + ")");
 
-        const x = d3
+        this.xScale = d3
             .scaleBand()
-            .range([0, this.width])
+            .range([0, this.WIDTH])
             .domain(this.projectData.columnData.map((d) => d.Time_Stamp))
             .padding(0.2);
 
-        this.svg
-            .append("g")
-            .attr("transform", "translate(0, " + this.height + ")")
-            .call(d3.axisBottom(x))
+        this.xAxis = this.svg.append("g").attr("transform", "translate(0, " + this.HEIGHT + ")");
+
+        this.xAxis
+            .call(d3.axisBottom(this.xScale))
             .selectAll("text")
             .attr("transform", "translate(-10, 0)rotate(-45)")
             .style("text-anchor", "end");
 
-        const y = d3.scaleLinear().domain([0, 30]).range([this.height, 0]);
+        this.yScale = d3.scaleLinear().domain([0, 30]).range([this.HEIGHT, 0]);
 
-        this.svg.append("g").call(d3.axisLeft(y));
+        this.yAxis = this.svg.append("g");
 
-        const colorScale = d3.scaleLinear<string>().domain([0, 40000]).range(["green", "blue"]);
+        this.yAxis.call(d3.axisLeft(this.yScale));
 
-        const dataFilter = this.projectData.columnData.map((d) => {
+        this.colorScale.domain([0, 30]);
+
+        this.updatePlot();
+    }
+
+    updatePlot(): void {
+        if (!this.svg) return;
+
+        const filteredData = this.projectData.columnData.map((d) => {
             return {
                 time: d.Time_Stamp,
-                value: d[this.selectedGroup],
+                value: d[this.group],
             };
         });
 
-        this.svg
-            .selectAll("bars")
-            .data(dataFilter)
-            .enter()
+        let bars = this.svg.selectAll(".bars").data(filteredData, (d) => d.time);
+
+        bars.exit().attr("width", 0).remove();
+
+        bars.enter()
             .append("rect")
-            .attr("x", (d) => x(d.time))
-            .attr("y", (d) => y(d.value))
-            .attr("width", x.bandwidth())
-            .attr("height", (d) => this.height - y(d.value))
-            .attr("fill", d3.color("red"));
+            .attr("class", "bars")
+            .attr("x", (d) => this.xScale(d.time))
+            .attr("y", (d) => this.yScale(d.value))
+            .attr("width", 0)
+            .attr("height", (d) => this.HEIGHT - this.yScale(d.value))
+            .attr("fill", d3.color("red"))
+            .merge(bars)
+            .transition()
+            .duration(1000)
+            .attr("x", (d) => this.xScale(d.time))
+            .attr("y", (d) => this.yScale(d.value))
+            .attr("height", (d) => this.HEIGHT - this.yScale(d.value))
+            .attr("width", this.xScale.bandwidth());
+    }
+
+    selectGroup(groupName: string): void {
+        this.group = groupName;
+        this.updatePlot();
     }
 }
