@@ -77,14 +77,13 @@ export class BarChartComponent implements OnInit, AfterViewInit {
             };
         });
 
+        this.yScale.domain([d3.min(filteredData.map((d) => d.value)), d3.max(filteredData.map((d) => d.value))]);
+        this.yAxis.call(d3.axisLeft(this.yScale));
+
         let bars = this.svg.selectAll("rect").data(filteredData);
 
         bars.enter()
             .append("rect")
-            .attr("x", (d) => this.xScale(d.time))
-            .attr("y", (d) => this.yScale(d.value))
-            .attr("width", this.xScale.bandwidth())
-            .attr("height", (d) => this.HEIGHT - this.yScale(d.value))
             .merge(bars)
             .transition()
             .duration(1000)

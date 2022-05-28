@@ -23,8 +23,8 @@ export class LineChartComponent implements OnInit, AfterViewInit {
     private plot;
     private group;
 
-    private xScale = d3.scaleBand();
-    private yScale = d3.scaleLinear();
+    private xScale;
+    private yScale;
 
     private xAxis;
     private yAxis;
@@ -42,7 +42,8 @@ export class LineChartComponent implements OnInit, AfterViewInit {
             .append("g")
             .attr("transform", "translate(" + this.MARGIN + "," + this.MARGIN + ")");
 
-        this.xScale
+        this.xScale = d3
+            .scaleBand()
             .range([0, this.WIDTH])
             .domain(this.projectData.columnData.map((d) => d.Time_Stamp))
             .padding(0.2);
@@ -55,7 +56,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
             .attr("transform", "translate(-10, 0)rotate(-45)")
             .style("text-anchor", "end");
 
-        this.yScale.domain([0, 30]).range([this.HEIGHT, 0]);
+        this.yScale = d3.scaleLinear().domain([0, 30]).range([this.HEIGHT, 0]);
 
         this.yAxis = this.svg.append("g");
 
@@ -74,6 +75,9 @@ export class LineChartComponent implements OnInit, AfterViewInit {
                 value: d[this.group],
             };
         });
+
+        this.yScale.domain([d3.min(filteredData.map((d) => d.value)), d3.max(filteredData.map((d) => d.value))]);
+        this.yAxis.call(d3.axisLeft(this.yScale));
 
         this.plot
             .datum(filteredData)
