@@ -1,5 +1,10 @@
 <div class="plot-container">
-    <select (change)="selectGroup($event.target.value)" class="select">
+    <select (change)="selectPlotType($event.target.value)" class="select-plot">
+        <option *ngFor="let type of plotTypes" value="{{ type }}" [selected]="plotType === type">
+            {{ type }}
+        </option>
+    </select>
+    <select (change)="selectGroup($event.target.value)" class="select-group">
         <option *ngFor="let name of projectData.columnNames" value="{{ name }}" [selected]="selectedGroup === name">
             {{ name }}
         </option>

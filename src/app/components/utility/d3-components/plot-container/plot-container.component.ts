@@ -10,12 +10,18 @@ export class PlotContainerComponent implements OnInit {
     @Input() plotType;
     @Input() id;
 
+    plotTypes = ["bar", "line", "scatter"];
+
     selectedGroup;
 
     constructor() {}
 
     ngOnInit(): void {
         this.selectedGroup = this.projectData.columnNames[1];
+    }
+
+    selectPlotType(type): void {
+        this.plotType = type;
     }
 
     selectGroup(groupName): void {
