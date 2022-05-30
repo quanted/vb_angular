@@ -1,4 +1,7 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, ViewContainerRef } from "@angular/core";
+
+// import { LineChartComponent } from "../line-chart/line-chart.component";
+// import { BarChartComponent } from "../bar-chart/bar-chart.component";
 
 @Component({
     selector: "app-plot-container",
@@ -14,10 +17,20 @@ export class PlotContainerComponent implements OnInit {
 
     selectedGroup;
 
-    constructor() {}
+    constructor(private viewContainerRef: ViewContainerRef) {}
 
     ngOnInit(): void {
         this.selectedGroup = this.projectData.columnNames[1];
+        let plot;
+        // if (this.plotType === "line") {
+        //     plot = this.viewContainerRef.createComponent(LineChartComponent);
+        // }
+        // if (this.plotType === "bar") {
+        //     plot = this.viewContainerRef.createComponent(BarChartComponent);
+        // }
+        // plot.instance.projectData = this.projectData;
+        // plot.instance.id = this.id;
+        // plot.instance.selectedGroup = this.selectedGroup;
     }
 
     selectPlotType(type): void {
