@@ -18,6 +18,9 @@ button.title {
 }
 
 .buttons-left {
+    display: flex;
+    flex-direction: row;
+    column-gap: 0.5rem;
     padding-left: 1rem;
 }
 

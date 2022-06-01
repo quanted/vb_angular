@@ -11,6 +11,8 @@ import { Router } from "@angular/router";
 export class NavigationComponent implements OnInit {
     username: string;
 
+    showAboutPanel: boolean;
+
     constructor(private auth: AuthService, private router: Router) {}
 
     ngOnInit() {
@@ -19,6 +21,14 @@ export class NavigationComponent implements OnInit {
 
     gotoHome(): void {
         this.router.navigateByUrl("home");
+    }
+
+    showAbout(): void {
+        this.showAboutPanel = true;
+    }
+
+    closeAbout(): void {
+        this.showAboutPanel = false;
     }
 
     createProject(): void {
