@@ -78,6 +78,7 @@ import { DataCreateComponent } from "./components/project/data/data-create/data-
 
 import { DeleteConfirmationDialogComponent } from "./components/utility/dialogs/delete-confirmation-dialog/delete-confirmation-dialog.component";
 import { LoadingIndicatorComponent } from "./components/utility/loading-indicator/loading-indicator.component";
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
     declarations: [
@@ -125,6 +126,7 @@ import { LoadingIndicatorComponent } from "./components/utility/loading-indicato
         BarChartComponent,
         PlotContainerComponent,
         LineChartComponent,
+        AboutComponent,
     ],
     imports: [
         BrowserModule,
