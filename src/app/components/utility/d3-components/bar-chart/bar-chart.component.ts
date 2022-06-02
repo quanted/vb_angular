@@ -84,6 +84,10 @@ export class BarChartComponent implements OnInit, AfterViewInit {
 
         bars.enter()
             .append("rect")
+            .attr("x", (d) => this.xScale(d.time))
+            .attr("y", (d) => this.yScale(d.value))
+            .attr("width", this.xScale.bandwidth())
+            .attr("height", (d) => this.HEIGHT - this.yScale(d.value))
             .merge(bars)
             .transition()
             .duration(1000)
