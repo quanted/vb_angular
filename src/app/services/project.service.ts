@@ -174,7 +174,7 @@ export class ProjectService implements OnDestroy {
     isExecutionReady(project): Observable<boolean> {
         return this.pipelineService.getProjectPipelines(project.id).pipe(
             switchMap((pipelines) => {
-                if (project && project.location && project.dataset && pipelines.length > 0) {
+                if (project && project.location && project.dataset && pipelines.length > 0 && !project.executed) {
                     return of(true);
                 }
                 return of(false);
