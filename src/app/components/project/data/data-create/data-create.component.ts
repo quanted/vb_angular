@@ -73,7 +73,7 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
     selectAllRows(): void {
         this.selectedRows = [];
         this.datasetForm.get("startRow").setValue(1);
-        this.datasetForm.get("endRow").setValue(this.columnData.length);
+        this.datasetForm.get("endRow").setValue(this.projectData.columnData.length);
         this.selectRows();
     }
 
@@ -82,7 +82,7 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
             const start = this.datasetForm.get("startRow").value;
             const end = this.datasetForm.get("endRow").value;
             // TODO: add a modals for these 3 situations
-            if (end <= start || start < 1 || end > this.columnData.length) return;
+            if (end <= start || start < 1 || end > this.projectData.columnData.length) return;
 
             // if there aren't any ranges just add it
             if (this.selectedRows.length === 0) {
