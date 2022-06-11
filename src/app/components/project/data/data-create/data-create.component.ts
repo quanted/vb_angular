@@ -20,7 +20,6 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
     datasetForm: FormGroup;
     dv = [];
 
-    dataCSV = "";
     dataArray = [];
 
     columnData = [];
@@ -159,7 +158,7 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
             const newDataset = {
                 name: formValues.name,
                 description: formValues.description,
-                data: this.dataCSV,
+                data: this.projectData.dataCSV,
             };
 
             if (this.generateAO) {
@@ -186,7 +185,10 @@ export class DataCreateComponent implements OnInit, AfterViewInit {
                 });
             }
             // TODO: both of these observables could probably use some error handling
+            console.log("newDataset: ", newDataset);
             this.datasetService.createDataset(newDataset).subscribe((dataset) => {
+                console.log("newDataset-response: ", dataset);
+
                 this.projectService.selectDataset(this.project, dataset).subscribe(() => {
                     this.datasetCreated.emit(dataset);
                 });

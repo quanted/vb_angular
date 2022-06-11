@@ -101,6 +101,7 @@ export class DatasetService implements OnDestroy {
                     fileName,
                     columnNames,
                     columnData,
+                    dataCSV,
                     statistics: testStatistics,
                 });
                 observer.complete();
