@@ -140,6 +140,7 @@ export class ProjectService implements OnDestroy {
     }
 
     executeProject(project): Observable<any> {
+        console.log("execute.project: ", project);
         return this.pipelineService.getAllPipelines(project.id).pipe(
             concatMap((pipelines) => {
                 let vbHelper = null;

@@ -83,12 +83,22 @@ export class PipelineCreateComponent implements OnInit {
     }
 
     addPipeline(): void {
+        const formValue = this.estimatorOptionsForm.value;
+        // convert number strings to numbers
+        for (let field of Object.keys(formValue)) {
+            const newFloat = parseFloat(formValue[field]);
+            if (newFloat) {
+                formValue[field] = newFloat;
+            }
+        }
+        console.log("formValue: ", formValue);
+
         const pipeline = {
             project: this.project.id,
             name: this.selectedEstimator.name,
             description: this.selectedEstimator.description,
             type: this.selectedEstimator.ptype,
-            metadata: JSON.stringify({ parameters: this.estimatorOptionsForm.value }),
+            metadata: JSON.stringify({ parameters: formValue }),
         };
         this.pipelineService.addPipeline(pipeline).subscribe((response) => {
             this.pipelineCreated.emit();

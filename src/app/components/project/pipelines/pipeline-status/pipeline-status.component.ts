@@ -41,6 +41,7 @@ export class PipelineStatusComponent implements OnInit, OnDestroy {
                     if (pipeline.type === "vbhelper") {
                         // vbhelper will only have a pipeline.metadata.status once it has been executed
                         if (pipeline.metadata.status) {
+                            console.log("pipeline: ", pipeline);
                             this.pipelineMessage = pipeline.metadata.message;
                             this.pipelineStage = pipeline.metadata.stage;
                             this.pipelineStatus = pipeline.metadata.status;

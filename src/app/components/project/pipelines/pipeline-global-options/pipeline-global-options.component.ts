@@ -85,7 +85,17 @@ export class PipelineGlobalOptionsComponent implements OnInit {
     }
 
     updateGlobalOptions(): void {
-        this.pipelineService.updatePipeline(this.vbHelper, this.globalOptionsForm.value).subscribe((response) => {
+        const formValue = this.globalOptionsForm.value;
+        // convert number strings to numbers
+        for (let field of Object.keys(formValue)) {
+            const newFloat = parseFloat(formValue[field]);
+            if (newFloat) {
+                formValue[field] = newFloat;
+            }
+        }
+        console.log("formValue: ", formValue);
+
+        this.pipelineService.updatePipeline(this.vbHelper, formValue).subscribe((response) => {
             console.log("updateGlobalOptions.response: ", response);
         });
     }
