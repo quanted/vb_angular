@@ -70,8 +70,7 @@ export class PipelineDetailComponent implements OnInit {
     }
 
     updatePipelineOptions(): void {
-        this.pipelineService.updatePipeline(this.pipeline, this.pipelineOptionsForm.value).subscribe((response) => {
-            console.log("updatePipelineOptions.return: ", response);
-        });
+        this.pipeline.metadata = this.pipelineOptionsForm.value;
+        this.pipelineService.updatePipeline(this.pipeline).subscribe((response) => {});
     }
 }

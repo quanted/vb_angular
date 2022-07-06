@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of, Subject } from "rxjs";
-import { catchError, switchMap, takeUntil } from "rxjs/operators";
+import { catchError, switchMap, takeUntil, tap } from "rxjs/operators";
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -84,41 +84,101 @@ export class PipelineService implements OnDestroy {
         );
     }
 
-    createVBHelper(id, defaults) {
-        const pipeline = {
-            project: id,
-            name: "VB Helper",
-            type: "vbhelper",
-            description: "Parent pipeline class, containing global CV",
-            metadata: JSON.stringify({ parameters: defaults }),
-        };
-        return this.addPipeline(pipeline);
-    }
-
     addPipeline(pipeline: any): Observable<any> {
+        pipeline.metadata = this.prepareMetadata(pipeline.metadata);
+        console.log("addPipeline: ", pipeline);
         return this.http.post(environment.apiURL + "pipeline/", pipeline).pipe(
             takeUntil(this.ngUnsubscribe),
+            tap((response) => {
+                console.log("addResponse: ", response);
+            }),
             catchError((error) => {
                 return of({ error: `Failed to add pipeline! ${error}` });
             })
         );
     }
 
-    updatePipeline(pipeline: any, metadata: any): Observable<any> {
-        // metadata will have a "properties" key if it is from a vbhelper execution
-        if (metadata.parameters) {
-            pipeline.metadata = JSON.stringify(metadata);
-        } else {
-            // or will just be a dictionary of pipeline option values if not
-            pipeline.metadata.parameters = JSON.stringify(metadata);
-        }
-        console.log("updated pipeline: ", pipeline);
+    // creates a vbhelper pipeline which contains the project global options
+    // every project requires a vbhelper pipeline
+    createVBHelper(id, defaults) {
+        const pipeline = {
+            project: id,
+            name: "VB Helper",
+            type: "vbhelper",
+            description: "Parent pipeline class, containing global CV",
+            metadata: { parameters: defaults },
+        };
+        return this.addPipeline(pipeline);
+    }
+
+    // updates an existing pipeline
+    updatePipeline(pipeline): Observable<any> {
+        console.log("updatePipeline: ", pipeline);
+        pipeline.metadata = this.prepareMetadata(pipeline.metadata);
         return this.http.put(environment.apiURL + `pipeline/${pipeline.id}/`, pipeline).pipe(
             takeUntil(this.ngUnsubscribe),
+            tap((response) => {
+                console.log("updatePipeline.response: ", response);
+            }),
             catchError((error) => {
                 return of({ error: `Failed to update pipeline! ${error}` });
             })
         );
+    }
+
+    // returns a valid json string
+    prepareMetadata(metadata): string {
+        /**
+         *  vbHelper metadata:
+         *  metadata = {
+                parameters: {
+                    hyper_param_1: value,
+                    hyper_param_2: value,
+                    hyper_param_3: value,
+                    hyper_param_4: value, ...
+                },
+                estimators: [],
+                outer_cv: "True",
+                drop_features: [],
+            }
+            other pipeline metadata:
+            metadata = {
+                hyper_param_1: value,
+                hyper_param_2: value,
+                hyper_param_3: value,
+                hyper_param_4: value, ...
+            }
+         */
+        // the incoming metadata object is raw angular form data
+        // numbers could be represented as strings in that data
+        // need to convert them to numbers before sending to backend
+        console.log("prepareMetadata", metadata);
+        let newMetadata = {};
+        if (Object.keys(metadata).includes("parameters")) {
+            if (!newMetadata["parameters"]) newMetadata["parameters"] = {};
+            for (let field of Object.keys(metadata["parameters"])) {
+                const newFloat = parseFloat(metadata["parameters"][field]);
+                if (newFloat) {
+                    newMetadata["parameters"][field] = newFloat;
+                } else {
+                    newMetadata["parameters"][field] = metadata["parameters"][field];
+                }
+            }
+            if (metadata.estimators) newMetadata["estimators"] = metadata.estimators;
+            if (metadata.outer_cv) newMetadata["outer_cv"] = metadata.outer_cv;
+            if (metadata.drop_features) newMetadata["drop_features"] = metadata.drop_features;
+        } else {
+            for (let field of Object.keys(metadata)) {
+                const newFloat = parseFloat(metadata[field]);
+                if (newFloat) {
+                    newMetadata[field] = newFloat;
+                } else {
+                    newMetadata[field] = metadata[field];
+                }
+            }
+        }
+        console.log("preparedMetadata: ", newMetadata);
+        return JSON.stringify({ parameters: newMetadata });
     }
 
     executePipeline(project, pipeline_id): Observable<any> {

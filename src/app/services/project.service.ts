@@ -149,14 +149,17 @@ export class ProjectService implements OnDestroy {
                     if (pipeline.type == "vbhelper") {
                         vbHelper = pipeline;
                     } else {
+                        console.log("project.pipelines.pipeline: ", pipeline);
                         let estimator = {
                             type: pipeline.type,
-                            parameters: pipeline.metadata.parameters,
+                            parameters: JSON.parse(pipeline.metadata.parameters.replaceAll("'", '"')),
                         };
                         estimators.push(estimator);
                     }
                 }
-                let parameters = vbHelper.metadata.parameters;
+                let parameters = JSON.parse(vbHelper.metadata.parameters.replaceAll("'", '"'));
+
+                console.log("execute.vbhelper.metadata.parameters: ", parameters);
 
                 const metadata = {
                     parameters,
@@ -164,7 +167,10 @@ export class ProjectService implements OnDestroy {
                     outer_cv: "True",
                     drop_features: [],
                 };
-                return this.pipelineService.updatePipeline(vbHelper, metadata);
+
+                console.log("execute.metadata: ", metadata);
+                vbHelper.metadata = metadata;
+                return this.pipelineService.updatePipeline(vbHelper);
             }),
             concatMap((vbHelper) => {
                 return this.pipelineService.executePipeline(project, vbHelper.id);

@@ -26,6 +26,9 @@ export class PipelineGlobalOptionsComponent implements OnInit {
             this.vbHelper = pipelinesMetadata.find((pipeline) => {
                 return pipeline.ptype === "vbhelper";
             });
+
+            console.log("vbHelper: ", this.vbHelper);
+
             const vbHelperOptions = this.vbHelper["hyper-parameters"];
             // map the each option's range/values to something that the forms can use
             for (let parameter of vbHelperOptions) {
@@ -81,22 +84,14 @@ export class PipelineGlobalOptionsComponent implements OnInit {
     }
 
     setOptionFormValues(): void {
-        this.globalOptionsForm.setValue(this.globalOptionsValues);
+        console.log("optionsValues: ", this.globalOptionsValues);
+        console.log("optionForm: ", this.globalOptionsForm);
+        this.globalOptionsForm.setValue(this.globalOptionsValues.parameters);
     }
 
     updateGlobalOptions(): void {
-        const formValue = this.globalOptionsForm.value;
-        // convert number strings to numbers
-        for (let field of Object.keys(formValue)) {
-            const newFloat = parseFloat(formValue[field]);
-            if (newFloat) {
-                formValue[field] = newFloat;
-            }
-        }
-        console.log("formValue: ", formValue);
-
-        this.pipelineService.updatePipeline(this.vbHelper, formValue).subscribe((response) => {
-            console.log("updateGlobalOptions.response: ", response);
-        });
+        console.log("form: ", this.globalOptionsForm.value);
+        this.vbHelper.metadata["parameters"] = this.globalOptionsForm.value;
+        this.pipelineService.updatePipeline(this.vbHelper).subscribe((response) => {});
     }
 }
