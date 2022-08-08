@@ -27,14 +27,6 @@ export class PipelineService implements OnDestroy {
         );
     }
 
-    getGlobalOptionsMetadata(): Observable<any> {
-        return this.getPipelinesMetadata().pipe(
-            switchMap((pipelines) => {
-                return of({});
-            })
-        );
-    }
-
     getAllPipelines(id): Observable<any> {
         return this.http.get(`${environment.apiURL}pipeline/?project=${id}`).pipe(
             takeUntil(this.ngUnsubscribe),
@@ -89,9 +81,6 @@ export class PipelineService implements OnDestroy {
         console.log("addPipeline: ", pipeline);
         return this.http.post(environment.apiURL + "pipeline/", pipeline).pipe(
             takeUntil(this.ngUnsubscribe),
-            tap((response) => {
-                console.log("addResponse: ", response);
-            }),
             catchError((error) => {
                 return of({ error: `Failed to add pipeline! ${error}` });
             })
@@ -113,7 +102,6 @@ export class PipelineService implements OnDestroy {
 
     // updates an existing pipeline
     updatePipeline(pipeline): Observable<any> {
-        console.log("updatePipeline: ", pipeline);
         pipeline.metadata = this.prepareMetadata(pipeline.metadata);
         return this.http.put(environment.apiURL + `pipeline/${pipeline.id}/`, pipeline).pipe(
             takeUntil(this.ngUnsubscribe),
@@ -152,10 +140,9 @@ export class PipelineService implements OnDestroy {
         // the incoming metadata object is raw angular form data
         // numbers could be represented as strings in that data
         // need to convert them to numbers before sending to backend
-        console.log("prepareMetadata", metadata);
         let newMetadata = {};
+        newMetadata["parameters"] = {};
         if (Object.keys(metadata).includes("parameters")) {
-            if (!newMetadata["parameters"]) newMetadata["parameters"] = {};
             for (let field of Object.keys(metadata["parameters"])) {
                 const newFloat = parseFloat(metadata["parameters"][field]);
                 if (newFloat) {
@@ -171,14 +158,13 @@ export class PipelineService implements OnDestroy {
             for (let field of Object.keys(metadata)) {
                 const newFloat = parseFloat(metadata[field]);
                 if (newFloat) {
-                    newMetadata[field] = newFloat;
+                    newMetadata["parameters"][field] = newFloat;
                 } else {
-                    newMetadata[field] = metadata[field];
+                    newMetadata["parameters"][field] = metadata[field];
                 }
             }
         }
-        console.log("preparedMetadata: ", newMetadata);
-        return JSON.stringify({ parameters: newMetadata });
+        return JSON.stringify(newMetadata);
     }
 
     executePipeline(project, pipeline_id): Observable<any> {

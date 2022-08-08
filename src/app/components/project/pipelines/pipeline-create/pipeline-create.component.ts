@@ -83,16 +83,20 @@ export class PipelineCreateComponent implements OnInit {
     }
 
     addPipeline(): void {
-        const pipeline = {
-            project: this.project.id,
-            name: this.selectedEstimator.name,
-            description: this.selectedEstimator.description,
-            type: this.selectedEstimator.ptype,
-            metadata: { parameters: this.estimatorOptionsForm.value },
-        };
-        this.pipelineService.addPipeline(pipeline).subscribe((response) => {
-            this.pipelineCreated.emit();
-        });
+        if (this.estimatorSelectForm.valid) {
+            const pipeline = {
+                project: this.project.id,
+                name: this.selectedEstimator.name,
+                description: this.selectedEstimator.description,
+                type: this.selectedEstimator.ptype,
+                metadata: { parameters: this.estimatorOptionsForm.value },
+            };
+            this.pipelineService.addPipeline(pipeline).subscribe((response) => {
+                this.pipelineCreated.emit();
+            });
+        } else {
+            // TODO: show a prompt to select an estimator
+        }
     }
 
     cancelPipeline(): void {

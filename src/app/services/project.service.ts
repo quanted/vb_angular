@@ -140,7 +140,6 @@ export class ProjectService implements OnDestroy {
     }
 
     executeProject(project): Observable<any> {
-        console.log("execute.project: ", project);
         return this.pipelineService.getAllPipelines(project.id).pipe(
             concatMap((pipelines) => {
                 let vbHelper = null;
@@ -149,7 +148,6 @@ export class ProjectService implements OnDestroy {
                     if (pipeline.type == "vbhelper") {
                         vbHelper = pipeline;
                     } else {
-                        console.log("project.pipelines.pipeline: ", pipeline);
                         let estimator = {
                             type: pipeline.type,
                             parameters: JSON.parse(pipeline.metadata.parameters.replaceAll("'", '"')),
@@ -158,8 +156,6 @@ export class ProjectService implements OnDestroy {
                     }
                 }
                 let parameters = JSON.parse(vbHelper.metadata.parameters.replaceAll("'", '"'));
-
-                console.log("execute.vbhelper.metadata.parameters: ", parameters);
 
                 const metadata = {
                     parameters,
