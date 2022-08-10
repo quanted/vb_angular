@@ -145,7 +145,7 @@ export class PipelineService implements OnDestroy {
         if (Object.keys(metadata).includes("parameters")) {
             for (let field of Object.keys(metadata["parameters"])) {
                 const newFloat = parseFloat(metadata["parameters"][field]);
-                if (newFloat) {
+                if (newFloat || newFloat === 0) {
                     newMetadata["parameters"][field] = newFloat;
                 } else {
                     newMetadata["parameters"][field] = metadata["parameters"][field];
@@ -164,6 +164,7 @@ export class PipelineService implements OnDestroy {
                 }
             }
         }
+        console.log("preparedMetadata: ", newMetadata);
         return JSON.stringify(newMetadata);
     }
 
